@@ -1,162 +1,334 @@
-// Mengambil tempat untuk menampilkan tulisan
-const detailTulisan = document.getElementById("detailTulisan");
+// =====================================
+// DETAIL TULISAN
+// RUANG CERITA
+// =====================================
 
-/**
- * Mengambil ID tulisan dari alamat browser.
- *
- * Contoh:
- * detail.html?id=1784012948500
- */
-const parameterURL = new URLSearchParams(window.location.search);
-const idDariURL = parameterURL.get("id");
 
-/**
- * Mengambil seluruh tulisan yang tersimpan di localStorage.
- */
-const dataTersimpan = localStorage.getItem("semuaTulisan");
 
-let semuaTulisan = [];
+const detailTulisan =
+document.getElementById(
+"detailTulisan"
+);
 
-if (dataTersimpan) {
-    try {
-        semuaTulisan = JSON.parse(dataTersimpan);
-    } catch (error) {
-        console.error("Data tulisan tidak dapat dibaca:", error);
-        semuaTulisan = [];
-    }
+
+
+const parameter =
+new URLSearchParams(
+window.location.search
+);
+
+
+
+const id =
+parameter.get("id");
+
+
+
+const kode =
+localStorage.getItem(
+"kodeRuangCerita"
+);
+
+
+
+
+
+// =====================================
+// AMBIL DATA
+// =====================================
+
+
+async function bukaDetail(){
+
+
+const {data,error} =
+await window.db.rpc(
+"ambil_tulisan",
+{
+kode:kode
+}
+);
+
+
+
+if(error){
+
+
+console.error(error);
+
+
+detailTulisan.innerHTML = `
+
+<h2>
+Gagal membuka cerita
+</h2>
+
+`;
+
+return;
+
 }
 
-/**
- * Mencari tulisan berdasarkan ID.
- *
- * String digunakan agar angka dan teks tetap dapat dibandingkan.
- */
-const tulisanDipilih = semuaTulisan.find(function (tulisan) {
-    return String(tulisan.id) === String(idDariURL);
-});
 
-/**
- * Mengubah tanggal menjadi format Indonesia.
- */
-function formatTanggal(tanggal) {
-    const objekTanggal = new Date(Number(tanggal));
 
-    if (isNaN(objekTanggal.getTime())) {
-        return "Tanggal tidak tersedia";
-    }
 
-    return objekTanggal.toLocaleDateString("id-ID", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    });
+
+const tulisan =
+data.find(
+item =>
+String(item.id)
+===
+String(id)
+);
+
+
+
+
+
+if(!tulisan){
+
+
+detailTulisan.innerHTML = `
+
+<h2>
+Cerita tidak ditemukan
+</h2>
+
+`;
+
+return;
+
+
 }
 
-/**
- * Mengubah waktu menjadi format jam Indonesia.
- */
-function formatWaktu(tanggal) {
-    const objekTanggal = new Date(Number(tanggal));
 
-    if (isNaN(objekTanggal.getTime())) {
-        return "";
-    }
 
-    return objekTanggal.toLocaleTimeString("id-ID", {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+
+
+tampilkanCerita(
+tulisan
+);
+
+
+
 }
 
-/**
- * Menghapus seluruh isi kotak detail.
- */
-function kosongkanDetail() {
-    detailTulisan.innerHTML = "";
+
+
+
+
+
+
+
+// =====================================
+// TAMPILKAN CERITA
+// =====================================
+
+
+function tampilkanCerita(tulisan){
+
+
+
+document.title =
+tulisan.judul +
+" - Ruang Cerita";
+
+
+
+
+
+
+detailTulisan.innerHTML = `
+
+
+
+<div class="surat-wrapper">
+
+
+
+<div class="surat-header">
+
+
+<div class="surat-icon">
+
+✦
+
+</div>
+
+
+
+<h2>
+
+${escapeHTML(
+tulisan.judul
+)}
+
+</h2>
+
+
+
+
+<p class="surat-tanggal">
+
+${formatTanggal(
+tulisan.created_at
+)}
+
+<br>
+
+pukul
+
+${formatJam(
+tulisan.created_at
+)}
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="garis-surat">
+
+</div>
+
+
+
+
+
+
+
+<div class="surat-isi">
+
+
+${escapeHTML(
+tulisan.isi
+)
+.replace(
+/\n/g,
+"<br><br>"
+)}
+
+
+</div>
+
+
+
+
+
+
+
+<div class="penutup-surat">
+
+
+<span>
+♥
+</span>
+
+
+<p>
+persembahan dari hati
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+`;
+
+
+
 }
 
-/**
- * Menampilkan pesan kesalahan.
- */
-function tampilkanPesanKesalahan(judulPesan, isiPesan) {
-    kosongkanDetail();
 
-    const pembungkus = document.createElement("div");
-    pembungkus.className = "pesan-tidak-ditemukan";
 
-    const judul = document.createElement("h2");
-    judul.textContent = judulPesan;
 
-    const isi = document.createElement("p");
-    isi.textContent = isiPesan;
 
-    pembungkus.appendChild(judul);
-    pembungkus.appendChild(isi);
 
-    detailTulisan.appendChild(pembungkus);
+
+
+// =====================================
+// FORMAT
+// =====================================
+
+
+function formatTanggal(tanggal){
+
+
+return new Date(tanggal)
+.toLocaleDateString(
+"id-ID",
+{
+
+day:"numeric",
+
+month:"long",
+
+year:"numeric"
+
 }
 
-/**
- * Menampilkan isi tulisan secara lengkap.
- */
-function tampilkanTulisan() {
-    // Memastikan ID tersedia di alamat browser
-    if (!idDariURL) {
-        tampilkanPesanKesalahan(
-            "ID tulisan tidak tersedia",
-            "Buka tulisan melalui tombol Buka Tulisan di halaman utama."
-        );
+);
 
-        return;
-    }
 
-    // Memastikan data tulisan ditemukan
-    if (!tulisanDipilih) {
-        tampilkanPesanKesalahan(
-            "Tulisan tidak ditemukan",
-            "Tulisan mungkin sudah dihapus atau data tidak tersimpan pada browser ini."
-        );
-
-        console.log("ID dari URL:", idDariURL);
-        console.log("Semua tulisan:", semuaTulisan);
-
-        return;
-    }
-
-    kosongkanDetail();
-
-    // Mengubah nama tab browser
-    document.title = `${tulisanDipilih.judul} - Ruang Cerita`;
-
-    // Membuat judul
-    const judul = document.createElement("h2");
-    judul.className = "judul-detail";
-    judul.textContent = tulisanDipilih.judul;
-
-    // Membuat informasi tanggal dan waktu
-    const tanggal = document.createElement("p");
-    tanggal.className = "tanggal-detail";
-
-    tanggal.textContent =
-        `${formatTanggal(tulisanDipilih.dibuatPada)} ` +
-        `pukul ${formatWaktu(tulisanDipilih.dibuatPada)}`;
-
-    // Membuat garis pembatas
-    const garis = document.createElement("hr");
-    garis.className = "garis-detail";
-
-    // Membuat isi tulisan
-    const isi = document.createElement("div");
-    isi.className = "isi-detail";
-    isi.textContent = tulisanDipilih.isi;
-
-    // Memasukkan elemen ke halaman
-    detailTulisan.appendChild(judul);
-    detailTulisan.appendChild(tanggal);
-    detailTulisan.appendChild(garis);
-    detailTulisan.appendChild(isi);
 }
 
-// Menjalankan fungsi
-tampilkanTulisan();
+
+
+
+function formatJam(tanggal){
+
+
+return new Date(tanggal)
+.toLocaleTimeString(
+"id-ID",
+{
+
+hour:"2-digit",
+
+minute:"2-digit"
+
+}
+
+);
+
+
+}
+
+
+
+
+
+function escapeHTML(text){
+
+
+return text
+.replace(
+/</g,
+"&lt;"
+)
+.replace(
+/>/g,
+"&gt;"
+);
+
+
+}
+
+
+
+
+
+bukaDetail();

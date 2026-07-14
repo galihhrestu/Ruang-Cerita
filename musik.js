@@ -1,414 +1,685 @@
-/**
- * Daftar lima lagu.
- *
- * Bagian "judul" bebas diubah.
- * Bagian "file" harus sesuai nama file MP3.
- */
-const daftarLagu = [
-    {
-        judul: "nadhif - penjaga hati",
-        file: "lagu1.mp3"
-    },
-    {
-        judul: "batas senja - nanti kita seperti ini",
-        file: "lagu2.mp3"
-    },
-    {
-        judul: "andmesh - hanya rindu",
-        file: "lagu3.mp3"
-    },
-    {
-        judul: "andmesh - kumau dia",
-        file: "lagu4.mp3"
-    },
-    {
-        judul: "ed sheeran - perfect",
-        file: "lagu5.mp3"
-    }
-];
+document.addEventListener("DOMContentLoaded", function () {
 
-// Mengambil elemen pemutar musik
-const backgroundMusic =
-    document.getElementById("backgroundMusic");
 
-const musicToggle =
-    document.getElementById("musicToggle");
+    // ===============================
+    // DAFTAR LAGU
+    // ===============================
 
-const musicIcon =
-    document.getElementById("musicIcon");
+    const daftarLagu = [
 
-const musicText =
-    document.getElementById("musicText");
+        {
+            judul: "Nadhif - Penjaga Hati",
+            file: "lagu1.mp3"
+        },
 
-const musicTitle =
-    document.getElementById("musicTitle");
+        {
+            judul: "Batas Senja - Nanti Kita Seperti Ini",
+            file: "lagu2.mp3"
+        },
 
-const musicSelect =
-    document.getElementById("musicSelect");
+        {
+            judul: "Andmesh - Hanya Rindu",
+            file: "lagu3.mp3"
+        },
 
-const prevMusic =
-    document.getElementById("prevMusic");
+        {
+            judul: "Andmesh - Kumau Dia",
+            file: "lagu4.mp3"
+        },
 
-const nextMusic =
-    document.getElementById("nextMusic");
-
-const musicVolume =
-    document.getElementById("musicVolume");
-
-// Menjalankan kode jika seluruh elemen tersedia
-if (
-    backgroundMusic &&
-    musicToggle &&
-    musicIcon &&
-    musicText &&
-    musicTitle &&
-    musicSelect &&
-    prevMusic &&
-    nextMusic &&
-    musicVolume
-) {
-    let indeksLagu = Number(
-        sessionStorage.getItem("indeksLagu")
-    );
-
-    if (
-        !Number.isInteger(indeksLagu) ||
-        indeksLagu < 0 ||
-        indeksLagu >= daftarLagu.length
-    ) {
-        indeksLagu = 0;
-    }
-
-    /**
-     * Membuat pilihan lagu.
-     */
-    daftarLagu.forEach(function (lagu, indeks) {
-        const pilihan = document.createElement("option");
-
-        pilihan.value = String(indeks);
-        pilihan.textContent =
-            `${indeks + 1}. ${lagu.judul}`;
-
-        musicSelect.appendChild(pilihan);
-    });
-
-    /**
-     * Mengubah tampilan tombol.
-     */
-    function ubahTampilanTombol(sedangDiputar) {
-        if (sedangDiputar) {
-            musicIcon.textContent = "❚❚";
-            musicText.textContent = "Jeda";
-            musicToggle.classList.add("music-playing");
-        } else {
-            musicIcon.textContent = "▶";
-            musicText.textContent = "Putar";
-            musicToggle.classList.remove("music-playing");
+        {
+            judul: "Ed Sheeran - Perfect",
+            file: "lagu5.mp3"
         }
+
+    ];
+
+
+
+    // ===============================
+    // ELEMENT HTML
+    // ===============================
+
+    const audio =
+        document.getElementById(
+            "backgroundMusic"
+        );
+
+
+    const judulLagu =
+        document.getElementById(
+            "musicTitle"
+        );
+
+
+    const tombolPutar =
+        document.getElementById(
+            "musicToggle"
+        );
+
+
+    const ikonMusik =
+        document.getElementById(
+            "musicIcon"
+        );
+
+
+    const teksMusik =
+        document.getElementById(
+            "musicText"
+        );
+
+
+    const tombolPrev =
+        document.getElementById(
+            "prevMusic"
+        );
+
+
+    const tombolNext =
+        document.getElementById(
+            "nextMusic"
+        );
+
+
+    const pilihanLagu =
+        document.getElementById(
+            "musicSelect"
+        );
+
+
+    const volume =
+        document.getElementById(
+            "musicVolume"
+        );
+
+
+
+    if(!audio){
+
+        console.error(
+            "Audio tidak ditemukan"
+        );
+
+        return;
+
     }
 
-    /**
-     * Menyimpan status pemutar.
-     */
-    function simpanStatusMusik() {
-        sessionStorage.setItem(
+
+
+    // ===============================
+    // DATA TERAKHIR
+    // ===============================
+
+
+    let indeksLagu =
+        Number(
+            localStorage.getItem(
+                "indeksLagu"
+            )
+        );
+
+
+    if(
+        !Number.isInteger(indeksLagu)
+        ||
+        indeksLagu < 0
+        ||
+        indeksLagu >= daftarLagu.length
+    ){
+
+        indeksLagu = 0;
+
+    }
+
+
+
+
+    let posisiTerakhir =
+        Number(
+            localStorage.getItem(
+                "posisiMusik"
+            )
+        );
+
+
+
+    let musikSebelumnyaBerjalan =
+        localStorage.getItem(
+            "musikBerjalan"
+        );
+
+
+
+
+    // ===============================
+    // TAMPILAN BUTTON
+    // ===============================
+
+
+    function updateButton(status){
+
+
+        if(ikonMusik){
+
+            ikonMusik.textContent =
+            status
+            ?
+            "❚❚"
+            :
+            "▶";
+
+        }
+
+
+        if(teksMusik){
+
+            teksMusik.textContent =
+            status
+            ?
+            "Jeda"
+            :
+            "Putar";
+
+        }
+
+    }
+
+
+
+
+
+    // ===============================
+    // LIST LAGU
+    // ===============================
+
+
+    function isiPilihanLagu(){
+
+
+        if(!pilihanLagu){
+
+            return;
+
+        }
+
+
+        pilihanLagu.innerHTML="";
+
+
+        daftarLagu.forEach(
+            function(lagu,index){
+
+
+                const option =
+                document.createElement(
+                    "option"
+                );
+
+
+                option.value=index;
+
+
+                option.textContent =
+                `${index+1}. ${lagu.judul}`;
+
+
+                pilihanLagu.appendChild(
+                    option
+                );
+
+
+            }
+        );
+
+
+    }
+
+
+
+
+
+    // ===============================
+    // LOAD LAGU
+    // ===============================
+
+
+    function loadLagu(index, autoplay=false){
+
+
+        if(index < 0){
+
+            index =
+            daftarLagu.length-1;
+
+        }
+
+
+        if(index >= daftarLagu.length){
+
+            index=0;
+
+        }
+
+
+
+        indeksLagu=index;
+
+
+
+        const lagu =
+        daftarLagu[indeksLagu];
+
+
+
+        audio.src =
+        lagu.file;
+
+
+
+        judulLagu.textContent =
+        lagu.judul;
+
+
+
+        if(pilihanLagu){
+
+            pilihanLagu.value =
+            indeksLagu;
+
+        }
+
+
+
+        localStorage.setItem(
             "indeksLagu",
-            String(indeksLagu)
+            indeksLagu
         );
 
-        sessionStorage.setItem(
-            "waktuMusik",
-            String(backgroundMusic.currentTime || 0)
-        );
 
-        sessionStorage.setItem(
-            "musikSedangDiputar",
-            String(!backgroundMusic.paused)
-        );
-    }
 
-    /**
-     * Menjalankan musik.
-     */
-    function putarMusik() {
-        backgroundMusic
-            .play()
-            .then(function () {
-                ubahTampilanTombol(true);
+        audio.load();
 
-                sessionStorage.setItem(
-                    "musikSedangDiputar",
-                    "true"
-                );
-            })
-            .catch(function (error) {
-                console.error(
-                    "Musik tidak dapat diputar:",
-                    error
-                );
 
-                ubahTampilanTombol(false);
 
-                sessionStorage.setItem(
-                    "musikSedangDiputar",
-                    "false"
-                );
-            });
-    }
-
-    /**
-     * Menjeda musik.
-     */
-    function jedaMusik() {
-        backgroundMusic.pause();
-
-        ubahTampilanTombol(false);
-
-        sessionStorage.setItem(
-            "musikSedangDiputar",
-            "false"
-        );
-    }
-
-    /**
-     * Memuat sebuah lagu.
-     */
-    function muatLagu(
-        indeks,
-        waktuAwal = 0,
-        putarSetelahDimuat = false
-    ) {
-        indeksLagu = indeks;
-
-        const laguDipilih = daftarLagu[indeksLagu];
-
-        musicTitle.textContent = laguDipilih.judul;
-        musicSelect.value = String(indeksLagu);
-
-        backgroundMusic.src = laguDipilih.file;
-        backgroundMusic.load();
-
-        sessionStorage.setItem(
-            "indeksLagu",
-            String(indeksLagu)
-        );
-
-        backgroundMusic.addEventListener(
+        audio.addEventListener(
             "loadedmetadata",
-            function () {
-                const waktuValid =
-                    Number(waktuAwal);
+            function(){
 
-                if (
-                    Number.isFinite(waktuValid) &&
-                    waktuValid > 0 &&
-                    waktuValid < backgroundMusic.duration
-                ) {
-                    backgroundMusic.currentTime =
-                        waktuValid;
+
+                if(
+                    Number.isFinite(
+                        posisiTerakhir
+                    )
+                ){
+
+                    audio.currentTime =
+                    posisiTerakhir;
+
                 }
 
-                if (putarSetelahDimuat) {
-                    putarMusik();
+
+                if(autoplay){
+
+                    play();
+
                 }
+
+
             },
             {
-                once: true
+                once:true
             }
         );
+
+
+
     }
 
-    /**
-     * Berpindah lagu.
-     */
-    function pindahLagu(perubahanIndeks) {
-        const sebelumnyaDiputar =
-            !backgroundMusic.paused;
 
-        let indeksBaru =
-            indeksLagu + perubahanIndeks;
 
-        // Kembali ke lagu terakhir
-        if (indeksBaru < 0) {
-            indeksBaru =
-                daftarLagu.length - 1;
-        }
 
-        // Kembali ke lagu pertama
-        if (indeksBaru >= daftarLagu.length) {
-            indeksBaru = 0;
-        }
 
-        muatLagu(
-            indeksBaru,
-            0,
-            sebelumnyaDiputar
-        );
-    }
 
-    /**
-     * Tombol putar dan jeda.
-     */
-    musicToggle.addEventListener(
-        "click",
-        function () {
-            if (backgroundMusic.paused) {
-                putarMusik();
-            } else {
-                jedaMusik();
-            }
-        }
-    );
+    // ===============================
+    // PLAY
+    // ===============================
 
-    /**
-     * Tombol lagu sebelumnya.
-     */
-    prevMusic.addEventListener(
-        "click",
-        function () {
-            pindahLagu(-1);
-        }
-    );
 
-    /**
-     * Tombol lagu berikutnya.
-     */
-    nextMusic.addEventListener(
-        "click",
-        function () {
-            pindahLagu(1);
-        }
-    );
+    async function play(){
 
-    /**
-     * Memilih lagu melalui daftar.
-     */
-    musicSelect.addEventListener(
-        "change",
-        function () {
-            const sebelumnyaDiputar =
-                !backgroundMusic.paused;
 
-            const indeksPilihan =
-                Number(musicSelect.value);
+        try{
 
-            muatLagu(
-                indeksPilihan,
-                0,
-                sebelumnyaDiputar
-            );
-        }
-    );
 
-    /**
-     * Otomatis memutar lagu berikutnya.
-     */
-    backgroundMusic.addEventListener(
-        "ended",
-        function () {
-            pindahLagu(1);
-        }
-    );
+            await audio.play();
 
-    /**
-     * Menampilkan kesalahan jika file tidak ditemukan.
-     */
-    backgroundMusic.addEventListener(
-        "error",
-        function () {
-            musicTitle.textContent =
-                "File lagu tidak ditemukan";
 
-            ubahTampilanTombol(false);
+            updateButton(true);
 
-            console.error(
-                "Periksa nama dan lokasi file:",
-                daftarLagu[indeksLagu].file
-            );
-        }
-    );
 
-    /**
-     * Mengatur volume.
-     */
-    const volumeTersimpan =
-        localStorage.getItem("volumeMusik");
-
-    if (volumeTersimpan !== null) {
-        const nilaiVolume =
-            Number(volumeTersimpan);
-
-        if (
-            Number.isFinite(nilaiVolume) &&
-            nilaiVolume >= 0 &&
-            nilaiVolume <= 1
-        ) {
-            musicVolume.value =
-                String(nilaiVolume);
-        }
-    }
-
-    backgroundMusic.volume =
-        Number(musicVolume.value);
-
-    musicVolume.addEventListener(
-        "input",
-        function () {
-            const volumeBaru =
-                Number(musicVolume.value);
-
-            backgroundMusic.volume =
-                volumeBaru;
 
             localStorage.setItem(
-                "volumeMusik",
-                String(volumeBaru)
+                "musikBerjalan",
+                "true"
             );
+
+
+        }
+
+        catch(error){
+
+
+            console.log(
+                "Autoplay diblok browser"
+            );
+
+
+        }
+
+
+    }
+
+
+
+
+    // ===============================
+    // PAUSE
+    // ===============================
+
+
+    function pause(){
+
+
+        audio.pause();
+
+
+        updateButton(false);
+
+
+
+        localStorage.setItem(
+            "musikBerjalan",
+            "false"
+        );
+
+
+    }
+
+
+
+
+
+
+    // ===============================
+    // BUTTON
+    // ===============================
+
+
+    tombolPutar.addEventListener(
+        "click",
+        function(){
+
+
+            if(audio.paused){
+
+                play();
+
+            }
+
+            else{
+
+                pause();
+
+            }
+
+
         }
     );
 
-    /**
-     * Menyimpan posisi musik secara berkala.
-     */
-    backgroundMusic.addEventListener(
+
+
+
+
+
+    if(tombolNext){
+
+
+        tombolNext.addEventListener(
+            "click",
+            function(){
+
+
+                posisiTerakhir=0;
+
+
+                loadLagu(
+                    indeksLagu+1,
+                    true
+                );
+
+
+            }
+        );
+
+
+    }
+
+
+
+
+
+    if(tombolPrev){
+
+
+        tombolPrev.addEventListener(
+            "click",
+            function(){
+
+
+                posisiTerakhir=0;
+
+
+                loadLagu(
+                    indeksLagu-1,
+                    true
+                );
+
+
+            }
+        );
+
+
+    }
+
+
+
+
+
+    if(pilihanLagu){
+
+
+        pilihanLagu.addEventListener(
+            "change",
+            function(){
+
+
+                posisiTerakhir=0;
+
+
+                loadLagu(
+                    Number(
+                        pilihanLagu.value
+                    ),
+                    true
+                );
+
+
+            }
+        );
+
+
+    }
+
+
+
+
+
+
+    // ===============================
+    // SIMPAN POSISI
+    // ===============================
+
+
+    audio.addEventListener(
         "timeupdate",
-        function () {
-            sessionStorage.setItem(
-                "waktuMusik",
-                String(backgroundMusic.currentTime)
+        function(){
+
+
+            localStorage.setItem(
+                "posisiMusik",
+                audio.currentTime
             );
+
+
         }
     );
 
-    /**
-     * Menyimpan posisi sebelum pindah halaman.
-     */
-    window.addEventListener(
-        "beforeunload",
-        function () {
-            simpanStatusMusik();
+
+
+
+
+    audio.addEventListener(
+        "playing",
+        function(){
+
+
+            updateButton(true);
+
+
         }
     );
 
-    /**
-     * Mengambil status musik sebelumnya.
-     */
-    const waktuTersimpan =
-        Number(
-            sessionStorage.getItem("waktuMusik")
-        ) || 0;
 
-    const sebelumnyaDiputar =
-        sessionStorage.getItem(
-            "musikSedangDiputar"
-        ) === "true";
 
-    // Memuat lagu pertama atau lagu terakhir
-    muatLagu(
+
+    audio.addEventListener(
+        "pause",
+        function(){
+
+
+            updateButton(false);
+
+
+        }
+    );
+
+
+
+
+
+
+    // ===============================
+    // VOLUME
+    // ===============================
+
+
+    let volumeAwal =
+    Number(
+        localStorage.getItem(
+            "volumeMusik"
+        )
+    );
+
+
+    if(
+        !Number.isFinite(volumeAwal)
+    ){
+
+        volumeAwal=0.35;
+
+    }
+
+
+
+    audio.volume =
+    volumeAwal;
+
+
+
+    if(volume){
+
+        volume.value =
+        volumeAwal;
+
+
+
+        volume.addEventListener(
+            "input",
+            function(){
+
+
+                audio.volume =
+                Number(
+                    volume.value
+                );
+
+
+                localStorage.setItem(
+                    "volumeMusik",
+                    volume.value
+                );
+
+
+            }
+        );
+
+    }
+
+
+
+
+
+
+    // ===============================
+    // LAGU SELESAI
+    // ===============================
+
+
+    audio.addEventListener(
+        "ended",
+        function(){
+
+
+            posisiTerakhir=0;
+
+
+            loadLagu(
+                indeksLagu+1,
+                true
+            );
+
+
+        }
+    );
+
+
+
+
+
+
+    // ===============================
+    // START
+    // ===============================
+
+
+    isiPilihanLagu();
+
+
+    loadLagu(
         indeksLagu,
-        waktuTersimpan,
-        sebelumnyaDiputar
+        musikSebelumnyaBerjalan === "true"
     );
 
-    ubahTampilanTombol(false);
-}
+
+});

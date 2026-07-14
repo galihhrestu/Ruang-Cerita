@@ -1,201 +1,843 @@
-// Mengambil elemen dari halaman index.html
-const formTulisan = document.getElementById("formTulisan");
-const inputJudul = document.getElementById("judul");
-const inputIsi = document.getElementById("isi");
-const daftarTulisan = document.getElementById("daftarTulisan");
-const jumlahTulisan = document.getElementById("jumlahTulisan");
+// =====================================
+// RUANG CERITA
+// SUPABASE VERSION FINAL
+// =====================================
 
-// Mengambil tulisan yang sudah tersimpan
-let semuaTulisan = [];
 
-const dataTersimpan = localStorage.getItem("semuaTulisan");
 
-if (dataTersimpan) {
-    try {
-        semuaTulisan = JSON.parse(dataTersimpan);
-    } catch (error) {
-        semuaTulisan = [];
+const formTulisan =
+document.getElementById("formTulisan");
+
+
+const inputJudul =
+document.getElementById("judul");
+
+
+const inputIsi =
+document.getElementById("isi");
+
+
+const daftarTulisan =
+document.getElementById("daftarTulisan");
+
+
+const jumlahTulisan =
+document.getElementById("jumlahTulisan");
+
+
+
+const KUNCI_AKSES =
+"kodeRuangCerita";
+
+
+
+let kodeAkses = "";
+
+
+
+
+
+// =====================================
+// CEK KODE
+// =====================================
+
+
+async function cekKode(kode){
+
+
+    const {data,error} =
+    await window.db.rpc(
+        "cek_kode",
+        {
+            kode:kode
+        }
+    );
+
+
+
+    if(error){
+
+        console.error(error);
+
+        return false;
+
     }
+
+
+
+    return data;
+
+
 }
 
-// Menyimpan tulisan ke browser
-function simpanKeBrowser() {
+
+
+
+
+
+// =====================================
+// LOGIN
+// =====================================
+
+
+async function masukRuangCerita(){
+
+
+    let kode =
+    localStorage.getItem(
+        KUNCI_AKSES
+    );
+
+
+
+    if(kode){
+
+
+        const valid =
+        await cekKode(kode);
+
+
+
+        if(valid){
+
+            return kode;
+
+        }
+
+
+    }
+
+
+
+
+    kode =
+    prompt(
+        "Masukkan kode akses Ruang Cerita:"
+    );
+
+
+
+    if(!kode){
+
+        return null;
+
+    }
+
+
+
+
+
+    const benar =
+    await cekKode(kode);
+
+
+
+    if(!benar){
+
+
+        alert(
+            "Kode akses salah"
+        );
+
+
+        return null;
+
+    }
+
+
+
+
+
     localStorage.setItem(
-        "semuaTulisan",
-        JSON.stringify(semuaTulisan)
-    );
-}
-
-// Membuat format tanggal
-function formatTanggal(tanggal) {
-    return new Date(tanggal).toLocaleDateString("id-ID", {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    });
-}
-
-// Membuat format waktu
-function formatWaktu(tanggal) {
-    return new Date(tanggal).toLocaleTimeString("id-ID", {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
-}
-
-// Membuat cuplikan tulisan
-function buatCuplikan(isi) {
-    const batasKarakter = 120;
-
-    if (isi.length <= batasKarakter) {
-        return isi;
-    }
-
-    return isi.substring(0, batasKarakter) + "...";
-}
-
-// Membuka tulisan ke halaman detail
-function bukaTulisan(idTulisan) {
-    window.location.href =
-        "detail.html?id=" + encodeURIComponent(idTulisan);
-}
-
-// Menghapus tulisan
-function hapusTulisan(idTulisan) {
-    const yakinMenghapus = confirm(
-        "Apakah kamu yakin ingin menghapus tulisan ini?"
+        KUNCI_AKSES,
+        kode
     );
 
-    if (!yakinMenghapus) {
+
+
+    return kode;
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================
+// AMBIL TULISAN
+// =====================================
+
+
+async function tampilkanTulisan(){
+
+
+
+    const {data,error} =
+    await window.db.rpc(
+        "ambil_tulisan",
+        {
+            kode:kodeAkses
+        }
+    );
+
+
+
+
+    if(error){
+
+
+        console.error(
+            "ERROR AMBIL:",
+            error
+        );
+
+
+        daftarTulisan.innerHTML =
+        `
+        <p>
+        Gagal mengambil tulisan.
+        </p>
+        `;
+
+
         return;
+
     }
 
-    semuaTulisan = semuaTulisan.filter(function (tulisan) {
-        return String(tulisan.id) !== String(idTulisan);
-    });
 
-    simpanKeBrowser();
-    tampilkanSemuaTulisan();
-}
 
-// Menampilkan daftar tulisan
-function tampilkanSemuaTulisan() {
+
     daftarTulisan.innerHTML = "";
 
+
+
     jumlahTulisan.textContent =
-        semuaTulisan.length + " tulisan";
+    `${data.length} tulisan`;
 
-    // Jika belum ada tulisan
-    if (semuaTulisan.length === 0) {
-        const pesanKosong = document.createElement("p");
 
-        pesanKosong.className = "kosong";
-        pesanKosong.textContent =
-            "Belum ada tulisan yang disimpan.";
 
-        daftarTulisan.appendChild(pesanKosong);
+
+
+
+    if(data.length === 0){
+
+
+        daftarTulisan.innerHTML =
+        `
+        <p>
+        Belum ada tulisan.
+        </p>
+        `;
+
 
         return;
+
+
     }
 
-    // Mengurutkan tulisan terbaru
-    const tulisanTerurut = [...semuaTulisan].sort(function (a, b) {
-        return Number(b.dibuatPada) - Number(a.dibuatPada);
-    });
 
-    tulisanTerurut.forEach(function (tulisan) {
-        // Membuat kartu
-        const kartu = document.createElement("article");
-        kartu.className = "kartu-tulisan";
 
-        // Membuat judul
-        const judul = document.createElement("h3");
-        judul.textContent = tulisan.judul;
 
-        // Membuat tanggal dan waktu
-        const tanggal = document.createElement("p");
-        tanggal.className = "tanggal";
 
-        tanggal.textContent =
-            formatTanggal(tulisan.dibuatPada) +
-            " pukul " +
-            formatWaktu(tulisan.dibuatPada);
 
-        // Membuat cuplikan
-        const cuplikan = document.createElement("p");
-        cuplikan.className = "cuplikan-tulisan";
-        cuplikan.textContent = buatCuplikan(tulisan.isi);
 
-        // Tempat tombol
-        const bagianTombol = document.createElement("div");
-        bagianTombol.className = "bagian-tombol";
+    data.forEach(
+    function(tulisan){
 
-        // Tombol buka
-        const tombolBuka = document.createElement("button");
-        tombolBuka.type = "button";
-        tombolBuka.className = "btn-buka";
-        tombolBuka.textContent = "Buka Tulisan";
 
-        tombolBuka.addEventListener("click", function () {
-            bukaTulisan(tulisan.id);
-        });
 
-        // Tombol hapus
-        const tombolHapus = document.createElement("button");
-        tombolHapus.type = "button";
-        tombolHapus.className = "btn-hapus";
-        tombolHapus.textContent = "Hapus";
+        const kartu =
+        document.createElement("div");
 
-        tombolHapus.addEventListener("click", function () {
-            hapusTulisan(tulisan.id);
-        });
 
-        // Memasukkan tombol
-        bagianTombol.appendChild(tombolBuka);
-        bagianTombol.appendChild(tombolHapus);
 
-        // Memasukkan isi ke kartu
-        kartu.appendChild(judul);
-        kartu.appendChild(tanggal);
-        kartu.appendChild(cuplikan);
-        kartu.appendChild(bagianTombol);
+        kartu.className =
+        "kartu-tulisan";
 
-        // Memasukkan kartu ke halaman
+
+
+
+
+        kartu.innerHTML = `
+
+
+        <div class="kartu-header">
+
+
+            <h3>
+            ✦ ${escapeHTML(tulisan.judul)}
+            </h3>
+
+
+
+            <p class="tanggal-tulisan">
+
+            ${formatTanggal(tulisan.created_at)}
+
+            </p>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="preview-tulisan">
+
+        ${escapeHTML(
+            tulisan.isi.substring(0,180)
+        )}
+
+        ${
+            tulisan.isi.length > 180
+            ?
+            "..."
+            :
+            ""
+        }
+
+        </div>
+
+
+
+
+
+        <div class="aksi-tulisan">
+
+
+
+            <button
+            class="btn-favorit ${
+                tulisan.favorit
+                ?
+                "aktif"
+                :
+                ""
+            }">
+
+            ${
+                tulisan.favorit
+                ?
+                "♥ Favorit"
+                :
+                "♡ Favorit"
+            }
+
+
+            </button>
+
+
+
+
+
+            <button
+            class="btn-edit">
+
+            ✎ Edit
+
+            </button>
+
+
+
+
+
+
+            <button
+            class="btn-buka">
+
+            Baca Cerita →
+
+            </button>
+
+
+
+
+
+
+            <button
+            class="btn-hapus">
+
+            Hapus
+
+            </button>
+
+
+
+
+        </div>
+
+
+
+        `;
+
+
+
+
+
+
         daftarTulisan.appendChild(kartu);
+
+
+
+
+
+
+
+
+        // =========================
+        // DETAIL
+        // =========================
+
+
+        kartu
+        .querySelector(".btn-buka")
+        .addEventListener(
+            "click",
+            function(){
+
+                bukaTulisan(
+                    tulisan.id
+                );
+
+            }
+        );
+
+
+
+
+
+
+
+        // =========================
+        // EDIT
+        // =========================
+
+
+        kartu
+        .querySelector(".btn-edit")
+        .addEventListener(
+            "click",
+            function(){
+
+                editTulisan(
+                    tulisan.id
+                );
+
+            }
+        );
+
+
+
+
+
+
+
+        // =========================
+        // FAVORIT
+        // =========================
+
+
+        kartu
+        .querySelector(".btn-favorit")
+        .addEventListener(
+            "click",
+            function(){
+
+                toggleFavorit(
+                    tulisan.id
+                );
+
+            }
+        );
+
+
+
+
+
+
+
+        // =========================
+        // HAPUS
+        // =========================
+
+
+        kartu
+        .querySelector(".btn-hapus")
+        .addEventListener(
+            "click",
+            function(){
+
+                hapusTulisan(
+                    tulisan.id
+                );
+
+            }
+        );
+
+
+
     });
+
+
+
 }
 
-// Menyimpan tulisan baru
-formTulisan.addEventListener("submit", function (event) {
-    event.preventDefault();
 
-    const judulTulisan = inputJudul.value.trim();
-    const isiTulisan = inputIsi.value.trim();
 
-    if (judulTulisan === "" || isiTulisan === "") {
-        alert("Judul dan isi tulisan harus diisi.");
-        return;
-    }
 
-    const waktuSekarang = Date.now();
 
-    const tulisanBaru = {
-        id: String(waktuSekarang),
-        judul: judulTulisan,
-        isi: isiTulisan,
-        dibuatPada: waktuSekarang
-    };
 
-    semuaTulisan.push(tulisanBaru);
 
-    simpanKeBrowser();
-    tampilkanSemuaTulisan();
 
-    formTulisan.reset();
-    inputJudul.focus();
 
-    alert("Tulisan berhasil disimpan.");
+// =====================================
+// SIMPAN TULISAN
+// =====================================
+
+
+if(formTulisan){
+
+
+formTulisan.addEventListener(
+"submit",
+async function(e){
+
+
+e.preventDefault();
+
+
+
+const judul =
+inputJudul.value.trim();
+
+
+
+const isi =
+inputIsi.value.trim();
+
+
+
+
+
+const {error} =
+await window.db.rpc(
+"simpan_tulisan",
+{
+
+kode:kodeAkses,
+
+judul_input:judul,
+
+isi_input:isi
+
+}
+
+);
+
+
+
+
+
+if(error){
+
+
+console.error(error);
+
+
+alert(
+"Gagal menyimpan tulisan"
+);
+
+
+return;
+
+
+}
+
+
+
+
+alert(
+"Tulisan berhasil disimpan"
+);
+
+
+
+formTulisan.reset();
+
+
+
+tampilkanTulisan();
+
+
+
 });
 
-// Menampilkan tulisan saat halaman dibuka
-tampilkanSemuaTulisan();
+}
+
+
+
+ 
+// =====================================
+// DETAIL
+// =====================================
+
+
+function bukaTulisan(id){
+
+
+window.location.href =
+"detail.html?id="+id;
+
+
+}
+
+
+
+
+
+
+// =====================================
+// EDIT
+// =====================================
+
+
+function editTulisan(id){
+
+
+window.location.href =
+"edit.html?id="+id;
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================
+// HAPUS
+// =====================================
+
+
+async function hapusTulisan(id){
+
+
+const yakin =
+confirm(
+"Hapus tulisan ini?"
+);
+
+
+
+if(!yakin){
+
+return;
+
+}
+
+
+
+
+const {error} =
+await window.db.rpc(
+"hapus_tulisan",
+{
+
+kode:kodeAkses,
+
+id_input:id
+
+}
+
+);
+
+
+
+
+if(error){
+
+
+console.error(error);
+
+
+alert(
+"Gagal menghapus"
+);
+
+
+return;
+
+
+}
+
+
+
+tampilkanTulisan();
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================
+// FAVORIT
+// =====================================
+
+
+async function toggleFavorit(id){
+
+
+
+const {error} =
+await window.db.rpc(
+"toggle_favorit",
+{
+
+kode:kodeAkses,
+
+id_input:id
+
+}
+
+);
+
+
+
+
+
+if(error){
+
+
+console.error(error);
+
+
+alert(
+"Gagal mengubah favorit"
+);
+
+
+return;
+
+
+}
+
+
+
+tampilkanTulisan();
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================
+// FORMAT TANGGAL
+// =====================================
+
+
+function formatTanggal(tanggal){
+
+
+return new Date(tanggal)
+.toLocaleDateString(
+"id-ID",
+{
+
+day:"numeric",
+
+month:"long",
+
+year:"numeric"
+
+}
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================
+// AMANKAN HTML
+// =====================================
+
+
+function escapeHTML(text){
+
+
+return text
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;");
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================
+// MULAI
+// =====================================
+
+
+async function mulai(){
+
+
+
+kodeAkses =
+await masukRuangCerita();
+
+
+
+
+if(!kodeAkses){
+
+return;
+
+}
+
+
+
+
+tampilkanTulisan();
+
+
+
+}
+
+
+
+mulai();

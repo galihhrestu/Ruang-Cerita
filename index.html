@@ -44,6 +44,13 @@
                     pemikiran, dan pengalaman kita.
                 </p>
             </div>
+        <button 
+        id="logoutButton"
+    class="logout-button"
+    type="button"
+>
+    🔒 Keluar
+</button>
 
         </div>
 
@@ -132,16 +139,6 @@
 
 </div>
 
-        <audio
-            id="backgroundMusic"
-            loop
-            preload="metadata"
-        >
-            <source src="musik.mp3" type="audio/mpeg">
-        </audio>
-
-    </div>
-
 </header>
 
     <main class="container">
@@ -206,7 +203,16 @@
 
     </main>
 
-    <script src="script.js"></script>
+<!-- Library Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Konfigurasi koneksi Supabase -->
+<script src="supabase-config.js"></script>
+
+<!-- Sistem penyimpanan tulisan -->
+<script src="script.js"></script>
+
+<!-- Pemutar musik -->
 <script src="musik.js"></script>
 
 </body>

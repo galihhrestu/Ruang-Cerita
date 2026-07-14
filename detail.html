@@ -58,13 +58,20 @@
                         Baca kembali cerita, pemikiran,
                         dan pengalaman yang telah kamu simpan.
                     </p>
+                    <button 
+    id="logoutButton"
+    class="logout-button"
+    type="button"
+>
+    🔒 Keluar
+</button>
 
                 </div>
 
             </div>
 
             <!-- Tombol musik -->
-            <<!-- Pemutar musik -->
+            <!-- Pemutar musik -->
 <div class="music-area">
 
     <div class="music-player">
@@ -194,11 +201,17 @@
 
     </main>
 
-    <!-- JavaScript untuk menampilkan tulisan -->
-    <script src="detail.js"></script>
+    <!-- Library Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- JavaScript untuk musik -->
-    <script src="musik.js"></script>
+<!-- Konfigurasi koneksi Supabase -->
+<script src="supabase-config.js"></script>
+
+<!-- Sistem detail tulisan -->
+<script src="detail.js"></script>
+
+<!-- Pemutar musik -->
+<script src="musik.js"></script>
 
 </body>
 </html>

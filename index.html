@@ -47,7 +47,30 @@
 
         </div>
 
-        <div class="music-area">
+        <!-- Pemutar musik -->
+<div class="music-area">
+
+    <div class="music-player">
+
+        <p class="music-caption">
+            Musik untuk menemani menulis
+        </p>
+
+        <p id="musicTitle" class="music-title">
+            Memuat lagu...
+        </p>
+
+        <div class="music-controls">
+
+            <button
+                type="button"
+                id="prevMusic"
+                class="music-control-button"
+                aria-label="Lagu sebelumnya"
+                title="Lagu sebelumnya"
+            >
+                ⏮
+            </button>
 
             <button
                 type="button"
@@ -55,15 +78,59 @@
                 class="music-button"
                 aria-label="Putar atau jeda musik"
             >
-                <span id="musicIcon" class="music-icon">▶</span>
-                <span id="musicText">Putar Musik</span>
+                <span id="musicIcon" class="music-icon">
+                    ▶
+                </span>
+
+                <span id="musicText">
+                    Putar
+                </span>
             </button>
 
-            <p class="music-caption">
-                Musik untuk menemani menulis
-            </p>
+            <button
+                type="button"
+                id="nextMusic"
+                class="music-control-button"
+                aria-label="Lagu berikutnya"
+                title="Lagu berikutnya"
+            >
+                ⏭
+            </button>
 
         </div>
+
+        <select
+            id="musicSelect"
+            class="music-select"
+            aria-label="Pilih lagu"
+        >
+            <!-- Pilihan lagu dibuat oleh musik.js -->
+        </select>
+
+        <label class="volume-control">
+
+            <span>Volume</span>
+
+            <input
+                type="range"
+                id="musicVolume"
+                min="0"
+                max="1"
+                step="0.05"
+                value="0.35"
+                aria-label="Volume musik"
+            >
+
+        </label>
+
+    </div>
+
+    <audio
+        id="backgroundMusic"
+        preload="metadata"
+    ></audio>
+
+</div>
 
         <audio
             id="backgroundMusic"

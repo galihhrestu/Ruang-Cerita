@@ -1,0 +1,533 @@
+/* Pengaturan dasar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f5f3ef;
+    color: #242424;
+    line-height: 1.7;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* Header */
+.header {
+    background-color: #3f4f44;
+    color: white;
+    padding: 45px 0;
+    margin-bottom: 35px;
+}
+
+.header h1 {
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+
+.header p {
+    color: #e1e8e3;
+}
+
+/* Bagian form dan daftar */
+.form-section,
+.daftar-section,
+.detail-section {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+}
+
+.form-section h2,
+.daftar-section h2 {
+    margin-bottom: 20px;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #cccccc;
+    border-radius: 7px;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3f4f44;
+    box-shadow: 0 0 0 3px rgba(63, 79, 68, 0.15);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+/* Tombol simpan */
+.btn-simpan {
+    background-color: #3f4f44;
+    color: white;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-simpan:hover {
+    background-color: #2e3c32;
+}
+
+/* Kepala daftar tulisan */
+.judul-daftar {
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.judul-daftar h2 {
+    margin-bottom: 0;
+}
+
+.judul-daftar p {
+    color: #777777;
+}
+
+/* Kartu tulisan */
+.kartu-tulisan {
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 18px;
+    background-color: #fffefa;
+}
+
+.kartu-tulisan h3 {
+    font-size: 23px;
+    margin-bottom: 5px;
+}
+
+.tanggal {
+    color: #777777;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.cuplikan-tulisan {
+    color: #444444;
+    margin-bottom: 20px;
+    overflow-wrap: break-word;
+}
+
+/* Bagian tombol pada kartu */
+.bagian-tombol {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Tombol buka */
+.btn-buka {
+    background-color: #3f4f44;
+    color: white;
+    border: none;
+    padding: 10px 17px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-buka:hover {
+    background-color: #2e3c32;
+}
+
+/* Tombol hapus */
+.btn-hapus {
+    background-color: #bd4545;
+    color: white;
+    border: none;
+    padding: 10px 17px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-hapus:hover {
+    background-color: #933232;
+}
+
+/* Pesan daftar kosong */
+.kosong {
+    text-align: center;
+    color: #777777;
+    padding: 35px 10px;
+}
+
+/* Halaman detail tulisan */
+.btn-kembali {
+    display: inline-block;
+    color: #3f4f44;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.btn-kembali:hover {
+    text-decoration: underline;
+}
+
+.detail-tulisan {
+    background-color: #fffefa;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    padding: 35px;
+}
+
+.judul-detail {
+    font-size: 32px;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
+}
+
+.tanggal-detail {
+    color: #777777;
+    font-size: 15px;
+}
+
+.garis-detail {
+    border: none;
+    border-top: 1px solid #dddddd;
+    margin: 25px 0;
+}
+
+.isi-detail {
+    font-size: 18px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+.pesan-tidak-ditemukan {
+    text-align: center;
+    padding: 40px 10px;
+}
+
+.pesan-tidak-ditemukan h2 {
+    margin-bottom: 10px;
+}
+
+.pesan-tidak-ditemukan p {
+    color: #777777;
+}
+
+/* Tampilan layar HP */
+@media screen and (max-width: 600px) {
+    .header {
+        padding: 30px 0;
+    }
+
+    .header h1 {
+        font-size: 29px;
+    }
+
+    .form-section,
+    .daftar-section,
+    .detail-section {
+        padding: 20px;
+    }
+
+    .detail-tulisan {
+        padding: 22px;
+    }
+
+    .judul-detail {
+        font-size: 26px;
+    }
+
+    .isi-detail {
+        font-size: 16px;
+    }
+
+    .btn-buka,
+    .btn-hapus {
+        width: 100%;
+    }
+}
+/* =====================================================
+   DESAIN HEADER MODERN RUANG CERITA
+===================================================== */
+
+body {
+    font-family: "DM Sans", Arial, Helvetica, sans-serif;
+}
+
+.modern-header {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #26382f 0%,
+            #354c3f 50%,
+            #435c4d 100%
+        );
+    color: white;
+    padding: 48px 0;
+    margin-bottom: 38px;
+    border-radius: 0 0 28px 28px;
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+}
+
+.brand-area {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+/* Logo RC */
+.logo-ruang-cerita {
+    width: 82px;
+    height: 82px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.24),
+            rgba(255, 255, 255, 0.08)
+        );
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+}
+
+.logo-ruang-cerita span {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 31px;
+    font-weight: 700;
+    letter-spacing: -2px;
+    color: #ffffff;
+}
+
+/* Teks header */
+.header-label {
+    margin-bottom: 4px;
+    color: #d6e1da;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+
+.brand-text h1 {
+    margin: 0;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(38px, 5vw, 55px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    color: #ffffff;
+}
+
+.header-description {
+    max-width: 590px;
+    margin-top: 11px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* Kontrol musik */
+.music-area {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.music-button {
+    min-width: 164px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    padding: 13px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    font-family: "DM Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.music-button:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.21);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
+}
+
+.music-button:active {
+    transform: translateY(0);
+}
+
+.music-button.music-playing {
+    background: #f3ead8;
+    color: #304539;
+    border-color: #f3ead8;
+}
+
+.music-icon {
+    width: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.music-caption {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 11px;
+}
+
+/* Ornamen transparan */
+.dekorasi-header {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.dekorasi-satu {
+    top: -135px;
+    right: 18%;
+    width: 310px;
+    height: 310px;
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.dekorasi-dua {
+    right: -85px;
+    bottom: -165px;
+    width: 340px;
+    height: 340px;
+    border: 55px solid rgba(255, 255, 255, 0.045);
+}
+
+/* Menyesuaikan judul bagian isi */
+.form-section h2,
+.daftar-section h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    letter-spacing: -0.5px;
+}
+
+/* Tampilan pada tablet dan HP */
+@media screen and (max-width: 760px) {
+    .modern-header {
+        padding: 35px 0;
+        border-radius: 0 0 22px 22px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 25px;
+    }
+
+    .brand-area {
+        align-items: flex-start;
+    }
+
+    .logo-ruang-cerita {
+        width: 68px;
+        height: 68px;
+        border-radius: 20px;
+    }
+
+    .logo-ruang-cerita span {
+        font-size: 26px;
+    }
+
+    .brand-text h1 {
+        font-size: 37px;
+    }
+
+    .header-description {
+        font-size: 14px;
+    }
+
+    .music-area {
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    .music-button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .brand-area {
+        gap: 15px;
+    }
+
+    .logo-ruang-cerita {
+        width: 58px;
+        height: 58px;
+        border-radius: 17px;
+    }
+
+    .logo-ruang-cerita span {
+        font-size: 22px;
+    }
+
+    .header-label {
+        font-size: 9px;
+        letter-spacing: 1.8px;
+    }
+
+    .brand-text h1 {
+        font-size: 31px;
+    }
+}

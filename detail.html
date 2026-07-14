@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Detail Tulisan - Ruang Cerita</title>
+
+    <!-- Font modern dan estetik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Menghubungkan ke file CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Bagian atas website -->
+    <header class="header modern-header">
+
+        <!-- Ornamen latar header -->
+        <div class="dekorasi-header dekorasi-satu"></div>
+        <div class="dekorasi-header dekorasi-dua"></div>
+
+        <div class="container header-content">
+
+            <!-- Logo dan nama website -->
+            <div class="brand-area">
+
+                <div class="logo-ruang-cerita">
+                    <span>RC</span>
+                </div>
+
+                <div class="brand-text">
+
+                    <p class="header-label">
+                        Personal Writing Space
+                    </p>
+
+                    <h1>Ruang Cerita</h1>
+
+                    <p class="header-description">
+                        Baca kembali cerita, pemikiran,
+                        dan pengalaman yang telah kamu simpan.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Tombol musik -->
+            <div class="music-area">
+
+                <button
+                    type="button"
+                    id="musicToggle"
+                    class="music-button"
+                    aria-label="Putar atau jeda musik"
+                >
+                    <span
+                        id="musicIcon"
+                        class="music-icon"
+                    >
+                        ▶
+                    </span>
+
+                    <span id="musicText">
+                        Putar Musik
+                    </span>
+                </button>
+
+                <p class="music-caption">
+                    Musik untuk menemani membaca
+                </p>
+
+            </div>
+
+            <!-- File musik -->
+            <audio
+                id="backgroundMusic"
+                loop
+                preload="metadata"
+            >
+                <source
+                    src="musik.mp3"
+                    type="audio/mpeg"
+                >
+
+                Browser tidak mendukung pemutar musik.
+            </audio>
+
+        </div>
+
+    </header>
+
+    <!-- Isi utama halaman -->
+    <main class="container">
+
+        <section class="detail-section">
+
+            <!-- Tombol kembali -->
+            <a
+                href="index.html"
+                class="btn-kembali"
+            >
+                ← Kembali ke Daftar Tulisan
+            </a>
+
+            <!-- Tempat isi tulisan ditampilkan -->
+            <article
+                id="detailTulisan"
+                class="detail-tulisan"
+            >
+                <p class="status-detail">
+                    Sedang membuka tulisan...
+                </p>
+            </article>
+
+        </section>
+
+    </main>
+
+    <!-- JavaScript untuk menampilkan tulisan -->
+    <script src="detail.js"></script>
+
+    <!-- JavaScript untuk musik -->
+    <script src="musik.js"></script>
+
+</body>
+</html>

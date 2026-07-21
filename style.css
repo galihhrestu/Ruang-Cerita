@@ -1230,7 +1230,7 @@ translateX(-5px);
 
     .surat-isi{
 
-        font: size 13px;
+        font-size: 13px;
         line-height:1.9;
 
     }
@@ -1243,4 +1243,234 @@ max-width:600px;
 margin-left:auto;
 margin-right:auto;
 
+}
+/* =====================================
+   PENCARIAN CERITA DAN PAGINASI
+===================================== */
+
+[hidden] {
+    display: none !important;
+}
+
+.daftar-section {
+    scroll-margin-top: 24px;
+}
+
+.daftar-tools {
+    margin-bottom: 26px;
+}
+
+.pencarian-cerita {
+    max-width: 680px;
+}
+
+.pencarian-cerita label {
+    display: block;
+    margin-bottom: 9px;
+    color: #35483d;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.pencarian-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.ikon-pencarian {
+    position: absolute;
+    left: 17px;
+    z-index: 1;
+    color: #6f7d73;
+    font-size: 23px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+#pencarianJudul {
+    width: 100%;
+    min-height: 52px;
+    padding: 13px 52px 13px 50px;
+    border: 1px solid rgba(53, 72, 61, 0.2);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #29342d;
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    outline: none;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#pencarianJudul::placeholder {
+    color: #969f99;
+}
+
+#pencarianJudul:focus {
+    border-color: #5f7868;
+    box-shadow: 0 0 0 4px rgba(95, 120, 104, 0.12);
+}
+
+/* Menghilangkan tombol hapus bawaan browser agar tidak ganda. */
+#pencarianJudul::-webkit-search-cancel-button {
+    appearance: none;
+}
+
+.hapus-pencarian {
+    position: absolute;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background: #edf1ee;
+    color: #526158;
+    font-size: 23px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.hapus-pencarian:hover {
+    background: #dfe7e1;
+    transform: scale(1.04);
+}
+
+.info-hasil-pencarian {
+    min-height: 20px;
+    margin: 10px 0 0;
+    color: #747f78;
+    font-size: 13px;
+}
+
+.status-daftar {
+    padding: 24px 0;
+    color: #747f78;
+    text-align: center;
+}
+
+.pesan-daftar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 150px;
+    padding: 30px 20px;
+    border: 1px dashed rgba(53, 72, 61, 0.25);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.55);
+    color: #6f7973;
+    text-align: center;
+}
+
+.pesan-daftar strong {
+    color: #35483d;
+    font-family: "Playfair Display", serif;
+    font-size: 22px;
+}
+
+.pesan-error {
+    border-color: rgba(189, 69, 69, 0.3);
+}
+
+.pesan-error strong {
+    color: #a73d3d;
+}
+
+.paginasi-tulisan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(53, 72, 61, 0.12);
+}
+
+.nomor-halaman {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.tombol-paginasi {
+    min-width: 42px;
+    min-height: 42px;
+    border: 1px solid rgba(53, 72, 61, 0.18);
+    border-radius: 13px;
+    background: #ffffff;
+    color: #35483d;
+    font-family: "DM Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.tombol-paginasi:hover:not(:disabled),
+.tombol-paginasi.aktif {
+    background: #35483d;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.tombol-paginasi:focus-visible,
+.hapus-pencarian:focus-visible {
+    outline: 3px solid rgba(53, 72, 61, 0.24);
+    outline-offset: 2px;
+}
+
+.tombol-paginasi:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+}
+
+.tombol-paginasi-arah {
+    min-width: 132px;
+    padding: 0 16px;
+}
+
+.elipsis-paginasi {
+    min-width: 22px;
+    color: #7d8781;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+    .paginasi-tulisan {
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .nomor-halaman {
+        order: -1;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .tombol-paginasi-arah {
+        flex: 1 1 135px;
+    }
+}
+
+@media (max-width: 480px) {
+    #pencarianJudul {
+        font-size: 16px;
+    }
+
+    .tombol-paginasi {
+        min-width: 38px;
+        min-height: 38px;
+    }
+
+    .aksi-tulisan {
+        align-items: stretch;
+    }
+
+    .aksi-tulisan button {
+        flex: 1 1 45%;
+    }
 }

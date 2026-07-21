@@ -188,8 +188,42 @@
             <div class="judul-daftar">
                 <div>
                     <h2>Tulisan Tersimpan</h2>
-                    <p id="jumlahTulisan">0 tulisan</p>
+                    <p id="jumlahTulisan" aria-live="polite">0 tulisan</p>
                 </div>
+            </div>
+
+            <div class="daftar-tools">
+                <div class="pencarian-cerita">
+                    <label for="pencarianJudul">Cari judul cerita</label>
+
+                    <div class="pencarian-input-wrapper">
+                        <span class="ikon-pencarian" aria-hidden="true">⌕</span>
+
+                        <input
+                            type="search"
+                            id="pencarianJudul"
+                            placeholder="Ketik judul yang ingin dicari..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            id="hapusPencarian"
+                            class="hapus-pencarian"
+                            aria-label="Hapus pencarian"
+                            title="Hapus pencarian"
+                            hidden
+                        >
+                            ×
+                        </button>
+                    </div>
+                </div>
+
+                <p
+                    id="infoHasilPencarian"
+                    class="info-hasil-pencarian"
+                    aria-live="polite"
+                ></p>
             </div>
 
             <div
@@ -198,6 +232,35 @@
             >
                 <!-- Daftar tulisan ditampilkan melalui JavaScript -->
             </div>
+
+            <nav
+                id="paginasiTulisan"
+                class="paginasi-tulisan"
+                aria-label="Navigasi halaman cerita"
+                hidden
+            >
+                <button
+                    type="button"
+                    id="halamanSebelumnya"
+                    class="tombol-paginasi tombol-paginasi-arah"
+                >
+                    ← Sebelumnya
+                </button>
+
+                <div
+                    id="nomorHalaman"
+                    class="nomor-halaman"
+                    aria-label="Nomor halaman"
+                ></div>
+
+                <button
+                    type="button"
+                    id="halamanBerikutnya"
+                    class="tombol-paginasi tombol-paginasi-arah"
+                >
+                    Berikutnya →
+                </button>
+            </nav>
 
         </section>
 

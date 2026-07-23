@@ -1,0 +1,37 @@
+RUANG CERITA - PETUNJUK FITUR FILTER, KATEGORI, DAN MOOD
+
+URUTAN PEMASANGAN
+
+1. Buka dashboard Supabase project Ruang Cerita.
+2. Masuk ke menu SQL Editor.
+3. Klik New query.
+4. Buka file supabase-kategori-mood.sql dari folder project.
+5. Salin seluruh isi file SQL tersebut.
+6. Tempel ke SQL Editor Supabase, lalu klik Run.
+7. Pastikan muncul pesan Success dan tidak ada error.
+8. Setelah SQL berhasil, timpa file website lama dengan file versi baru.
+9. Jalankan website melalui Live Server.
+10. Tekan Ctrl + Shift + R agar cache JavaScript dan CSS lama dibersihkan.
+
+FITUR YANG DITAMBAHKAN
+
+- Pilihan kategori saat membuat cerita.
+- Pilihan mood saat membuat cerita.
+- Kategori dan mood dapat diubah dari halaman Edit.
+- Label kategori dan mood tampil pada kartu cerita.
+- Label kategori dan mood tampil pada halaman detail.
+- Filter Semua/Favorit.
+- Filter berdasarkan kategori.
+- Filter berdasarkan mood.
+- Pengurutan Terbaru, Terlama, Terakhir diedit, dan Judul A-Z.
+- Tombol Reset filter.
+- Pencarian judul, filter, pengurutan, dan pagination bekerja bersamaan.
+
+CATATAN CERITA LAMA
+
+Cerita yang dibuat sebelum fitur ini dipasang akan tampil sebagai:
+- Belum dikategorikan
+- Belum dipilih
+
+Untuk mengisinya, buka tombol Edit pada cerita lama, pilih kategori dan mood,
+lalu klik Simpan Perubahan.

@@ -1,16 +1,23 @@
 // =====================================
 // RUANG CERITA
-// DAFTAR, PENCARIAN, DAN PAGINASI
+// PENCARIAN, FILTER, PENGURUTAN, DAN PAGINASI
 // =====================================
 
 const formTulisan = document.getElementById("formTulisan");
 const inputJudul = document.getElementById("judul");
 const inputIsi = document.getElementById("isi");
+const inputKategori = document.getElementById("kategori");
+const inputMood = document.getElementById("mood");
 const daftarTulisan = document.getElementById("daftarTulisan");
 const jumlahTulisan = document.getElementById("jumlahTulisan");
 const pencarianJudul = document.getElementById("pencarianJudul");
 const hapusPencarian = document.getElementById("hapusPencarian");
 const infoHasilPencarian = document.getElementById("infoHasilPencarian");
+const filterFavorit = document.getElementById("filterFavorit");
+const filterKategori = document.getElementById("filterKategori");
+const filterMood = document.getElementById("filterMood");
+const urutkanCerita = document.getElementById("urutkanCerita");
+const resetFilter = document.getElementById("resetFilter");
 const paginasiTulisan = document.getElementById("paginasiTulisan");
 const halamanSebelumnya = document.getElementById("halamanSebelumnya");
 const halamanBerikutnya = document.getElementById("halamanBerikutnya");
@@ -20,11 +27,24 @@ const logoutButton = document.getElementById("logoutButton");
 const KUNCI_AKSES = "kodeRuangCerita";
 const JUMLAH_PER_HALAMAN = 5;
 const ZONA_WAKTU_WIB = "Asia/Jakarta";
+const KATEGORI_DEFAULT = "Belum dikategorikan";
+const MOOD_DEFAULT = "Belum dipilih";
+
+const IKON_MOOD = {
+    "Bahagia": "😊",
+    "Penuh Cinta": "❤️",
+    "Terharu": "🥺",
+    "Sedih": "😔",
+    "Bersyukur": "🌱",
+    "Tenang": "😌",
+    "Belum dipilih": "○"
+};
 
 let kodeAkses = "";
 let semuaTulisan = [];
 let tulisanTersaring = [];
 let halamanAktif = 1;
+let metadataAktif = true;
 
 // =====================================
 // CEK KODE DAN LOGIN
@@ -67,17 +87,73 @@ async function masukRuangCerita() {
 }
 
 // =====================================
-// AMBIL DAN OLAH TULISAN
+// AMBIL DAN GABUNGKAN DATA
 // =====================================
 
-async function muatTulisan({ kembaliKeAwal = false } = {}) {
-    daftarTulisan.innerHTML = '<p class="status-daftar">Memuat cerita...</p>';
-
+async function ambilTulisanMentah() {
     const { data, error } = await window.db.rpc("ambil_tulisan", {
         kode: kodeAkses
     });
 
     if (error) {
+        throw error;
+    }
+
+    return Array.isArray(data) ? data : [];
+}
+
+async function ambilMetadataTulisan() {
+    const { data, error } = await window.db.rpc("ambil_metadata_tulisan", {
+        kode: kodeAkses
+    });
+
+    if (error) {
+        metadataAktif = false;
+        console.warn(
+            "Fitur kategori dan mood belum aktif di Supabase. Jalankan file supabase-kategori-mood.sql.",
+            error
+        );
+        return [];
+    }
+
+    metadataAktif = true;
+    return Array.isArray(data) ? data : [];
+}
+
+function gabungkanTulisanDenganMetadata(daftarCerita, daftarMetadata) {
+    const metadataPerId = new Map(
+        daftarMetadata.map((item) => [String(item.cerita_id), item])
+    );
+
+    return daftarCerita.map((tulisan) => {
+        const metadata = metadataPerId.get(String(tulisan.id));
+
+        return {
+            ...tulisan,
+            kategori: metadata?.kategori || KATEGORI_DEFAULT,
+            mood: metadata?.mood || MOOD_DEFAULT
+        };
+    });
+}
+
+async function muatTulisan({ kembaliKeAwal = false } = {}) {
+    daftarTulisan.innerHTML = '<p class="status-daftar">Memuat cerita...</p>';
+
+    try {
+        const [dataTulisan, dataMetadata] = await Promise.all([
+            ambilTulisanMentah(),
+            ambilMetadataTulisan()
+        ]);
+
+        semuaTulisan = gabungkanTulisanDenganMetadata(dataTulisan, dataMetadata);
+
+        if (kembaliKeAwal) {
+            halamanAktif = 1;
+        }
+
+        terapkanFilterDanUrutan(false);
+        tampilkanStatusMetadata();
+    } catch (error) {
         console.error("Gagal mengambil tulisan:", error);
         daftarTulisan.innerHTML = `
             <div class="pesan-daftar pesan-error">
@@ -86,33 +162,55 @@ async function muatTulisan({ kembaliKeAwal = false } = {}) {
             </div>
         `;
         sembunyikanPaginasi();
+    }
+}
+
+function tampilkanStatusMetadata() {
+    const idPeringatan = "peringatanMetadata";
+    let peringatan = document.getElementById(idPeringatan);
+
+    if (metadataAktif) {
+        peringatan?.remove();
         return;
     }
 
-    semuaTulisan = Array.isArray(data) ? [...data] : [];
-
-    // Cerita terbaru selalu ditampilkan lebih dahulu.
-    semuaTulisan.sort((a, b) => {
-        return waktuKeAngka(b.created_at) - waktuKeAngka(a.created_at);
-    });
-
-    if (kembaliKeAwal) {
-        halamanAktif = 1;
+    if (!peringatan) {
+        peringatan = document.createElement("div");
+        peringatan.id = idPeringatan;
+        peringatan.className = "peringatan-metadata";
+        peringatan.innerHTML = `
+            <strong>Kategori dan mood belum tersambung ke Supabase.</strong>
+            <span>Jalankan file <code>supabase-kategori-mood.sql</code> di SQL Editor Supabase.</span>
+        `;
+        document.querySelector(".daftar-tools")?.prepend(peringatan);
     }
-
-    terapkanPencarian(false);
 }
 
-function terapkanPencarian(resetHalaman = true) {
-    const kataKunci = (pencarianJudul?.value || "").trim().toLocaleLowerCase("id-ID");
+// =====================================
+// PENCARIAN, FILTER, DAN PENGURUTAN
+// =====================================
 
-    tulisanTersaring = kataKunci
-        ? semuaTulisan.filter((tulisan) => {
-            return String(tulisan.judul || "")
-                .toLocaleLowerCase("id-ID")
-                .includes(kataKunci);
-        })
-        : [...semuaTulisan];
+function terapkanFilterDanUrutan(resetHalaman = true) {
+    const kataKunci = (pencarianJudul?.value || "")
+        .trim()
+        .toLocaleLowerCase("id-ID");
+    const statusFavorit = filterFavorit?.value || "semua";
+    const kategoriDipilih = filterKategori?.value || "semua";
+    const moodDipilih = filterMood?.value || "semua";
+    const urutan = urutkanCerita?.value || "terbaru";
+
+    tulisanTersaring = semuaTulisan.filter((tulisan) => {
+        const cocokJudul = !kataKunci || String(tulisan.judul || "")
+            .toLocaleLowerCase("id-ID")
+            .includes(kataKunci);
+        const cocokFavorit = statusFavorit !== "favorit" || Boolean(tulisan.favorit);
+        const cocokKategori = kategoriDipilih === "semua" || tulisan.kategori === kategoriDipilih;
+        const cocokMood = moodDipilih === "semua" || tulisan.mood === moodDipilih;
+
+        return cocokJudul && cocokFavorit && cocokKategori && cocokMood;
+    });
+
+    urutkanDaftar(tulisanTersaring, urutan);
 
     if (resetHalaman) {
         halamanAktif = 1;
@@ -125,11 +223,39 @@ function terapkanPencarian(resetHalaman = true) {
     renderHalamanAktif();
 }
 
+function urutkanDaftar(daftar, urutan) {
+    daftar.sort((a, b) => {
+        if (urutan === "terlama") {
+            return waktuKeAngka(a.created_at) - waktuKeAngka(b.created_at);
+        }
+
+        if (urutan === "terakhir-diedit") {
+            const waktuA = waktuKeAngka(a.updated_at || a.created_at);
+            const waktuB = waktuKeAngka(b.updated_at || b.created_at);
+            return waktuB - waktuA;
+        }
+
+        if (urutan === "judul-az") {
+            return String(a.judul || "").localeCompare(
+                String(b.judul || ""),
+                "id-ID",
+                { sensitivity: "base" }
+            );
+        }
+
+        return waktuKeAngka(b.created_at) - waktuKeAngka(a.created_at);
+    });
+}
+
 function perbaruiInformasiDaftar(kataKunci) {
     const total = semuaTulisan.length;
     const ditemukan = tulisanTersaring.length;
+    const filterSedangAktif = Boolean(kataKunci)
+        || filterFavorit?.value === "favorit"
+        || filterKategori?.value !== "semua"
+        || filterMood?.value !== "semua";
 
-    jumlahTulisan.textContent = kataKunci
+    jumlahTulisan.textContent = filterSedangAktif
         ? `${ditemukan} dari ${total} tulisan`
         : `${total} tulisan`;
 
@@ -137,20 +263,36 @@ function perbaruiInformasiDaftar(kataKunci) {
         hapusPencarian.hidden = kataKunci.length === 0;
     }
 
+    if (resetFilter) {
+        resetFilter.hidden = !filterSedangAktif
+            && (urutkanCerita?.value || "terbaru") === "terbaru";
+    }
+
     if (!infoHasilPencarian) {
         return;
     }
 
-    if (!kataKunci) {
-        infoHasilPencarian.textContent = total > JUMLAH_PER_HALAMAN
-            ? `Menampilkan ${JUMLAH_PER_HALAMAN} cerita per halaman.`
-            : "";
+    if (ditemukan === 0) {
+        infoHasilPencarian.textContent = "Tidak ada cerita yang sesuai dengan pencarian atau filter.";
         return;
     }
 
-    infoHasilPencarian.textContent = ditemukan > 0
-        ? `${ditemukan} judul cocok dengan “${pencarianJudul.value.trim()}”.`
-        : `Tidak ada judul yang cocok dengan “${pencarianJudul.value.trim()}”.`;
+    const awal = ((halamanAktif - 1) * JUMLAH_PER_HALAMAN) + 1;
+    const akhir = Math.min(halamanAktif * JUMLAH_PER_HALAMAN, ditemukan);
+    infoHasilPencarian.textContent = `Menampilkan cerita ${awal}–${akhir} dari ${ditemukan} hasil.`;
+}
+
+function resetSemuaFilter({ render = true } = {}) {
+    if (pencarianJudul) pencarianJudul.value = "";
+    if (filterFavorit) filterFavorit.value = "semua";
+    if (filterKategori) filterKategori.value = "semua";
+    if (filterMood) filterMood.value = "semua";
+    if (urutkanCerita) urutkanCerita.value = "terbaru";
+    halamanAktif = 1;
+
+    if (render) {
+        terapkanFilterDanUrutan(false);
+    }
 }
 
 // =====================================
@@ -171,8 +313,8 @@ function renderHalamanAktif() {
 
     if (tulisanTersaring.length === 0) {
         tampilkanPesanKosong(
-            "Judul tidak ditemukan",
-            "Coba gunakan kata kunci lain atau hapus pencarian."
+            "Cerita tidak ditemukan",
+            "Coba ubah kata pencarian, kategori, mood, atau status favorit."
         );
         sembunyikanPaginasi();
         return;
@@ -186,19 +328,28 @@ function renderHalamanAktif() {
 
     tulisanHalamanIni.forEach(buatKartuTulisan);
     renderPaginasi();
+    perbaruiInformasiDaftar((pencarianJudul?.value || "").trim());
 }
 
 function buatKartuTulisan(tulisan) {
     const judul = String(tulisan.judul || "Tanpa judul");
     const isi = String(tulisan.isi || "");
     const preview = isi.substring(0, 180);
+    const kategori = tulisan.kategori || KATEGORI_DEFAULT;
+    const mood = tulisan.mood || MOOD_DEFAULT;
 
     const kartu = document.createElement("article");
     kartu.className = "kartu-tulisan";
 
     kartu.innerHTML = `
         <div class="kartu-header">
-            <h3>✦ ${escapeHTML(judul)}</h3>
+            <div>
+                <h3>✦ ${escapeHTML(judul)}</h3>
+                <div class="metadata-cerita">
+                    <span class="badge-cerita badge-kategori">${escapeHTML(kategori)}</span>
+                    <span class="badge-cerita badge-mood">${ikonMood(mood)} ${escapeHTML(mood)}</span>
+                </div>
+            </div>
             <p class="tanggal-tulisan">${formatTanggalWIB(tulisan.created_at)}</p>
         </div>
 
@@ -268,7 +419,6 @@ function renderPaginasi() {
     paginasiTulisan.hidden = false;
     halamanSebelumnya.disabled = halamanAktif === 1;
     halamanBerikutnya.disabled = halamanAktif === totalHalaman;
-
     nomorHalaman.innerHTML = "";
 
     buatRentangHalaman(totalHalaman, halamanAktif).forEach((nomor) => {
@@ -333,33 +483,83 @@ function sembunyikanPaginasi() {
 // SIMPAN, EDIT, HAPUS, FAVORIT
 // =====================================
 
+async function aturMetadataTulisan(id, kategori, mood) {
+    const { error } = await window.db.rpc("atur_metadata_tulisan", {
+        kode: kodeAkses,
+        id_input: String(id),
+        kategori_input: kategori,
+        mood_input: mood
+    });
+
+    if (error) {
+        metadataAktif = false;
+        console.error("Gagal menyimpan kategori dan mood:", error);
+        return false;
+    }
+
+    metadataAktif = true;
+    return true;
+}
+
 if (formTulisan) {
     formTulisan.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const judul = inputJudul.value.trim();
         const isi = inputIsi.value.trim();
+        const kategori = inputKategori.value;
+        const mood = inputMood.value;
 
-        const { error } = await window.db.rpc("simpan_tulisan", {
-            kode: kodeAkses,
-            judul_input: judul,
-            isi_input: isi
-        });
-
-        if (error) {
-            console.error("Gagal menyimpan tulisan:", error);
-            alert("Gagal menyimpan tulisan");
+        if (!judul || !isi || !kategori || !mood) {
+            alert("Judul, kategori, mood, dan isi cerita harus dilengkapi.");
             return;
         }
 
-        alert("Tulisan berhasil disimpan");
-        formTulisan.reset();
+        const tombolSimpan = formTulisan.querySelector(".btn-simpan");
+        const teksAwal = tombolSimpan.textContent;
+        tombolSimpan.disabled = true;
+        tombolSimpan.textContent = "Menyimpan...";
 
-        if (pencarianJudul) {
-            pencarianJudul.value = "";
+        const idSebelum = new Set(semuaTulisan.map((item) => String(item.id)));
+
+        try {
+            const { error } = await window.db.rpc("simpan_tulisan", {
+                kode: kodeAkses,
+                judul_input: judul,
+                isi_input: isi
+            });
+
+            if (error) {
+                throw error;
+            }
+
+            const dataTerbaru = await ambilTulisanMentah();
+            const kandidatBaru = dataTerbaru
+                .filter((item) => !idSebelum.has(String(item.id)))
+                .sort((a, b) => waktuKeAngka(b.created_at) - waktuKeAngka(a.created_at))[0]
+                || dataTerbaru
+                    .filter((item) => item.judul === judul && item.isi === isi)
+                    .sort((a, b) => waktuKeAngka(b.created_at) - waktuKeAngka(a.created_at))[0];
+
+            const metadataTersimpan = kandidatBaru
+                ? await aturMetadataTulisan(kandidatBaru.id, kategori, mood)
+                : false;
+
+            formTulisan.reset();
+            resetSemuaFilter({ render: false });
+            await muatTulisan({ kembaliKeAwal: true });
+
+            alert(metadataTersimpan
+                ? "Tulisan berhasil disimpan"
+                : "Tulisan tersimpan, tetapi kategori dan mood belum tersimpan. Jalankan SQL kategori dan mood di Supabase."
+            );
+        } catch (error) {
+            console.error("Gagal menyimpan tulisan:", error);
+            alert("Gagal menyimpan tulisan");
+        } finally {
+            tombolSimpan.disabled = false;
+            tombolSimpan.textContent = teksAwal;
         }
-
-        await muatTulisan({ kembaliKeAwal: true });
     });
 }
 
@@ -387,6 +587,16 @@ async function hapusTulisan(id) {
         return;
     }
 
+    // Metadata dihapus terpisah agar tabel metadata tetap bersih.
+    const hasilMetadata = await window.db.rpc("hapus_metadata_tulisan", {
+        kode: kodeAkses,
+        id_input: String(id)
+    });
+
+    if (hasilMetadata.error) {
+        console.warn("Metadata cerita tidak dapat dihapus:", hasilMetadata.error);
+    }
+
     await muatTulisan();
 }
 
@@ -406,22 +616,23 @@ async function toggleFavorit(id) {
 }
 
 // =====================================
-// PENCARIAN DAN NAVIGASI
+// EVENT PENCARIAN DAN FILTER
 // =====================================
 
-pencarianJudul?.addEventListener("input", () => {
-    terapkanPencarian(true);
-});
-
-pencarianJudul?.addEventListener("search", () => {
-    terapkanPencarian(true);
-});
+pencarianJudul?.addEventListener("input", () => terapkanFilterDanUrutan(true));
+pencarianJudul?.addEventListener("search", () => terapkanFilterDanUrutan(true));
+filterFavorit?.addEventListener("change", () => terapkanFilterDanUrutan(true));
+filterKategori?.addEventListener("change", () => terapkanFilterDanUrutan(true));
+filterMood?.addEventListener("change", () => terapkanFilterDanUrutan(true));
+urutkanCerita?.addEventListener("change", () => terapkanFilterDanUrutan(true));
 
 hapusPencarian?.addEventListener("click", () => {
     pencarianJudul.value = "";
     pencarianJudul.focus();
-    terapkanPencarian(true);
+    terapkanFilterDanUrutan(true);
 });
+
+resetFilter?.addEventListener("click", () => resetSemuaFilter());
 
 halamanSebelumnya?.addEventListener("click", () => {
     pindahHalaman(halamanAktif - 1);
@@ -449,8 +660,6 @@ function parseWaktuSupabase(tanggal) {
         return tanggal;
     }
 
-    // Timestamp Supabase/PostgreSQL tanpa penanda zona waktu dianggap UTC.
-    // Contoh: "2026-07-21 05:42:00" menjadi "2026-07-21T05:42:00Z".
     const teks = String(tanggal).trim().replace(" ", "T");
     const memilikiZonaWaktu = /(?:Z|[+-]\d{2}(?::?\d{2})?)$/i.test(teks);
 
@@ -475,6 +684,10 @@ function formatTanggalWIB(tanggal) {
         month: "long",
         year: "numeric"
     });
+}
+
+function ikonMood(mood) {
+    return IKON_MOOD[mood] || "○";
 }
 
 function escapeHTML(text) {

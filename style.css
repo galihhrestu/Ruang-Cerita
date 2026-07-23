@@ -1474,3 +1474,186 @@ margin-right:auto;
         flex: 1 1 45%;
     }
 }
+
+/* =====================================
+   FILTER, KATEGORI, DAN MOOD
+===================================== */
+
+.form-grid-dua {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.form-group select,
+.filter-control select {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 42px 12px 14px;
+    border: 1px solid rgba(53, 72, 61, 0.2);
+    border-radius: 12px;
+    background-color: #ffffff;
+    color: #29342d;
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.form-group select:focus,
+.filter-control select:focus {
+    outline: none;
+    border-color: #5f7868;
+    box-shadow: 0 0 0 4px rgba(95, 120, 104, 0.12);
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.filter-control label {
+    display: block;
+    margin-bottom: 7px;
+    color: #526158;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.filter-control select {
+    min-height: 46px;
+    font-size: 14px;
+}
+
+.baris-info-filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.baris-info-filter .info-hasil-pencarian {
+    margin: 0;
+}
+
+.reset-filter {
+    flex: 0 0 auto;
+    border: 0;
+    background: transparent;
+    color: #566b5e;
+    font-family: "DM Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.reset-filter:hover {
+    color: #2f4437;
+}
+
+.kartu-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.kartu-header > div {
+    min-width: 0;
+}
+
+.metadata-cerita {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.badge-cerita {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.badge-kategori {
+    border: 1px solid rgba(69, 93, 77, 0.16);
+    background: #edf3ef;
+    color: #405747;
+}
+
+.badge-mood {
+    border: 1px solid rgba(167, 111, 92, 0.14);
+    background: #fff3ed;
+    color: #825542;
+}
+
+.metadata-detail {
+    justify-content: center;
+    margin: 14px 0 2px;
+}
+
+.peringatan-metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 16px;
+    padding: 13px 15px;
+    border: 1px solid rgba(177, 118, 32, 0.28);
+    border-radius: 12px;
+    background: #fff8e9;
+    color: #755321;
+    font-size: 13px;
+}
+
+.peringatan-metadata code {
+    font-weight: 700;
+}
+
+.peringatan-edit {
+    margin-top: 8px;
+    color: #9a6419;
+    font-weight: 700;
+}
+
+.btn-simpan:disabled {
+    cursor: wait;
+    opacity: 0.68;
+}
+
+@media (max-width: 820px) {
+    .filter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .form-grid-dua,
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kartu-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .tanggal-tulisan {
+        align-self: flex-start;
+    }
+
+    .baris-info-filter {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
+    }
+}

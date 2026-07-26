@@ -12,6 +12,10 @@ let currentProfile = "";
 let dashboardData = null;
 let activeTargetDate = null;
 
+const HISTORY_PAGE_SIZE = 5;
+let historyPage = 1;
+let historyTotalPages = 0;
+
 const els = {
     profileModal: document.getElementById("profileModal"),
     switchProfileButton: document.getElementById("switchProfileButton"),
@@ -54,7 +58,16 @@ const els = {
 
     resultSection: document.getElementById("resultSection"),
     resultDate: document.getElementById("resultDate"),
-    resultGrid: document.getElementById("resultGrid")
+    resultGrid: document.getElementById("resultGrid"),
+
+    historySection: document.getElementById("historySection"),
+    historySummary: document.getElementById("historySummary"),
+    historyList: document.getElementById("historyList"),
+    historyEmpty: document.getElementById("historyEmpty"),
+    historyPagination: document.getElementById("historyPagination"),
+    historyPrev: document.getElementById("historyPrev"),
+    historyNext: document.getElementById("historyNext"),
+    historyPageNumbers: document.getElementById("historyPageNumbers")
 };
 
 
@@ -247,6 +260,24 @@ async function fetchDay(date) {
             kode: accessCode,
             profile_input: currentProfile,
             tanggal_input: date
+        }
+    );
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+}
+
+
+async function fetchHistory(page = 1) {
+    const { data, error } = await window.db.rpc(
+        "ambil_daily_checkin_history",
+        {
+            kode: accessCode,
+            page_input: page,
+            page_size_input: HISTORY_PAGE_SIZE
         }
     );
 
@@ -702,6 +733,281 @@ function renderTodayResult(data) {
 }
 
 
+
+
+// ----------------------------------------------------------
+// HISTORY
+// 1 kartu = 1 tanggal. Urutan terbaru -> terlama.
+// ----------------------------------------------------------
+
+function historyStatusLabel(item) {
+    if (item.day_complete && item.is_restored) {
+        return {
+            label: "❤️‍🩹 Restored",
+            className: "restored"
+        };
+    }
+
+    if (item.day_complete) {
+        return {
+            label: "❤️ Complete",
+            className: "complete"
+        };
+    }
+
+    return {
+        label: "♡ Belum lengkap",
+        className: "partial"
+    };
+}
+
+function renderHistoryPerson(name, data) {
+    if (!data) {
+        return `
+            <div class="history-person history-person-missing">
+                <div class="history-person-title">
+                    <span class="history-mini-avatar">
+                        ${escapeHTML(name.charAt(0))}
+                    </span>
+
+                    <strong>${escapeHTML(name)}</strong>
+                </div>
+
+                <span class="history-missing-text">
+                    Belum check-in
+                </span>
+            </div>
+        `;
+    }
+
+    return `
+        <div class="history-person">
+            <div class="history-person-title">
+                <span class="history-mini-avatar">
+                    ${escapeHTML(name.charAt(0))}
+                </span>
+
+                <strong>${escapeHTML(name)}</strong>
+            </div>
+
+            <div class="history-person-details">
+                <span>
+                    ${moodEmoji(data.mood)}
+                    ${escapeHTML(data.mood)}
+                </span>
+
+                <span>
+                    ⚡ ${escapeHTML(data.energy)}/5
+                </span>
+
+                <span>
+                    ${escapeHTML(data.day_rating)}/10
+                </span>
+            </div>
+        </div>
+    `;
+}
+
+function renderHistoryPageNumbers(currentPage, totalPages) {
+    els.historyPageNumbers.innerHTML = "";
+
+    if (totalPages <= 1) {
+        return;
+    }
+
+    const pages = [];
+
+    if (totalPages <= 7) {
+        for (let i = 1; i <= totalPages; i++) {
+            pages.push(i);
+        }
+    } else {
+        pages.push(1);
+
+        const start = Math.max(2, currentPage - 1);
+        const end = Math.min(
+            totalPages - 1,
+            currentPage + 1
+        );
+
+        if (start > 2) {
+            pages.push("...");
+        }
+
+        for (let i = start; i <= end; i++) {
+            pages.push(i);
+        }
+
+        if (end < totalPages - 1) {
+            pages.push("...");
+        }
+
+        pages.push(totalPages);
+    }
+
+    pages.forEach((page) => {
+        if (page === "...") {
+            const dots = document.createElement("span");
+            dots.className = "history-page-dots";
+            dots.textContent = "…";
+            els.historyPageNumbers.appendChild(dots);
+            return;
+        }
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className =
+            "history-page-button history-number-button";
+
+        if (page === currentPage) {
+            button.classList.add("active");
+            button.setAttribute("aria-current", "page");
+        }
+
+        button.textContent = String(page);
+
+        button.addEventListener(
+            "click",
+            () => loadHistory(page, true)
+        );
+
+        els.historyPageNumbers.appendChild(button);
+    });
+}
+
+function renderHistory(data) {
+    const items =
+        Array.isArray(data?.items)
+            ? data.items
+            : [];
+
+    const totalDays =
+        Number(data?.total_days || 0);
+
+    const currentPage =
+        Number(data?.page || 1);
+
+    const totalPages =
+        Number(data?.total_pages || 0);
+
+    historyPage = currentPage;
+    historyTotalPages = totalPages;
+
+    els.historyList.innerHTML = "";
+
+    if (!items.length) {
+        els.historySummary.textContent =
+            "Belum ada hari sebelumnya.";
+
+        els.historyEmpty.hidden = false;
+        els.historyPagination.hidden = true;
+        return;
+    }
+
+    els.historyEmpty.hidden = true;
+
+    const start =
+        (currentPage - 1) * HISTORY_PAGE_SIZE + 1;
+
+    const end =
+        Math.min(
+            start + items.length - 1,
+            totalDays
+        );
+
+    els.historySummary.textContent =
+        `Menampilkan ${start}–${end} dari ${totalDays} hari.`;
+
+    items.forEach((item) => {
+        const status =
+            historyStatusLabel(item);
+
+        const article =
+            document.createElement("article");
+
+        article.className = "history-entry";
+
+        article.innerHTML = `
+            <div class="history-date-row">
+                <h3>${formatDateID(item.date)}</h3>
+
+                <span
+                    class="history-status ${status.className}"
+                >
+                    ${status.label}
+                </span>
+            </div>
+
+            <div class="history-couple-grid">
+                ${renderHistoryPerson("Galih", item.galih)}
+                ${renderHistoryPerson("Wisye", item.wisye)}
+            </div>
+        `;
+
+        els.historyList.appendChild(article);
+    });
+
+    const showPagination =
+        totalPages > 1;
+
+    els.historyPagination.hidden =
+        !showPagination;
+
+    if (!showPagination) {
+        return;
+    }
+
+    els.historyPrev.disabled =
+        currentPage <= 1;
+
+    els.historyNext.disabled =
+        currentPage >= totalPages;
+
+    renderHistoryPageNumbers(
+        currentPage,
+        totalPages
+    );
+}
+
+async function loadHistory(
+    page = historyPage,
+    scrollToHistory = false
+) {
+    try {
+        els.historySummary.textContent =
+            "Memuat riwayat...";
+
+        const data =
+            await fetchHistory(page);
+
+        renderHistory(data);
+
+        if (scrollToHistory) {
+            els.historySection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    } catch (error) {
+        console.error(
+            "Gagal memuat riwayat check-in:",
+            error
+        );
+
+        els.historySummary.textContent =
+            "Riwayat gagal dimuat.";
+
+        els.historyList.innerHTML = "";
+
+        els.historyEmpty.hidden = false;
+        els.historyEmpty.textContent =
+            error.message
+            || "Periksa koneksi Supabase.";
+
+        els.historyPagination.hidden = true;
+    }
+}
+
 // ----------------------------------------------------------
 // TARGET FORM: TODAY / RESTORE
 // ----------------------------------------------------------
@@ -875,6 +1181,8 @@ async function loadDashboard() {
         ) {
             await showTodayForm();
         }
+
+        await loadHistory(historyPage, false);
     } catch (error) {
         console.error(
             "Gagal memuat Daily Check-in:",
@@ -959,6 +1267,34 @@ els.note.addEventListener(
             String(els.note.value.length);
     }
 );
+
+els.historyPrev.addEventListener(
+    "click",
+    () => {
+        if (historyPage > 1) {
+            loadHistory(
+                historyPage - 1,
+                true
+            );
+        }
+    }
+);
+
+els.historyNext.addEventListener(
+    "click",
+    () => {
+        if (
+            historyTotalPages > 0
+            && historyPage < historyTotalPages
+        ) {
+            loadHistory(
+                historyPage + 1,
+                true
+            );
+        }
+    }
+);
+
 
 els.checkinForm.addEventListener(
     "submit",

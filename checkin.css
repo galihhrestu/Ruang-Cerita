@@ -858,3 +858,87 @@ footer {
 .person-avatar {
     transform: translateY(0);
 }
+
+
+/* =========================================================
+   DAILY CHECK-IN FIX V2
+   1) Memastikan avatar G/W benar-benar center.
+   2) Memastikan judul hero 1 baris di HP.
+========================================================= */
+
+/*
+   Rule lama:
+   .person-status span { display: block; }
+   menimpa display flex pada .person-avatar.
+   Selector ini dibuat lebih spesifik dan diletakkan paling bawah.
+*/
+.person-status .person-avatar {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0;
+    padding: 0;
+
+    border-radius: 50%;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1 !important;
+    text-align: center;
+
+    overflow: hidden;
+}
+
+/* Jaga circle saat memilih profil juga tetap center */
+.profile-option > span {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    line-height: 1 !important;
+    text-align: center;
+    padding: 0;
+}
+
+
+/* MOBILE — judul hero tetap horizontal dalam satu baris */
+@media (max-width: 620px) {
+    .hero {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .hero h1 {
+        width: 100%;
+        max-width: none;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        font-size: clamp(28px, 8.4vw, 34px);
+        line-height: 1.08;
+        letter-spacing: -0.045em;
+
+        white-space: nowrap;
+        overflow: visible;
+    }
+}
+
+/* Untuk layar HP yang sangat sempit */
+@media (max-width: 360px) {
+    .hero {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .hero h1 {
+        font-size: 27px;
+        letter-spacing: -0.05em;
+    }
+}

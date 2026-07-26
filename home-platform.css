@@ -640,3 +640,375 @@
         grid-column: 1 / -1;
     }
 }
+
+
+/* =========================================================
+   OUR UNIVERSE — SIGNATURE HOMEPAGE ENTRY
+========================================================= */
+
+.universe-entry {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    min-height: 330px;
+    margin-bottom: 15px;
+    padding: 42px;
+
+    display: flex;
+    align-items: center;
+
+    border: 1px solid rgba(255, 248, 239, 0.12);
+    border-radius: 29px;
+
+    color: #fff8ef;
+    text-decoration: none;
+
+    background:
+        radial-gradient(
+            circle at 18% 18%,
+            rgba(210, 117, 137, 0.22),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 86% 74%,
+            rgba(145, 169, 154, 0.10),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            #20191b 0%,
+            #171415 55%,
+            #241a1e 100%
+        );
+
+    box-shadow:
+        0 28px 65px
+        rgba(64, 45, 47, 0.20);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.universe-entry:hover {
+    transform: translateY(-3px);
+    border-color: rgba(239, 200, 209, 0.24);
+
+    box-shadow:
+        0 34px 78px
+        rgba(64, 45, 47, 0.27);
+}
+
+.universe-entry:focus-visible {
+    outline: 3px solid rgba(201, 94, 116, 0.22);
+    outline-offset: 4px;
+}
+
+.universe-entry-sky {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.universe-entry-sky::before {
+    content: "";
+
+    position: absolute;
+
+    width: 310px;
+    height: 310px;
+
+    right: -105px;
+    top: -135px;
+
+    border-radius: 50%;
+    border: 1px solid rgba(255, 248, 239, 0.055);
+}
+
+.universe-entry-sky::after {
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+    height: 190px;
+
+    right: 52px;
+    bottom: -112px;
+
+    border-radius: 50%;
+    background: rgba(210, 117, 137, 0.055);
+}
+
+.universe-star {
+    position: absolute;
+
+    color: #fff8ef;
+
+    text-shadow:
+        0 0 18px
+        rgba(255, 248, 239, 0.50);
+
+    animation:
+        universe-home-twinkle
+        3.4s ease-in-out
+        infinite;
+}
+
+.star-a {
+    top: 22%;
+    right: 15%;
+    font-size: 24px;
+}
+
+.star-b {
+    top: 53%;
+    right: 25%;
+    font-size: 27px;
+    color: #efc8d1;
+    animation-delay: 0.7s;
+}
+
+.star-c {
+    top: 35%;
+    right: 7%;
+    font-size: 18px;
+    color: #cbd8cf;
+    animation-delay: 1.2s;
+}
+
+.star-d {
+    bottom: 22%;
+    right: 12%;
+    font-size: 32px;
+    color: #efc8d1;
+    animation-delay: 1.7s;
+}
+
+.star-e {
+    bottom: 15%;
+    right: 31%;
+    font-size: 13px;
+    animation-delay: 2.3s;
+}
+
+@keyframes universe-home-twinkle {
+    0%,
+    100% {
+        opacity: 0.38;
+        transform: scale(0.88);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.10);
+    }
+}
+
+.universe-orbit {
+    position: absolute;
+    border: 1px solid rgba(255, 248, 239, 0.065);
+    border-radius: 50%;
+    transform: rotate(-13deg);
+}
+
+.orbit-one {
+    width: 250px;
+    height: 115px;
+    right: 27px;
+    top: 77px;
+}
+
+.orbit-two {
+    width: 160px;
+    height: 74px;
+    right: 75px;
+    top: 101px;
+    border-color: rgba(210, 117, 137, 0.10);
+}
+
+.universe-entry-content {
+    position: relative;
+    z-index: 2;
+    width: min(610px, 72%);
+}
+
+.universe-entry-kicker {
+    margin: 0 0 7px;
+
+    color: #d98b9c;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.20em;
+}
+
+.universe-entry h2 {
+    margin: 0;
+
+    color: #fff8ef;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: clamp(45px, 7vw, 68px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.universe-entry-names {
+    margin: 12px 0 0;
+
+    color: rgba(255, 248, 239, 0.72);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 15px;
+    letter-spacing: 0.09em;
+}
+
+.universe-entry-names span {
+    margin: 0 7px;
+    color: #d98b9c;
+}
+
+.universe-entry-description {
+    margin: 16px 0 0;
+
+    color: rgba(255, 248, 239, 0.58);
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.universe-entry-sources {
+    margin: 22px 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.universe-entry-sources span {
+    padding: 6px 9px;
+
+    border: 1px solid rgba(255, 248, 239, 0.08);
+    border-radius: 999px;
+
+    color: rgba(255, 248, 239, 0.70);
+    background: rgba(255, 255, 255, 0.035);
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.universe-entry-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+
+    color: #efc8d1;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+}
+
+.universe-entry-cta > span {
+    display: inline-block;
+    font-size: 18px;
+    transition: transform 0.2s ease;
+}
+
+.universe-entry:hover
+.universe-entry-cta > span {
+    transform: translateX(5px);
+}
+
+@media screen and (max-width: 760px) {
+    .universe-entry {
+        min-height: 300px;
+        padding: 34px 28px;
+    }
+
+    .universe-entry-content {
+        width: 74%;
+    }
+
+    .universe-entry h2 {
+        font-size: 48px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .universe-entry {
+        min-height: 355px;
+        padding: 28px 21px;
+
+        align-items: flex-end;
+
+        border-radius: 22px;
+    }
+
+    .universe-entry-content {
+        width: 100%;
+    }
+
+    .universe-entry h2 {
+        font-size: 45px;
+    }
+
+    .universe-entry-description {
+        max-width: 80%;
+    }
+
+    .universe-entry-sources {
+        max-width: 82%;
+    }
+
+    .star-a {
+        top: 13%;
+        right: 18%;
+    }
+
+    .star-b {
+        top: 28%;
+        right: 35%;
+    }
+
+    .star-c {
+        top: 19%;
+        right: 7%;
+    }
+
+    .star-d {
+        top: 37%;
+        bottom: auto;
+        right: 16%;
+    }
+
+    .star-e {
+        top: 40%;
+        bottom: auto;
+        right: 45%;
+    }
+
+    .orbit-one {
+        top: 39px;
+        right: -28px;
+    }
+
+    .orbit-two {
+        top: 70px;
+        right: 24px;
+    }
+}

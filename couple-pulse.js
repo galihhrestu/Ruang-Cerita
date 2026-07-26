@@ -7,9 +7,7 @@ const ACCESS_KEY_STORAGE = "kodeRuangCerita";
 let accessCode = "";
 
 let activeMonth =
-    firstDayOfMonth(
-        new Date()
-    );
+    resolveInitialMonth();
 
 let pulseData = null;
 
@@ -175,6 +173,50 @@ const els = {
 // ----------------------------------------------------------
 // DATE
 // ----------------------------------------------------------
+
+function resolveInitialMonth() {
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const requested =
+        params.get(
+            "month"
+        );
+
+    if (
+        requested
+        && /^\d{4}-\d{2}-01$/
+            .test(requested)
+    ) {
+        const [
+            year,
+            month
+        ] =
+            requested
+                .split("-")
+                .map(Number);
+
+        if (
+            Number.isInteger(year)
+            && Number.isInteger(month)
+            && month >= 1
+            && month <= 12
+        ) {
+            return new Date(
+                year,
+                month - 1,
+                1
+            );
+        }
+    }
+
+    return firstDayOfMonth(
+        new Date()
+    );
+}
+
 
 function firstDayOfMonth(date) {
     return new Date(

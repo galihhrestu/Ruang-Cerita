@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="theme-color" content="#171415">
+    <title>Our Universe — Ruang Cerita</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="universe.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+
+<body>
+    <main id="universeApp" class="universe-app">
+
+        <canvas id="universeCanvas" aria-label="Peta interaktif Our Universe"></canvas>
+
+        <section id="introOverlay" class="intro-overlay">
+            <div class="intro-stars">
+                <i></i><i></i><i></i><i></i><i></i>
+            </div>
+
+            <div class="intro-content">
+                <p class="eyebrow">RUANG SEMESTA</p>
+                <h1>Our Universe</h1>
+                <p class="intro-names">Galih <span>×</span> Wisye</p>
+                <p id="introStatus" class="intro-status">
+                    Menyusun bintang dari hari-hari kalian...
+                </p>
+                <div class="intro-line"></div>
+            </div>
+        </section>
+
+        <header class="universe-topbar">
+            <a href="index.html" class="glass-button back-button" aria-label="Kembali ke Ruang Cerita">
+                <span aria-hidden="true">←</span>
+                <span class="button-label">Ruang Cerita</span>
+            </a>
+
+            <div class="universe-brand">
+                <p>RUANG SEMESTA</p>
+                <h1>Our Universe</h1>
+                <span id="universeSummary">Galih × Wisye</span>
+            </div>
+
+            <button id="infoButton" class="glass-button icon-button" type="button" aria-label="Petunjuk Our Universe">?</button>
+        </header>
+
+        <aside id="legendPanel" class="legend-panel glass-panel">
+            <p class="panel-label">CONSTELLATION</p>
+
+            <div class="legend-row">
+                <span class="legend-symbol legend-pulse">♥</span>
+                <div>
+                    <strong>Couple Pulse</strong>
+                    <small>Pusat konstelasi bulanan</small>
+                </div>
+            </div>
+
+            <div class="legend-row">
+                <span class="legend-symbol legend-story">✦</span>
+                <div>
+                    <strong>Cerita</strong>
+                    <small>Bintang terang</small>
+                </div>
+            </div>
+
+            <div class="legend-row">
+                <span class="legend-symbol legend-daily">●</span>
+                <div>
+                    <strong>Daily Check-in</strong>
+                    <small>Hari complete bersama</small>
+                </div>
+            </div>
+        </aside>
+
+        <aside id="detailPanel" class="detail-panel glass-panel" aria-live="polite" hidden>
+            <button id="closeDetailButton" class="detail-close" type="button" aria-label="Tutup detail">×</button>
+            <p id="detailEyebrow" class="panel-label">MOMENT</p>
+            <h2 id="detailTitle">—</h2>
+            <p id="detailDate" class="detail-date">—</p>
+            <div id="detailContent" class="detail-content"></div>
+            <a id="detailAction" class="detail-action" href="#" hidden>
+                Buka <span>→</span>
+            </a>
+        </aside>
+
+        <section class="control-deck">
+            <div id="yearControls" class="year-controls glass-panel" aria-label="Filter tahun">
+                <button type="button" class="year-button active" data-year="all">ALL TIME</button>
+            </div>
+
+            <button id="randomButton" class="random-button" type="button">
+                <span class="random-spark">✦</span>
+                <span>Take Me Somewhere</span>
+            </button>
+        </section>
+
+        <div class="view-controls">
+            <button id="zoomInButton" class="glass-button icon-button" type="button" aria-label="Perbesar">+</button>
+            <button id="resetViewButton" class="glass-button icon-button reset-view-button" type="button" aria-label="Kembali ke tampilan awal">◎</button>
+            <button id="zoomOutButton" class="glass-button icon-button" type="button" aria-label="Perkecil">−</button>
+        </div>
+
+        <div id="interactionHint" class="interaction-hint">
+            <span class="desktop-hint">drag untuk menjelajah · scroll untuk zoom · klik bintang</span>
+            <span class="mobile-hint">geser untuk menjelajah · pinch untuk zoom · tap bintang</span>
+        </div>
+
+        <div id="infoModal" class="info-modal" hidden>
+            <div class="info-card">
+                <button id="closeInfoButton" class="info-close" type="button" aria-label="Tutup petunjuk">×</button>
+
+                <p class="eyebrow">OUR UNIVERSE</p>
+                <h2>Semesta yang tumbuh bersama kalian.</h2>
+                <p>
+                    Setiap bulan adalah satu konstelasi. Couple Pulse menjadi pusatnya,
+                    sementara Daily Check-in dan Cerita mengorbit di sekelilingnya.
+                </p>
+
+                <div class="info-guide">
+                    <div>
+                        <span>♥</span>
+                        <p><strong>Couple Pulse</strong>pusat setiap bulan</p>
+                    </div>
+                    <div>
+                        <span>✦</span>
+                        <p><strong>Cerita</strong>momen yang paling terang</p>
+                    </div>
+                    <div>
+                        <span>●</span>
+                        <p><strong>Daily Check-in</strong>hari ketika kalian berdua hadir</p>
+                    </div>
+                </div>
+
+                <p class="info-note">
+                    Tidak ada input tambahan. Semesta ini tumbuh otomatis dari Ruang Cerita.
+                </p>
+            </div>
+        </div>
+
+        <div id="nodeTooltip" class="node-tooltip" hidden></div>
+
+    </main>
+
+    <script src="universe.js"></script>
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Couple Pulse — Ruang Cerita</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="couple-pulse.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+
+<body>
+
+    <div class="pulse-shell">
+
+        <header class="pulse-topbar">
+
+            <a
+                href="index.html"
+                class="back-link"
+            >
+                ← Ruang Cerita
+            </a>
+
+            <a
+                href="checkin.html"
+                class="checkin-link"
+            >
+                🌙 Daily Check-in
+            </a>
+
+        </header>
+
+
+        <main>
+
+            <section class="pulse-hero">
+
+                <div class="hero-orb hero-orb-one"></div>
+                <div class="hero-orb hero-orb-two"></div>
+
+                <div class="hero-content">
+
+                    <p class="eyebrow">
+                        COUPLE PULSE
+                    </p>
+
+                    <h1>
+                        <span id="monthHeroLabel">
+                            Bulan Kita
+                        </span>
+                        <span class="heart-mark">❤️</span>
+                    </h1>
+
+                    <p class="hero-copy">
+                        Potret kecil dari hari-hari Galih & Wisye,
+                        berdasarkan Daily Check-in yang kalian isi bersama.
+                    </p>
+
+
+                    <div class="month-navigation">
+
+                        <button
+                            id="prevMonthButton"
+                            type="button"
+                            class="month-button"
+                            aria-label="Bulan sebelumnya"
+                        >
+                            ←
+                        </button>
+
+                        <div class="month-center">
+                            <span class="month-caption">
+                                RECAP BULANAN
+                            </span>
+
+                            <strong id="monthLabel">
+                                Memuat...
+                            </strong>
+                        </div>
+
+                        <button
+                            id="nextMonthButton"
+                            type="button"
+                            class="month-button"
+                            aria-label="Bulan berikutnya"
+                        >
+                            →
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section
+                id="loadingState"
+                class="state-card"
+            >
+                <div class="loading-heart">
+                    ❤️
+                </div>
+
+                <p>
+                    Menyusun Couple Pulse...
+                </p>
+            </section>
+
+
+            <section
+                id="emptyState"
+                class="state-card"
+                hidden
+            >
+                <div class="state-emoji">
+                    🌱
+                </div>
+
+                <h2>Belum cukup data bulan ini</h2>
+
+                <p>
+                    Mulai isi Daily Check-in bersama.
+                    Couple Pulse akan tumbuh otomatis dari data kalian.
+                </p>
+
+                <a
+                    href="checkin.html"
+                    class="primary-link"
+                >
+                    Isi Daily Check-in
+                </a>
+            </section>
+
+
+            <div
+                id="pulseContent"
+                hidden
+            >
+
+                <!-- =================================================
+                     HERO STATS
+                ================================================== -->
+                <section class="pulse-overview">
+
+                    <article class="main-pulse-card">
+
+                        <p class="eyebrow">
+                            HARI BERSAMA
+                        </p>
+
+                        <div class="big-number-row">
+                            <strong id="completeDays">
+                                0
+                            </strong>
+
+                            <span>❤️</span>
+                        </div>
+
+                        <p class="main-pulse-label">
+                            hari complete bulan ini
+                        </p>
+
+                        <div class="progress-track">
+                            <div
+                                id="completionBar"
+                                class="progress-fill"
+                            ></div>
+                        </div>
+
+                        <div class="progress-caption">
+                            <span>
+                                Konsistensi
+                            </span>
+
+                            <strong id="completionPercent">
+                                0%
+                            </strong>
+                        </div>
+
+                    </article>
+
+
+                    <div class="overview-grid">
+
+                        <article class="mini-stat-card">
+                            <span class="mini-stat-icon">
+                                🔥
+                            </span>
+
+                            <p>Current streak</p>
+
+                            <strong>
+                                <span id="currentStreak">0</span>
+                                hari
+                            </strong>
+                        </article>
+
+
+                        <article class="mini-stat-card">
+                            <span class="mini-stat-icon">
+                                🏆
+                            </span>
+
+                            <p>Longest bulan ini</p>
+
+                            <strong>
+                                <span id="longestStreak">0</span>
+                                hari
+                            </strong>
+                        </article>
+
+
+                        <article class="mini-stat-card">
+                            <span class="mini-stat-icon">
+                                ❤️‍🩹
+                            </span>
+
+                            <p>Restore dipakai</p>
+
+                            <strong>
+                                <span id="restoreUsed">0</span>
+                                / 5
+                            </strong>
+                        </article>
+
+
+                        <article class="mini-stat-card">
+                            <span class="mini-stat-icon">
+                                📅
+                            </span>
+
+                            <p>Rentang aktif</p>
+
+                            <strong>
+                                <span id="activeDays">0</span>
+                                hari
+                            </strong>
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     PROFILE PULSE
+                ================================================== -->
+                <section class="section-block">
+
+                    <div class="section-heading">
+                        <p class="eyebrow">
+                            PULSE KALIAN
+                        </p>
+
+                        <h2>
+                            Bagaimana bulan ini terasa?
+                        </h2>
+                    </div>
+
+
+                    <div class="profile-pulse-grid">
+
+                        <article class="profile-pulse-card">
+
+                            <div class="profile-heading">
+
+                                <span class="profile-avatar">
+                                    G
+                                </span>
+
+                                <div>
+                                    <p>GALIH</p>
+                                    <h3 id="galihMood">
+                                        —
+                                    </h3>
+                                </div>
+
+                                <span
+                                    id="galihMoodEmoji"
+                                    class="profile-mood-emoji"
+                                >
+                                    ✨
+                                </span>
+
+                            </div>
+
+
+                            <div class="profile-metrics">
+
+                                <div>
+                                    <span>
+                                        Check-in
+                                    </span>
+
+                                    <strong id="galihCount">
+                                        0 hari
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        Rata-rata energi
+                                    </span>
+
+                                    <strong id="galihEnergy">
+                                        —
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        Rata-rata hari
+                                    </span>
+
+                                    <strong id="galihRating">
+                                        —
+                                    </strong>
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <article class="profile-pulse-card">
+
+                            <div class="profile-heading">
+
+                                <span class="profile-avatar">
+                                    W
+                                </span>
+
+                                <div>
+                                    <p>WISYE</p>
+                                    <h3 id="wisyeMood">
+                                        —
+                                    </h3>
+                                </div>
+
+                                <span
+                                    id="wisyeMoodEmoji"
+                                    class="profile-mood-emoji"
+                                >
+                                    ✨
+                                </span>
+
+                            </div>
+
+
+                            <div class="profile-metrics">
+
+                                <div>
+                                    <span>
+                                        Check-in
+                                    </span>
+
+                                    <strong id="wisyeCount">
+                                        0 hari
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        Rata-rata energi
+                                    </span>
+
+                                    <strong id="wisyeEnergy">
+                                        —
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        Rata-rata hari
+                                    </span>
+
+                                    <strong id="wisyeRating">
+                                        —
+                                    </strong>
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     TOGETHER
+                ================================================== -->
+                <section class="section-block">
+
+                    <div class="section-heading">
+                        <p class="eyebrow">
+                            KALIAN BERDUA
+                        </p>
+
+                        <h2>
+                            Hal-hal kecil yang terlihat
+                        </h2>
+                    </div>
+
+
+                    <div class="together-grid">
+
+                        <article class="together-card">
+
+                            <span class="together-icon">
+                                🤗
+                            </span>
+
+                            <p>
+                                Paling sering dibutuhkan
+                            </p>
+
+                            <strong id="commonNeed">
+                                —
+                            </strong>
+
+                        </article>
+
+
+                        <article class="together-card">
+
+                            <span class="together-icon">
+                                ✨
+                            </span>
+
+                            <p>
+                                Hari terbaik bersama
+                            </p>
+
+                            <strong id="bestDay">
+                                —
+                            </strong>
+
+                            <small id="bestDayScore">
+                                —
+                            </small>
+
+                        </article>
+
+
+                        <article class="together-card">
+
+                            <span class="together-icon">
+                                🌧️
+                            </span>
+
+                            <p>
+                                Hari paling berat
+                            </p>
+
+                            <strong id="hardestDay">
+                                —
+                            </strong>
+
+                            <small id="hardestDayScore">
+                                —
+                            </small>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     MONTH STORY
+                ================================================== -->
+                <section class="month-story-card">
+
+                    <div class="month-story-icon">
+                        💞
+                    </div>
+
+                    <div>
+                        <p class="eyebrow">
+                            CERITA BULAN INI
+                        </p>
+
+                        <h2 id="monthStoryTitle">
+                            Bulan kalian
+                        </h2>
+
+                        <p id="monthStoryText">
+                            Memuat ringkasan...
+                        </p>
+                    </div>
+
+                </section>
+
+
+                <section class="pulse-footer-action">
+
+                    <p>
+                        Couple Pulse berubah setiap kali
+                        Daily Check-in kalian bertambah.
+                    </p>
+
+                    <a
+                        href="checkin.html"
+                        class="primary-link"
+                    >
+                        Buka Daily Check-in
+                    </a>
+
+                </section>
+
+            </div>
+
+        </main>
+
+
+        <footer>
+            Ruang Cerita · Couple Pulse
+        </footer>
+
+    </div>
+
+
+    <script src="couple-pulse.js"></script>
+
+</body>
+</html>

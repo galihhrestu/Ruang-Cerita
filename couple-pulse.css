@@ -1,0 +1,998 @@
+/* =========================================================
+   RUANG CERITA — COUPLE PULSE V1
+========================================================= */
+
+:root {
+    --bg: #f3eee8;
+    --surface: rgba(255, 255, 255, 0.72);
+    --surface-solid: #fffaf6;
+    --text: #2f2a28;
+    --muted: #7e7570;
+    --line: rgba(82, 65, 57, 0.12);
+
+    --accent: #c95e74;
+    --accent-dark: #a9485f;
+    --accent-soft: #f7dfe5;
+
+    --green: #597663;
+    --green-soft: #e7efe8;
+
+    --shadow:
+        0 18px 45px
+        rgba(86, 65, 55, 0.09);
+
+    --radius: 24px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--bg);
+}
+
+body {
+    margin: 0;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 15% 4%,
+            rgba(255, 255, 255, 0.92),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 16%,
+            rgba(238, 205, 210, 0.52),
+            transparent 28%
+        ),
+        var(--bg);
+
+    font-family:
+        "DM Sans",
+        system-ui,
+        sans-serif;
+}
+
+button {
+    font: inherit;
+}
+
+a {
+    color: inherit;
+}
+
+.pulse-shell {
+    width:
+        min(
+            940px,
+            calc(100% - 32px)
+        );
+
+    margin: 0 auto;
+    padding-bottom: 62px;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.pulse-topbar {
+    min-height: 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.back-link,
+.checkin-link {
+    color: var(--muted);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.back-link:hover,
+.checkin-link:hover {
+    color: var(--accent-dark);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.pulse-hero {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 340px;
+
+    padding: 54px 34px 38px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(201, 94, 116, 0.14);
+
+    border-radius: 32px;
+
+    background:
+        radial-gradient(
+            circle at 18% 8%,
+            rgba(255, 255, 255, 0.97),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 88% 16%,
+            rgba(246, 202, 211, 0.82),
+            transparent 31%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.82),
+            rgba(247, 223, 229, 0.60)
+        );
+
+    box-shadow: var(--shadow);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+
+    width: min(650px, 100%);
+
+    text-align: center;
+}
+
+.eyebrow {
+    margin: 0;
+
+    color: var(--accent);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.pulse-hero h1 {
+    margin: 7px 0 12px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            42px,
+            8vw,
+            66px
+        );
+
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+.heart-mark {
+    display: inline-block;
+
+    margin-left: 6px;
+
+    font-size: 0.68em;
+
+    vertical-align: 0.08em;
+}
+
+.hero-copy {
+    max-width: 560px;
+
+    margin: 0 auto;
+
+    color: var(--muted);
+
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.hero-orb {
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.hero-orb-one {
+    width: 220px;
+    height: 220px;
+
+    top: -95px;
+    left: -65px;
+
+    background:
+        rgba(255, 255, 255, 0.52);
+}
+
+.hero-orb-two {
+    width: 210px;
+    height: 210px;
+
+    right: -60px;
+    bottom: -105px;
+
+    background:
+        rgba(201, 94, 116, 0.08);
+}
+
+
+/* Month navigation */
+
+.month-navigation {
+    width: min(420px, 100%);
+
+    margin: 30px auto 0;
+    padding: 8px;
+
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    align-items: center;
+    gap: 7px;
+
+    border:
+        1px solid
+        rgba(82, 65, 57, 0.10);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.59);
+
+    backdrop-filter: blur(12px);
+}
+
+.month-button {
+    width: 42px;
+    height: 42px;
+
+    border: 0;
+    border-radius: 13px;
+
+    color: var(--accent-dark);
+
+    background:
+        rgba(247, 223, 229, 0.72);
+
+    cursor: pointer;
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.month-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+}
+
+.month-center span,
+.month-center strong {
+    display: block;
+}
+
+.month-caption {
+    margin-bottom: 2px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.13em;
+}
+
+.month-center strong {
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+.state-card {
+    margin-top: 18px;
+    padding: 48px 24px;
+
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+
+    background: var(--surface);
+    box-shadow: var(--shadow);
+
+    text-align: center;
+}
+
+.state-card h2 {
+    margin: 10px 0 8px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 28px;
+}
+
+.state-card p {
+    max-width: 500px;
+
+    margin: 0 auto 20px;
+
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.loading-heart,
+.state-emoji {
+    font-size: 40px;
+}
+
+.loading-heart {
+    animation:
+        pulse-heart
+        1.2s ease-in-out
+        infinite;
+}
+
+@keyframes pulse-heart {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+
+/* =========================================================
+   OVERVIEW
+========================================================= */
+
+.pulse-overview {
+    margin-top: 18px;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.25fr)
+        minmax(0, 1fr);
+
+    gap: 18px;
+}
+
+.main-pulse-card,
+.mini-stat-card,
+.section-block,
+.month-story-card,
+.pulse-footer-action {
+    border: 1px solid var(--line);
+
+    background: var(--surface);
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(18px);
+}
+
+.main-pulse-card {
+    padding: 30px;
+
+    border-radius: 25px;
+}
+
+.big-number-row {
+    margin: 9px 0 0;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.big-number-row strong {
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            65px,
+            10vw,
+            96px
+        );
+
+    line-height: 0.95;
+}
+
+.big-number-row span {
+    font-size: 42px;
+}
+
+.main-pulse-label {
+    margin: 8px 0 24px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.progress-track {
+    height: 9px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(82, 65, 57, 0.08);
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d57689,
+            #c95e74
+        );
+
+    transition:
+        width 0.45s ease;
+}
+
+.progress-caption {
+    margin-top: 9px;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.progress-caption strong {
+    color: var(--text);
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.mini-stat-card {
+    min-width: 0;
+
+    padding: 18px;
+
+    border-radius: 21px;
+}
+
+.mini-stat-icon {
+    display: block;
+
+    margin-bottom: 18px;
+
+    font-size: 24px;
+}
+
+.mini-stat-card p {
+    margin: 0 0 4px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.mini-stat-card strong {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section-block {
+    margin-top: 18px;
+    padding: 30px;
+
+    border-radius: 25px;
+}
+
+.section-heading {
+    margin-bottom: 22px;
+}
+
+.section-heading h2 {
+    margin: 5px 0 0;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            28px,
+            5vw,
+            36px
+        );
+
+    line-height: 1.2;
+}
+
+
+/* =========================================================
+   PROFILE PULSE
+========================================================= */
+
+.profile-pulse-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+}
+
+.profile-pulse-card {
+    padding: 20px;
+
+    border:
+        1px solid
+        rgba(82, 65, 57, 0.10);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.48);
+}
+
+.profile-heading {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 22px;
+}
+
+.profile-avatar {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--accent-soft);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 18px;
+    line-height: 1;
+}
+
+.profile-heading p {
+    margin: 0 0 2px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.15em;
+}
+
+.profile-heading h3 {
+    margin: 0;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 21px;
+}
+
+.profile-mood-emoji {
+    font-size: 31px;
+}
+
+.profile-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.profile-metrics div {
+    padding: 11px 10px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(247, 243, 239, 0.80);
+}
+
+.profile-metrics span,
+.profile-metrics strong {
+    display: block;
+}
+
+.profile-metrics span {
+    margin-bottom: 4px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+    line-height: 1.35;
+}
+
+.profile-metrics strong {
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   TOGETHER
+========================================================= */
+
+.together-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.together-card {
+    min-width: 0;
+
+    padding: 21px 18px;
+
+    border:
+        1px solid
+        rgba(82, 65, 57, 0.10);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.49);
+}
+
+.together-icon {
+    display: block;
+
+    margin-bottom: 20px;
+
+    font-size: 28px;
+}
+
+.together-card p {
+    margin: 0 0 5px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.together-card strong {
+    display: block;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 20px;
+    line-height: 1.25;
+}
+
+.together-card small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   MONTH STORY
+========================================================= */
+
+.month-story-card {
+    margin-top: 18px;
+    padding: 28px 30px;
+
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: start;
+    gap: 19px;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.78),
+            rgba(247, 223, 229, 0.52)
+        );
+}
+
+.month-story-icon {
+    width: 60px;
+    height: 60px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.65);
+
+    font-size: 27px;
+}
+
+.month-story-card h2 {
+    margin: 4px 0 8px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 28px;
+}
+
+.month-story-card p:not(.eyebrow) {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   FOOTER ACTION
+========================================================= */
+
+.pulse-footer-action {
+    margin-top: 18px;
+    padding: 20px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+
+    border-radius: 21px;
+}
+
+.pulse-footer-action p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.primary-link {
+    min-height: 43px;
+    padding: 0 15px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    color: white;
+    background: var(--accent);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    text-decoration: none;
+}
+
+.primary-link:hover {
+    background: var(--accent-dark);
+}
+
+footer {
+    padding: 30px 0 0;
+
+    color: var(--muted);
+
+    text-align: center;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 720px) {
+
+    .pulse-shell {
+        width:
+            calc(
+                100% - 22px
+            );
+    }
+
+    .pulse-topbar {
+        min-height: 68px;
+    }
+
+    .pulse-hero {
+        min-height: 0;
+
+        padding:
+            42px 17px
+            28px;
+
+        border-radius: 23px;
+    }
+
+    .pulse-hero h1 {
+        font-size:
+            clamp(
+                34px,
+                9.5vw,
+                46px
+            );
+
+        letter-spacing: -1.5px;
+    }
+
+    .pulse-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .overview-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .profile-pulse-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .together-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-metrics {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .section-block,
+    .main-pulse-card {
+        padding: 21px 17px;
+
+        border-radius: 20px;
+    }
+
+    .month-story-card {
+        padding: 22px 18px;
+
+        grid-template-columns: 48px 1fr;
+
+        border-radius: 20px;
+    }
+
+    .month-story-icon {
+        width: 48px;
+        height: 48px;
+
+        border-radius: 15px;
+
+        font-size: 22px;
+    }
+
+    .pulse-footer-action {
+        align-items: stretch;
+        flex-direction: column;
+
+        padding: 18px;
+    }
+
+    .primary-link {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 430px) {
+
+    .back-link,
+    .checkin-link {
+        font-size: 11px;
+    }
+
+    .hero-copy {
+        font-size: 12px;
+    }
+
+    .month-navigation {
+        grid-template-columns:
+            42px 1fr 42px;
+    }
+
+    .month-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .overview-grid {
+        gap: 8px;
+    }
+
+    .mini-stat-card {
+        padding: 15px 13px;
+
+        border-radius: 17px;
+    }
+
+    .mini-stat-icon {
+        margin-bottom: 13px;
+
+        font-size: 21px;
+    }
+
+    .profile-metrics {
+        gap: 5px;
+    }
+
+    .profile-metrics div {
+        padding: 9px 7px;
+    }
+
+    .profile-metrics strong {
+        font-size: 11px;
+    }
+}

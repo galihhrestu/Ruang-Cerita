@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Daily Check-in — Ruang Cerita</title>
+
+    <link rel="stylesheet" href="checkin.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+
+<body>
+
+    <div class="checkin-shell">
+
+        <header class="checkin-header">
+            <a
+                href="index.html"
+                class="back-link"
+            >
+                ← Ruang Cerita
+            </a>
+
+            <button
+                id="switchProfileButton"
+                class="profile-switch"
+                type="button"
+            >
+                Ganti pengguna
+            </button>
+        </header>
+
+        <main>
+
+            <section class="hero">
+                <p class="eyebrow">DAILY CHECK-IN</p>
+                <h1>Bagaimana harimu?</h1>
+                <p class="hero-copy">
+                    Satu menit untuk berhenti sejenak,
+                    memahami diri sendiri, dan tetap saling terhubung.
+                </p>
+            </section>
+
+
+            <section
+                id="streakCard"
+                class="streak-card"
+            >
+                <div class="streak-main">
+                    <span
+                        id="streakNumber"
+                        class="streak-number"
+                    >
+                        —
+                    </span>
+
+                    <span class="streak-heart">❤️</span>
+                </div>
+
+                <p
+                    id="streakLabel"
+                    class="streak-label"
+                >
+                    Memuat streak...
+                </p>
+
+                <div
+                    id="streakProgress"
+                    class="streak-progress"
+                    hidden
+                ></div>
+
+                <div class="restore-summary">
+                    <span>❤️‍🩹 Restore bulan ini</span>
+                    <strong id="restoreQuota">— / 5</strong>
+                </div>
+            </section>
+
+
+            <section class="status-card">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">HARI INI</p>
+                        <h2 id="todayLabel">—</h2>
+                    </div>
+
+                    <span
+                        id="currentProfileBadge"
+                        class="current-profile"
+                    ></span>
+                </div>
+
+                <div class="people-status">
+                    <div class="person-status">
+                        <span class="person-avatar">G</span>
+
+                        <div>
+                            <strong>Galih</strong>
+                            <span id="statusGalih">Menunggu...</span>
+                        </div>
+                    </div>
+
+                    <div class="person-status">
+                        <span class="person-avatar">W</span>
+
+                        <div>
+                            <strong>Wisye</strong>
+                            <span id="statusWisye">Menunggu...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p
+                    id="todayStatusMessage"
+                    class="today-status-message"
+                ></p>
+            </section>
+
+
+            <section
+                id="restoreCard"
+                class="restore-card"
+                hidden
+            >
+                <div>
+                    <p class="eyebrow">STREAK TERPUTUS</p>
+                    <h2>Masih bisa diselamatkan ❤️‍🩹</h2>
+
+                    <p id="restoreText"></p>
+                </div>
+
+                <button
+                    id="restoreButton"
+                    type="button"
+                    class="secondary-button restore-button"
+                >
+                    Pulihkan hari
+                </button>
+            </section>
+
+
+            <section
+                id="activeRestoreCard"
+                class="active-restore-card"
+                hidden
+            >
+                <div>
+                    <p class="eyebrow">RESTORE AKTIF</p>
+                    <h2 id="activeRestoreTitle">
+                        Hari yang terlewat sedang dibuka
+                    </h2>
+
+                    <p id="activeRestoreText"></p>
+                </div>
+
+                <button
+                    id="fillRestoreButton"
+                    type="button"
+                    class="secondary-button"
+                >
+                    Isi hari yang dipulihkan
+                </button>
+            </section>
+
+
+            <section
+                id="formSection"
+                class="form-card"
+            >
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow" id="formEyebrow">CHECK-IN HARI INI</p>
+                        <h2 id="formTitle">Check-in kamu</h2>
+                    </div>
+
+                    <button
+                        id="backToTodayButton"
+                        type="button"
+                        class="text-button"
+                        hidden
+                    >
+                        Kembali ke hari ini
+                    </button>
+                </div>
+
+
+                <form id="checkinForm">
+
+                    <div class="form-block">
+                        <label class="main-label">
+                            Bagaimana perasaanmu?
+                        </label>
+
+                        <div
+                            id="moodGrid"
+                            class="mood-grid"
+                        >
+                            <button type="button" class="choice mood-choice" data-value="Bahagia">
+                                <span>😊</span>
+                                <small>Bahagia</small>
+                            </button>
+
+                            <button type="button" class="choice mood-choice" data-value="Penuh Cinta">
+                                <span>❤️</span>
+                                <small>Cinta</small>
+                            </button>
+
+                            <button type="button" class="choice mood-choice" data-value="Tenang">
+                                <span>😌</span>
+                                <small>Tenang</small>
+                            </button>
+
+                            <button type="button" class="choice mood-choice" data-value="Bersyukur">
+                                <span>🌱</span>
+                                <small>Bersyukur</small>
+                            </button>
+
+                            <button type="button" class="choice mood-choice" data-value="Terharu">
+                                <span>🥺</span>
+                                <small>Terharu</small>
+                            </button>
+
+                            <button type="button" class="choice mood-choice" data-value="Sedih">
+                                <span>😔</span>
+                                <small>Sedih</small>
+                            </button>
+
+                            <button type="button" class="choice mood-choice" data-value="Lelah">
+                                <span>😮‍💨</span>
+                                <small>Lelah</small>
+                            </button>
+
+                            <button type="button" class="choice mood-choice" data-value="Cemas">
+                                <span>😰</span>
+                                <small>Cemas</small>
+                            </button>
+                        </div>
+
+                        <input
+                            id="mood"
+                            type="hidden"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-block">
+                        <div class="label-row">
+                            <label
+                                for="energy"
+                                class="main-label"
+                            >
+                                Energi hari ini
+                            </label>
+
+                            <strong id="energyValue">3/5</strong>
+                        </div>
+
+                        <input
+                            id="energy"
+                            type="range"
+                            min="1"
+                            max="5"
+                            value="3"
+                        >
+
+                        <div class="range-labels">
+                            <span>Habis</span>
+                            <span>Penuh energi</span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-block">
+                        <label class="main-label">
+                            Kondisi badan
+                        </label>
+
+                        <div
+                            id="conditionGrid"
+                            class="condition-grid"
+                        >
+                            <button type="button" class="choice condition-choice" data-value="Fit">
+                                💪 Fit
+                            </button>
+
+                            <button type="button" class="choice condition-choice" data-value="Cukup baik">
+                                🙂 Cukup baik
+                            </button>
+
+                            <button type="button" class="choice condition-choice" data-value="Lelah">
+                                😮‍💨 Lelah
+                            </button>
+
+                            <button type="button" class="choice condition-choice" data-value="Kurang enak">
+                                🤒 Kurang enak
+                            </button>
+                        </div>
+
+                        <input
+                            id="physicalCondition"
+                            type="hidden"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-block">
+                        <div class="label-row">
+                            <label
+                                for="dayRating"
+                                class="main-label"
+                            >
+                                Seberapa baik harimu?
+                            </label>
+
+                            <strong>
+                                <span id="dayRatingValue">7</span>/10
+                            </strong>
+                        </div>
+
+                        <input
+                            id="dayRating"
+                            type="range"
+                            min="1"
+                            max="10"
+                            value="7"
+                        >
+
+                        <div class="range-labels">
+                            <span>Berat</span>
+                            <span>Indah</span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-block">
+                        <label
+                            for="needToday"
+                            class="main-label"
+                        >
+                            Hari ini aku butuh...
+                        </label>
+
+                        <select id="needToday">
+                            <option value="">Tidak ada yang khusus</option>
+                            <option value="Pelukan">🤗 Pelukan</option>
+                            <option value="Didengarkan">👂 Didengarkan</option>
+                            <option value="Perhatian">❤️ Perhatian</option>
+                            <option value="Waktu sendiri">😌 Waktu sendiri</option>
+                            <option value="Diajak bercanda">😂 Diajak bercanda</option>
+                            <option value="Ngobrol">💬 Ngobrol</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-block">
+                        <label
+                            for="note"
+                            class="main-label"
+                        >
+                            Satu kalimat tentang hari ini
+                        </label>
+
+                        <textarea
+                            id="note"
+                            maxlength="220"
+                            rows="4"
+                            placeholder="Opsional. Ceritakan sedikit tentang harimu..."
+                        ></textarea>
+
+                        <div class="char-counter">
+                            <span id="noteCount">0</span>/220
+                        </div>
+                    </div>
+
+
+                    <p
+                        id="formMessage"
+                        class="form-message"
+                        aria-live="polite"
+                    ></p>
+
+                    <button
+                        id="submitButton"
+                        class="primary-button"
+                        type="submit"
+                    >
+                        Selesaikan Check-in
+                    </button>
+
+                </form>
+            </section>
+
+
+            <section
+                id="resultSection"
+                class="result-card"
+                hidden
+            >
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">CHECK-IN BERSAMA</p>
+                        <h2 id="resultDate">—</h2>
+                    </div>
+                </div>
+
+                <div
+                    id="resultGrid"
+                    class="result-grid"
+                ></div>
+            </section>
+
+        </main>
+
+        <footer>
+            Ruang Cerita · Daily Check-in
+        </footer>
+
+    </div>
+
+
+    <div
+        id="profileModal"
+        class="profile-modal"
+        hidden
+    >
+        <div class="profile-modal-card">
+            <p class="eyebrow">DAILY CHECK-IN</p>
+
+            <h2>Siapa yang sedang membuka?</h2>
+
+            <p>
+                Pilihan ini akan diingat di perangkat ini.
+                Kamu bisa menggantinya kapan saja.
+            </p>
+
+            <div class="profile-options">
+                <button
+                    type="button"
+                    class="profile-option"
+                    data-profile="Galih"
+                >
+                    <span>G</span>
+                    Galih
+                </button>
+
+                <button
+                    type="button"
+                    class="profile-option"
+                    data-profile="Wisye"
+                >
+                    <span>W</span>
+                    Wisye
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="checkin.js"></script>
+
+</body>
+</html>

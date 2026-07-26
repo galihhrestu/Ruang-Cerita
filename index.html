@@ -9,147 +9,239 @@
     >
 
     <title>RUANG CERITA</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-    rel="stylesheet"
->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="home-platform.css">
 </head>
 
 <body>
 
     <header class="header modern-header">
 
-    <div class="dekorasi-header dekorasi-satu"></div>
-    <div class="dekorasi-header dekorasi-dua"></div>
+        <div class="dekorasi-header dekorasi-satu"></div>
+        <div class="dekorasi-header dekorasi-dua"></div>
 
-    <div class="container header-content">
+        <div class="container header-content">
 
-        <div class="brand-area">
+            <div class="brand-area">
 
-            <div class="logo-ruang-cerita">
-                <span>RC</span>
+                <div class="logo-ruang-cerita">
+                    <span>RC</span>
+                </div>
+
+                <div class="brand-text">
+                    <p class="header-label">
+                        Galih & Wisye Private Space
+                    </p>
+
+                    <h1>Ruang Cerita</h1>
+
+                    <p class="header-description">
+                        Tempat kecil untuk menyimpan cerita,
+                        memahami hari, dan menjaga momen kita.
+                    </p>
+                </div>
+
+                <button
+                    id="logoutButton"
+                    class="logout-button"
+                    type="button"
+                >
+                    🔒 Keluar
+                </button>
+
             </div>
 
-            <div class="brand-text">
-                <p class="header-label">Galih & Wisye Writing Space</p>
 
-                <h1>Ruang Cerita</h1>
+            <!-- Pemutar musik -->
+            <div class="music-area">
 
-                <p class="header-description">
-                    Tempat sederhana untuk menyimpan cerita,
-                    pemikiran, dan pengalaman kita.
-                </p>
+                <div class="music-player">
+
+                    <p class="music-caption">
+                        Musik untuk menemani ruang kita
+                    </p>
+
+                    <p
+                        id="musicTitle"
+                        class="music-title"
+                    >
+                        Memuat lagu...
+                    </p>
+
+                    <div class="music-controls">
+
+                        <button
+                            type="button"
+                            id="prevMusic"
+                            class="music-control-button"
+                            aria-label="Lagu sebelumnya"
+                            title="Lagu sebelumnya"
+                        >
+                            ⏮
+                        </button>
+
+                        <button
+                            type="button"
+                            id="musicToggle"
+                            class="music-button"
+                            aria-label="Putar atau jeda musik"
+                        >
+                            <span
+                                id="musicIcon"
+                                class="music-icon"
+                            >
+                                ▶
+                            </span>
+
+                            <span id="musicText">
+                                Putar
+                            </span>
+                        </button>
+
+                        <button
+                            type="button"
+                            id="nextMusic"
+                            class="music-control-button"
+                            aria-label="Lagu berikutnya"
+                            title="Lagu berikutnya"
+                        >
+                            ⏭
+                        </button>
+
+                    </div>
+
+                    <select
+                        id="musicSelect"
+                        class="music-select"
+                        aria-label="Pilih lagu"
+                    >
+                        <!-- Pilihan lagu dibuat oleh musik.js -->
+                    </select>
+
+                    <label class="volume-control">
+
+                        <span>Volume</span>
+
+                        <input
+                            type="range"
+                            id="musicVolume"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value="0.35"
+                            aria-label="Volume musik"
+                        >
+
+                    </label>
+
+                </div>
+
+                <audio
+                    id="backgroundMusic"
+                    preload="metadata"
+                ></audio>
+
             </div>
-        <button 
-        id="logoutButton"
-    class="logout-button"
-    type="button"
->
-    🔒 Keluar
-</button>
 
         </div>
 
-        <!-- Pemutar musik -->
-<div class="music-area">
+    </header>
 
-    <div class="music-player">
-
-        <p class="music-caption">
-            Musik untuk menemani menulis
-        </p>
-
-        <p id="musicTitle" class="music-title">
-            Memuat lagu...
-        </p>
-
-        <div class="music-controls">
-
-            <button
-                type="button"
-                id="prevMusic"
-                class="music-control-button"
-                aria-label="Lagu sebelumnya"
-                title="Lagu sebelumnya"
-            >
-                ⏮
-            </button>
-
-            <button
-                type="button"
-                id="musicToggle"
-                class="music-button"
-                aria-label="Putar atau jeda musik"
-            >
-                <span id="musicIcon" class="music-icon">
-                    ▶
-                </span>
-
-                <span id="musicText">
-                    Putar
-                </span>
-            </button>
-
-            <button
-                type="button"
-                id="nextMusic"
-                class="music-control-button"
-                aria-label="Lagu berikutnya"
-                title="Lagu berikutnya"
-            >
-                ⏭
-            </button>
-
-        </div>
-
-        <select
-            id="musicSelect"
-            class="music-select"
-            aria-label="Pilih lagu"
-        >
-            <!-- Pilihan lagu dibuat oleh musik.js -->
-        </select>
-
-        <label class="volume-control">
-
-            <span>Volume</span>
-
-            <input
-                type="range"
-                id="musicVolume"
-                min="0"
-                max="1"
-                step="0.05"
-                value="0.35"
-                aria-label="Volume musik"
-            >
-
-        </label>
-
-    </div>
-
-    <audio
-        id="backgroundMusic"
-        preload="metadata"
-    ></audio>
-
-</div>
-
-</header>
 
     <main class="container">
 
+        <!-- =====================================================
+             AKSES PLATFORM
+        ====================================================== -->
+        <section class="ruang-platform">
+
+            <div class="ruang-platform-heading">
+                <p class="ruang-platform-label">
+                    RUANG KITA
+                </p>
+
+                <div>
+                    <h2>Satu ruang, lebih dari sekadar cerita.</h2>
+                    <p>
+                        Mulai dari check-in harian sampai cerita yang ingin
+                        disimpan lebih lama.
+                    </p>
+                </div>
+            </div>
+
+
+            <a
+                href="checkin.html"
+                class="daily-checkin-entry"
+                aria-label="Buka Daily Check-in"
+            >
+
+                <div class="daily-checkin-entry-glow"></div>
+
+                <div class="daily-checkin-entry-icon">
+                    <span>🌙</span>
+                </div>
+
+                <div class="daily-checkin-entry-content">
+
+                    <p class="daily-checkin-entry-kicker">
+                        DAILY CHECK-IN
+                    </p>
+
+                    <h2>Bagaimana harimu?</h2>
+
+                    <p class="daily-checkin-entry-description">
+                        Luangkan satu menit untuk melihat bagaimana
+                        perasaanmu hari ini dan tetap saling terhubung.
+                    </p>
+
+                    <div class="daily-checkin-entry-meta">
+
+                        <span>
+                            ❤️ Streak bersama
+                        </span>
+
+                        <span>
+                            ❤️‍🩹 5 restore / bulan
+                        </span>
+
+                    </div>
+
+                    <span class="daily-checkin-entry-cta">
+                        Masuk ke Daily Check-in
+                        <span aria-hidden="true">→</span>
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <div class="ruang-platform-divider">
+                <span>RUANG MENULIS</span>
+            </div>
+
+        </section>
+
+
         <!-- Form menulis cerita -->
         <section class="form-section">
+
             <h2>Tulis Cerita Baru</h2>
 
             <form id="formTulisan">
 
                 <div class="form-group">
+
                     <label for="judul">
                         Judul tulisan
                     </label>
@@ -160,15 +252,22 @@
                         placeholder="Masukkan judul tulisan"
                         required
                     >
+
                 </div>
 
+
                 <div class="form-grid-dua">
+
                     <div class="form-group">
+
                         <label for="kategori">
                             Kategori cerita
                         </label>
 
-                        <select id="kategori" required>
+                        <select
+                            id="kategori"
+                            required
+                        >
                             <option value="">Pilih kategori</option>
                             <option value="Kenangan">Kenangan</option>
                             <option value="Perjalanan">Perjalanan</option>
@@ -178,14 +277,20 @@
                             <option value="Harapan">Harapan</option>
                             <option value="Lainnya">Lainnya</option>
                         </select>
+
                     </div>
 
+
                     <div class="form-group">
+
                         <label for="mood">
                             Mood saat menulis
                         </label>
 
-                        <select id="mood" required>
+                        <select
+                            id="mood"
+                            required
+                        >
                             <option value="">Pilih mood</option>
                             <option value="Bahagia">😊 Bahagia</option>
                             <option value="Penuh Cinta">❤️ Penuh Cinta</option>
@@ -194,10 +299,14 @@
                             <option value="Bersyukur">🌱 Bersyukur</option>
                             <option value="Tenang">😌 Tenang</option>
                         </select>
+
                     </div>
+
                 </div>
 
+
                 <div class="form-group">
+
                     <label for="isi">
                         Isi tulisan
                     </label>
@@ -208,31 +317,57 @@
                         placeholder="Mulailah menulis ceritamu di sini..."
                         required
                     ></textarea>
+
                 </div>
 
-                <button type="submit" class="btn-simpan">
+
+                <button
+                    type="submit"
+                    class="btn-simpan"
+                >
                     Simpan Tulisan
                 </button>
 
             </form>
+
         </section>
+
 
         <!-- Daftar tulisan -->
         <section class="daftar-section">
 
             <div class="judul-daftar">
+
                 <div>
                     <h2>Tulisan Tersimpan</h2>
-                    <p id="jumlahTulisan" aria-live="polite">0 tulisan</p>
+
+                    <p
+                        id="jumlahTulisan"
+                        aria-live="polite"
+                    >
+                        0 tulisan
+                    </p>
                 </div>
+
             </div>
 
+
             <div class="daftar-tools">
+
                 <div class="pencarian-cerita">
-                    <label for="pencarianJudul">Cari judul cerita</label>
+
+                    <label for="pencarianJudul">
+                        Cari judul cerita
+                    </label>
 
                     <div class="pencarian-input-wrapper">
-                        <span class="ikon-pencarian" aria-hidden="true">⌕</span>
+
+                        <span
+                            class="ikon-pencarian"
+                            aria-hidden="true"
+                        >
+                            ⌕
+                        </span>
 
                         <input
                             type="search"
@@ -251,20 +386,34 @@
                         >
                             ×
                         </button>
+
                     </div>
+
                 </div>
 
+
                 <div class="filter-grid">
+
                     <div class="filter-control">
-                        <label for="filterFavorit">Status</label>
+
+                        <label for="filterFavorit">
+                            Status
+                        </label>
+
                         <select id="filterFavorit">
                             <option value="semua">Semua cerita</option>
                             <option value="favorit">Favorit saja</option>
                         </select>
+
                     </div>
 
+
                     <div class="filter-control">
-                        <label for="filterKategori">Kategori</label>
+
+                        <label for="filterKategori">
+                            Kategori
+                        </label>
+
                         <select id="filterKategori">
                             <option value="semua">Semua kategori</option>
                             <option value="Kenangan">Kenangan</option>
@@ -274,12 +423,20 @@
                             <option value="Pekerjaan">Pekerjaan</option>
                             <option value="Harapan">Harapan</option>
                             <option value="Lainnya">Lainnya</option>
-                            <option value="Belum dikategorikan">Belum dikategorikan</option>
+                            <option value="Belum dikategorikan">
+                                Belum dikategorikan
+                            </option>
                         </select>
+
                     </div>
 
+
                     <div class="filter-control">
-                        <label for="filterMood">Mood</label>
+
+                        <label for="filterMood">
+                            Mood
+                        </label>
+
                         <select id="filterMood">
                             <option value="semua">Semua mood</option>
                             <option value="Bahagia">😊 Bahagia</option>
@@ -290,20 +447,32 @@
                             <option value="Tenang">😌 Tenang</option>
                             <option value="Belum dipilih">Belum dipilih</option>
                         </select>
+
                     </div>
 
+
                     <div class="filter-control">
-                        <label for="urutkanCerita">Urutkan</label>
+
+                        <label for="urutkanCerita">
+                            Urutkan
+                        </label>
+
                         <select id="urutkanCerita">
                             <option value="terbaru">Terbaru</option>
                             <option value="terlama">Terlama</option>
-                            <option value="terakhir-diedit">Terakhir diedit</option>
+                            <option value="terakhir-diedit">
+                                Terakhir diedit
+                            </option>
                             <option value="judul-az">Judul A–Z</option>
                         </select>
+
                     </div>
+
                 </div>
 
+
                 <div class="baris-info-filter">
+
                     <p
                         id="infoHasilPencarian"
                         class="info-hasil-pencarian"
@@ -317,8 +486,11 @@
                     >
                         Reset filter
                     </button>
+
                 </div>
+
             </div>
+
 
             <div
                 id="daftarTulisan"
@@ -327,12 +499,14 @@
                 <!-- Daftar tulisan ditampilkan melalui JavaScript -->
             </div>
 
+
             <nav
                 id="paginasiTulisan"
                 class="paginasi-tulisan"
                 aria-label="Navigasi halaman cerita"
                 hidden
             >
+
                 <button
                     type="button"
                     id="halamanSebelumnya"
@@ -354,23 +528,25 @@
                 >
                     Berikutnya →
                 </button>
+
             </nav>
 
         </section>
 
     </main>
 
-<!-- Library Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- Konfigurasi koneksi Supabase -->
-<script src="supabase-config.js"></script>
+    <!-- Library Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- Sistem penyimpanan tulisan -->
-<script src="script.js"></script>
+    <!-- Konfigurasi koneksi Supabase -->
+    <script src="supabase-config.js"></script>
 
-<!-- Pemutar musik -->
-<script src="musik.js"></script>
+    <!-- Sistem penyimpanan tulisan -->
+    <script src="script.js"></script>
+
+    <!-- Pemutar musik -->
+    <script src="musik.js"></script>
 
 </body>
 </html>

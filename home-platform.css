@@ -1,0 +1,447 @@
+/* =========================================================
+   RUANG CERITA — HOME PLATFORM ENTRY
+   Kartu akses Daily Check-in di halaman utama.
+   File ini dimuat SETELAH style.css.
+========================================================= */
+
+.ruang-platform {
+    margin-bottom: 30px;
+}
+
+.ruang-platform-heading {
+    margin-bottom: 18px;
+    padding: 0 4px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.ruang-platform-label {
+    flex: 0 0 auto;
+    margin: 0 0 5px;
+
+    color: #b85b6d;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+.ruang-platform-heading > div {
+    max-width: 610px;
+}
+
+.ruang-platform-heading h2 {
+    margin: 0;
+
+    color: #26382f;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: clamp(25px, 4vw, 34px);
+    line-height: 1.22;
+    letter-spacing: -0.7px;
+}
+
+.ruang-platform-heading p:not(.ruang-platform-label) {
+    margin: 7px 0 0;
+
+    color: #7d7771;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   DAILY CHECK-IN ENTRY CARD
+========================================================= */
+
+.daily-checkin-entry {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    min-height: 250px;
+    padding: 34px 38px;
+
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    align-items: center;
+    gap: 28px;
+
+    border:
+        1px solid
+        rgba(186, 102, 122, 0.19);
+
+    border-radius: 27px;
+
+    color: #302a28;
+    text-decoration: none;
+
+    background:
+        radial-gradient(
+            circle at 11% 15%,
+            rgba(255, 255, 255, 0.97),
+            transparent 31%
+        ),
+        radial-gradient(
+            circle at 91% 25%,
+            rgba(242, 191, 203, 0.50),
+            transparent 31%
+        ),
+        linear-gradient(
+            135deg,
+            #fffdfb 0%,
+            #fbf1ef 53%,
+            #f8e2e7 100%
+        );
+
+    box-shadow:
+        0 20px 48px
+        rgba(89, 65, 56, 0.10);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.daily-checkin-entry:hover {
+    transform: translateY(-3px);
+
+    border-color:
+        rgba(186, 102, 122, 0.34);
+
+    box-shadow:
+        0 26px 58px
+        rgba(89, 65, 56, 0.14);
+}
+
+.daily-checkin-entry:focus-visible {
+    outline:
+        3px solid
+        rgba(201, 94, 116, 0.24);
+
+    outline-offset: 4px;
+}
+
+.daily-checkin-entry-glow {
+    position: absolute;
+    z-index: -1;
+
+    width: 300px;
+    height: 300px;
+
+    right: -92px;
+    bottom: -175px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(201, 94, 116, 0.09);
+
+    pointer-events: none;
+}
+
+.daily-checkin-entry-glow::after {
+    content: "";
+
+    position: absolute;
+
+    width: 155px;
+    height: 155px;
+
+    top: -145px;
+    left: -665px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.58);
+}
+
+
+/* Icon */
+
+.daily-checkin-entry-icon {
+    width: 88px;
+    height: 88px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(201, 94, 116, 0.16);
+
+    border-radius: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.69);
+
+    box-shadow:
+        0 15px 30px
+        rgba(92, 67, 58, 0.08);
+
+    backdrop-filter: blur(12px);
+}
+
+.daily-checkin-entry-icon span {
+    display: block;
+
+    font-size: 38px;
+    line-height: 1;
+}
+
+
+/* Text */
+
+.daily-checkin-entry-content {
+    min-width: 0;
+}
+
+.daily-checkin-entry-kicker {
+    margin: 0 0 5px;
+
+    color: #c95e74;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.daily-checkin-entry-content h2 {
+    margin: 0;
+
+    color: #302a28;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: clamp(31px, 5vw, 45px);
+    line-height: 1.15;
+    letter-spacing: -1px;
+}
+
+.daily-checkin-entry-description {
+    max-width: 620px;
+
+    margin: 10px 0 17px;
+
+    color: #77706b;
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.daily-checkin-entry-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-bottom: 21px;
+}
+
+.daily-checkin-entry-meta span {
+    padding: 7px 10px;
+
+    border:
+        1px solid
+        rgba(201, 94, 116, 0.13);
+
+    border-radius: 999px;
+
+    color: #9c4a5c;
+
+    background:
+        rgba(255, 255, 255, 0.58);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.daily-checkin-entry-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #a9485f;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.daily-checkin-entry-cta > span {
+    display: inline-block;
+
+    font-size: 18px;
+
+    transition:
+        transform 0.2s ease;
+}
+
+.daily-checkin-entry:hover
+.daily-checkin-entry-cta > span {
+    transform: translateX(4px);
+}
+
+
+/* Divider ke fitur Cerita */
+
+.ruang-platform-divider {
+    margin: 28px 0 18px;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    color: #8b837d;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.17em;
+}
+
+.ruang-platform-divider::before,
+.ruang-platform-divider::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background:
+        rgba(82, 65, 57, 0.10);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 760px) {
+
+    .ruang-platform-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .ruang-platform-heading h2 {
+        font-size: 27px;
+    }
+
+    .daily-checkin-entry {
+        min-height: 0;
+
+        padding: 26px 23px;
+
+        grid-template-columns: 64px minmax(0, 1fr);
+        align-items: start;
+        gap: 17px;
+
+        border-radius: 22px;
+    }
+
+    .daily-checkin-entry-icon {
+        width: 64px;
+        height: 64px;
+
+        border-radius: 21px;
+    }
+
+    .daily-checkin-entry-icon span {
+        font-size: 29px;
+    }
+
+    .daily-checkin-entry-content h2 {
+        font-size: 30px;
+    }
+
+    .daily-checkin-entry-description {
+        grid-column: 1 / -1;
+    }
+}
+
+
+@media screen and (max-width: 520px) {
+
+    .ruang-platform {
+        margin-bottom: 22px;
+    }
+
+    .ruang-platform-heading {
+        padding: 0 2px;
+        margin-bottom: 14px;
+    }
+
+    .ruang-platform-heading h2 {
+        font-size: 25px;
+    }
+
+    .ruang-platform-heading p:not(.ruang-platform-label) {
+        font-size: 13px;
+    }
+
+    .daily-checkin-entry {
+        padding: 23px 18px;
+
+        grid-template-columns: 1fr;
+        gap: 15px;
+
+        border-radius: 20px;
+    }
+
+    .daily-checkin-entry-icon {
+        width: 58px;
+        height: 58px;
+
+        border-radius: 18px;
+    }
+
+    .daily-checkin-entry-content h2 {
+        font-size: 31px;
+    }
+
+    .daily-checkin-entry-description {
+        margin-top: 9px;
+        font-size: 13px;
+    }
+
+    .daily-checkin-entry-meta {
+        gap: 6px;
+        margin-bottom: 18px;
+    }
+
+    .daily-checkin-entry-meta span {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+
+    .daily-checkin-entry-cta {
+        width: 100%;
+
+        min-height: 44px;
+        padding: 0 14px;
+
+        justify-content: space-between;
+
+        border-radius: 12px;
+
+        color: white;
+        background: #c95e74;
+    }
+
+    .ruang-platform-divider {
+        margin-top: 23px;
+    }
+}

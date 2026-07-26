@@ -1023,19 +1023,16 @@
     isolation: isolate;
     overflow: hidden;
 
-    min-height: 255px;
+    min-height: 285px;
     margin-bottom: 15px;
     padding: 34px 36px;
 
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 210px;
+    grid-template-columns: minmax(0, 1.15fr) minmax(260px, 360px);
     align-items: center;
-    gap: 30px;
+    gap: 34px;
 
-    border:
-        1px solid
-        rgba(118, 62, 77, 0.16);
-
+    border: 1px solid rgba(118, 62, 77, 0.16);
     border-radius: 27px;
 
     color: #39262c;
@@ -1043,20 +1040,19 @@
 
     background:
         radial-gradient(
-            circle at 87% 18%,
+            circle at 85% 18%,
             rgba(173, 83, 104, 0.13),
-            transparent 29%
+            transparent 30%
         ),
         linear-gradient(
             135deg,
             #fff9f4,
-            #f5e9e6 60%,
-            #eedcdd
+            #f7ece8 60%,
+            #f0dfe0
         );
 
     box-shadow:
-        0 22px 55px
-        rgba(87, 56, 60, 0.10);
+        0 22px 55px rgba(87, 56, 60, 0.10);
 
     transition:
         transform 0.24s ease,
@@ -1066,83 +1062,82 @@
 
 .cinema-entry:hover {
     transform: translateY(-3px);
-
-    border-color:
-        rgba(118, 62, 77, 0.26);
-
+    border-color: rgba(118, 62, 77, 0.26);
     box-shadow:
-        0 29px 68px
-        rgba(87, 56, 60, 0.15);
+        0 29px 68px rgba(87, 56, 60, 0.15);
+}
+
+.cinema-entry::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 18% 78%,
+            rgba(214, 125, 145, 0.10),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 70% 18%,
+            rgba(214, 125, 145, 0.07),
+            transparent 22%
+        );
+}
+
+/* layer dekoratif, TIDAK IKUT layout */
+.cinema-entry-film {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
 }
 
 .cinema-entry-content {
     position: relative;
     z-index: 3;
+    align-self: center;
+    max-width: 560px;
 }
 
 .cinema-entry-kicker {
     margin: 0 0 7px;
-
     color: #ad5368;
-
     font-size: 9px;
     font-weight: 800;
-
     letter-spacing: 0.18em;
 }
 
 .cinema-entry h2 {
     margin: 0;
-
     color: #3a252b;
-
-    font-family:
-        "Playfair Display",
-        Georgia,
-        serif;
-
-    font-size:
-        clamp(
-            42px,
-            6vw,
-            61px
-        );
-
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(42px, 6vw, 61px);
     font-weight: 600;
-
-    line-height: 1;
+    line-height: 0.95;
     letter-spacing: -2px;
 }
 
 .cinema-entry-names {
     margin: 8px 0 0;
-
     color: #9e5365;
-
-    font-family:
-        "Playfair Display",
-        Georgia,
-        serif;
-
+    font-family: "Playfair Display", Georgia, serif;
     font-size: 14px;
-
     font-style: italic;
 }
 
 .cinema-entry-description {
-    width: min(590px, 100%);
-
+    width: min(560px, 100%);
     margin: 15px 0 0;
-
     color: #776a68;
-
     font-size: 11px;
-    line-height: 1.7;
+    line-height: 1.75;
 }
 
 .cinema-entry-meta {
     margin-top: 18px;
-
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
@@ -1150,34 +1145,22 @@
 
 .cinema-entry-meta span {
     padding: 6px 9px;
-
-    border:
-        1px solid
-        rgba(116, 75, 80, 0.09);
-
+    border: 1px solid rgba(116, 75, 80, 0.09);
     border-radius: 999px;
-
     color: #7e5961;
-
-    background:
-        rgba(255, 255, 255, 0.43);
-
+    background: rgba(255, 255, 255, 0.48);
     font-size: 8px;
     font-weight: 700;
 }
 
 .cinema-entry-cta {
     margin-top: 21px;
-
     display: inline-flex;
     align-items: center;
     gap: 8px;
-
     color: #9e455b;
-
     font-size: 10px;
     font-weight: 800;
-
     letter-spacing: 0.035em;
 }
 
@@ -1185,20 +1168,19 @@
     position: relative;
     z-index: 3;
 
-    min-height: 170px;
-
+    width: min(100%, 330px);
+    min-height: 195px;
     padding: 20px;
+
+    justify-self: end;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    border:
-        1px solid
-        rgba(255, 248, 239, 0.12);
-
-    border-radius: 20px;
+    border: 1px solid rgba(255, 248, 239, 0.12);
+    border-radius: 22px;
 
     color: #fff8ef;
 
@@ -1215,71 +1197,51 @@
         );
 
     box-shadow:
-        0 20px 42px
-        rgba(64, 42, 47, 0.20);
+        0 20px 42px rgba(64, 42, 47, 0.20);
 
-    transform:
-        rotate(1.5deg);
-
+    transform: rotate(1.2deg);
     transition:
-        transform 0.28s ease;
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
 }
 
-.cinema-entry:hover
-.cinema-entry-poster {
-    transform:
-        rotate(0deg)
-        scale(1.02);
+.cinema-entry:hover .cinema-entry-poster {
+    transform: rotate(0deg) scale(1.02);
+    box-shadow:
+        0 26px 52px rgba(64, 42, 47, 0.26);
 }
 
 .poster-original {
-    color:
-        rgba(255, 248, 239, 0.38);
-
+    color: rgba(255, 248, 239, 0.38);
     font-size: 6px;
     font-weight: 800;
-
     letter-spacing: 0.18em;
 }
 
 .cinema-entry-poster strong {
     margin: 17px 0 14px;
-
     color: #efc8d1;
-
-    font-family:
-        "Playfair Display",
-        Georgia,
-        serif;
-
+    font-family: "Playfair Display", Georgia, serif;
     font-size: 42px;
     font-weight: 500;
-
     letter-spacing: 0.06em;
 }
 
 .poster-year {
-    color:
-        rgba(255, 248, 239, 0.56);
-
+    color: rgba(255, 248, 239, 0.56);
     font-size: 8px;
     font-weight: 800;
-
     letter-spacing: 0.18em;
 }
-
 
 /* subtle film lines */
 
 .cinema-frame-line {
     position: absolute;
     z-index: 1;
-
-    left: 0;
-    right: 0;
-
+    left: 20px;
+    right: 20px;
     height: 1px;
-
     background:
         linear-gradient(
             90deg,
@@ -1300,14 +1262,10 @@
 .cinema-film-dot {
     position: absolute;
     z-index: 1;
-
     width: 5px;
     height: 8px;
-
     border-radius: 2px;
-
-    background:
-        rgba(112, 69, 77, 0.07);
+    background: rgba(112, 69, 77, 0.07);
 }
 
 .dot-1 {
@@ -1330,27 +1288,24 @@
     bottom: 43px;
 }
 
-
 @media screen and (max-width: 700px) {
-
     .cinema-entry {
         min-height: 320px;
-
         padding: 27px 22px;
-
         grid-template-columns: 1fr;
         gap: 22px;
-
         border-radius: 22px;
     }
 
+    .cinema-entry-content {
+        max-width: 100%;
+    }
+
     .cinema-entry-poster {
-        min-height: 132px;
-
         order: -1;
-
-        width: min(260px, 82%);
-        justify-self: end;
+        justify-self: center;
+        width: min(280px, 100%);
+        min-height: 145px;
     }
 
     .cinema-entry h2 {
@@ -1358,16 +1313,14 @@
     }
 }
 
-
 @media screen and (max-width: 430px) {
-
     .cinema-entry {
         min-height: 340px;
     }
 
     .cinema-entry-poster {
-        width: 73%;
-        min-height: 118px;
+        width: min(240px, 100%);
+        min-height: 130px;
     }
 
     .cinema-entry-poster strong {

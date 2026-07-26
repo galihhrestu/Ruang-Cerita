@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0e0c0d"
+    >
+
+    <title>Our Story — Ruang Sinema</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="our-story.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+
+<body>
+
+    <main
+        id="cinemaApp"
+        class="cinema-app"
+    >
+
+        <canvas
+            id="cinemaBackdrop"
+            aria-hidden="true"
+        ></canvas>
+
+        <div class="film-grain"></div>
+        <div class="cinema-vignette"></div>
+
+
+        <!-- =====================================================
+             LANDING / FILM SELECTOR
+        ====================================================== -->
+        <section
+            id="cinemaLobby"
+            class="cinema-lobby"
+        >
+
+            <header class="lobby-topbar">
+
+                <a
+                    href="index.html"
+                    class="quiet-link"
+                >
+                    ← Ruang Cerita
+                </a>
+
+                <p>
+                    A RUANG CERITA ORIGINAL
+                </p>
+
+                <a
+                    href="universe.html"
+                    class="quiet-link quiet-link-right"
+                >
+                    Our Universe ✦
+                </a>
+
+            </header>
+
+
+            <div class="lobby-content">
+
+                <div class="lobby-title-block">
+
+                    <p class="cinema-kicker">
+                        RUANG SINEMA
+                    </p>
+
+                    <h1>
+                        Our Story
+                    </h1>
+
+                    <p class="lobby-names">
+                        Galih
+                        <span>×</span>
+                        Wisye
+                    </p>
+
+                    <p class="lobby-tagline">
+                        A film made from the little moments
+                        you kept showing up for.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="loadingPanel"
+                    class="loading-panel"
+                >
+                    <span class="loading-spark">✦</span>
+
+                    <p id="loadingText">
+                        Menyiapkan ruang pemutaran...
+                    </p>
+                </div>
+
+
+                <div
+                    id="directorPanel"
+                    class="director-panel"
+                    hidden
+                >
+
+                    <p class="director-label">
+                        CHOOSE A CHAPTER
+                    </p>
+
+
+                    <div class="chapter-picker">
+
+                        <button
+                            type="button"
+                            class="chapter-card active"
+                            data-scope="month"
+                        >
+                            <span class="chapter-number">
+                                01
+                            </span>
+
+                            <span class="chapter-card-label">
+                                THIS MONTH
+                            </span>
+
+                            <strong id="monthChapterTitle">
+                                Bulan Ini
+                            </strong>
+
+                            <small id="monthChapterMeta">
+                                —
+                            </small>
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="chapter-card"
+                            data-scope="year"
+                        >
+                            <span class="chapter-number">
+                                02
+                            </span>
+
+                            <span class="chapter-card-label">
+                                THIS YEAR
+                            </span>
+
+                            <strong id="yearChapterTitle">
+                                Tahun Ini
+                            </strong>
+
+                            <small id="yearChapterMeta">
+                                —
+                            </small>
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="chapter-card"
+                            data-scope="all"
+                        >
+                            <span class="chapter-number">
+                                03
+                            </span>
+
+                            <span class="chapter-card-label">
+                                ALL TIME
+                            </span>
+
+                            <strong>
+                                The Whole Story
+                            </strong>
+
+                            <small id="allChapterMeta">
+                                —
+                            </small>
+                        </button>
+
+                    </div>
+
+
+                    <div class="director-preview">
+
+                        <div class="preview-copy">
+                            <p>
+                                DIRECTOR'S CUT
+                            </p>
+
+                            <h2 id="filmPreviewTitle">
+                                This Month
+                            </h2>
+
+                            <span id="filmPreviewDescription">
+                                Menyusun pilihan adegan...
+                            </span>
+                        </div>
+
+
+                        <div class="preview-stats">
+
+                            <div>
+                                <span>SCENES</span>
+                                <strong id="previewScenes">
+                                    —
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>RUNTIME</span>
+                                <strong id="previewRuntime">
+                                    —
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>SOUNDTRACK</span>
+                                <strong id="previewSoundtrack">
+                                    Memuat...
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        id="watchButton"
+                        type="button"
+                        class="watch-button"
+                    >
+                        <span class="watch-icon">
+                            ▶
+                        </span>
+
+                        <span>
+                            Watch Our Story
+                        </span>
+                    </button>
+
+
+                    <p class="director-note">
+                        Film disusun otomatis dari Daily Check-in,
+                        Couple Pulse, Cerita, dan musik Ruang Cerita.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FILM EXPERIENCE
+        ====================================================== -->
+        <section
+            id="filmExperience"
+            class="film-experience"
+            hidden
+        >
+
+            <div
+                id="sceneStage"
+                class="scene-stage"
+                aria-live="polite"
+            ></div>
+
+
+            <header class="film-topbar">
+
+                <button
+                    id="exitFilmButton"
+                    type="button"
+                    class="film-quiet-button"
+                >
+                    ← Exit
+                </button>
+
+
+                <div class="film-title-mini">
+                    <span>
+                        RUANG SINEMA
+                    </span>
+
+                    <strong>
+                        Our Story
+                    </strong>
+                </div>
+
+
+                <button
+                    id="soundButton"
+                    type="button"
+                    class="film-quiet-button sound-button"
+                    aria-label="Aktifkan atau matikan suara"
+                >
+                    ♪
+                </button>
+
+            </header>
+
+
+            <div class="soundtrack-chip">
+
+                <span class="soundtrack-wave">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </span>
+
+                <div>
+                    <small>NOW PLAYING</small>
+                    <strong id="filmSoundtrackTitle">
+                        —
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <footer
+                id="filmControls"
+                class="film-controls"
+            >
+
+                <div class="film-progress-track">
+                    <div
+                        id="filmProgressBar"
+                        class="film-progress-bar"
+                    ></div>
+                </div>
+
+
+                <div class="film-controls-row">
+
+                    <button
+                        id="previousSceneButton"
+                        type="button"
+                        aria-label="Adegan sebelumnya"
+                    >
+                        ‹
+                    </button>
+
+                    <button
+                        id="playPauseButton"
+                        type="button"
+                        class="play-pause-button"
+                        aria-label="Jeda atau lanjutkan film"
+                    >
+                        ❚❚
+                    </button>
+
+                    <button
+                        id="nextSceneButton"
+                        type="button"
+                        aria-label="Adegan berikutnya"
+                    >
+                        ›
+                    </button>
+
+
+                    <div class="scene-counter">
+                        <span id="sceneCounter">
+                            1 / 1
+                        </span>
+                    </div>
+
+                </div>
+
+            </footer>
+
+        </section>
+
+
+        <audio
+            id="cinemaAudio"
+            preload="metadata"
+        ></audio>
+
+    </main>
+
+
+    <script src="our-story.js"></script>
+
+</body>
+</html>

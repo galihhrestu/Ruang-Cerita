@@ -1356,3 +1356,54 @@ button {
         transition-duration: 0.01ms !important;
     }
 }
+
+
+/* =========================================================
+   OUR UNIVERSE → RUANG SINEMA BRIDGE
+========================================================= */
+
+.universe-top-actions {
+    justify-self: end;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.universe-top-actions
+#infoButton {
+    justify-self: auto;
+}
+
+.cinema-bridge-button {
+    width: 45px;
+    height: 45px;
+    min-height: 45px;
+
+    padding: 0;
+
+    border-radius: 15px;
+
+    color: var(--rose-soft);
+
+    font-size: 15px;
+}
+
+@media (max-width: 700px) {
+
+    .universe-top-actions {
+        gap: 5px;
+    }
+
+    .cinema-bridge-button {
+        width: 42px;
+        height: 42px;
+        min-height: 42px;
+
+        border-radius: 13px;
+    }
+
+    .universe-topbar {
+        grid-template-columns: 42px 1fr auto;
+    }
+}

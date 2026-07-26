@@ -1012,3 +1012,370 @@
         right: 24px;
     }
 }
+
+
+/* =========================================================
+   RUANG SINEMA — OUR STORY HOMEPAGE ENTRY
+========================================================= */
+
+.cinema-entry {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    min-height: 255px;
+    margin-bottom: 15px;
+    padding: 34px 36px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 210px;
+    align-items: center;
+    gap: 30px;
+
+    border:
+        1px solid
+        rgba(118, 62, 77, 0.16);
+
+    border-radius: 27px;
+
+    color: #39262c;
+    text-decoration: none;
+
+    background:
+        radial-gradient(
+            circle at 87% 18%,
+            rgba(173, 83, 104, 0.13),
+            transparent 29%
+        ),
+        linear-gradient(
+            135deg,
+            #fff9f4,
+            #f5e9e6 60%,
+            #eedcdd
+        );
+
+    box-shadow:
+        0 22px 55px
+        rgba(87, 56, 60, 0.10);
+
+    transition:
+        transform 0.24s ease,
+        box-shadow 0.24s ease,
+        border-color 0.24s ease;
+}
+
+.cinema-entry:hover {
+    transform: translateY(-3px);
+
+    border-color:
+        rgba(118, 62, 77, 0.26);
+
+    box-shadow:
+        0 29px 68px
+        rgba(87, 56, 60, 0.15);
+}
+
+.cinema-entry-content {
+    position: relative;
+    z-index: 3;
+}
+
+.cinema-entry-kicker {
+    margin: 0 0 7px;
+
+    color: #ad5368;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.cinema-entry h2 {
+    margin: 0;
+
+    color: #3a252b;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            42px,
+            6vw,
+            61px
+        );
+
+    font-weight: 600;
+
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.cinema-entry-names {
+    margin: 8px 0 0;
+
+    color: #9e5365;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 14px;
+
+    font-style: italic;
+}
+
+.cinema-entry-description {
+    width: min(590px, 100%);
+
+    margin: 15px 0 0;
+
+    color: #776a68;
+
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.cinema-entry-meta {
+    margin-top: 18px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.cinema-entry-meta span {
+    padding: 6px 9px;
+
+    border:
+        1px solid
+        rgba(116, 75, 80, 0.09);
+
+    border-radius: 999px;
+
+    color: #7e5961;
+
+    background:
+        rgba(255, 255, 255, 0.43);
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.cinema-entry-cta {
+    margin-top: 21px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #9e455b;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.035em;
+}
+
+.cinema-entry-poster {
+    position: relative;
+    z-index: 3;
+
+    min-height: 170px;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.12);
+
+    border-radius: 20px;
+
+    color: #fff8ef;
+
+    background:
+        radial-gradient(
+            circle at 25% 20%,
+            rgba(210, 117, 137, 0.18),
+            transparent 34%
+        ),
+        linear-gradient(
+            145deg,
+            #261a1e,
+            #151112
+        );
+
+    box-shadow:
+        0 20px 42px
+        rgba(64, 42, 47, 0.20);
+
+    transform:
+        rotate(1.5deg);
+
+    transition:
+        transform 0.28s ease;
+}
+
+.cinema-entry:hover
+.cinema-entry-poster {
+    transform:
+        rotate(0deg)
+        scale(1.02);
+}
+
+.poster-original {
+    color:
+        rgba(255, 248, 239, 0.38);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.cinema-entry-poster strong {
+    margin: 17px 0 14px;
+
+    color: #efc8d1;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 42px;
+    font-weight: 500;
+
+    letter-spacing: 0.06em;
+}
+
+.poster-year {
+    color:
+        rgba(255, 248, 239, 0.56);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+
+/* subtle film lines */
+
+.cinema-frame-line {
+    position: absolute;
+    z-index: 1;
+
+    left: 0;
+    right: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(122, 65, 79, 0.12),
+            transparent
+        );
+}
+
+.frame-top {
+    top: 18px;
+}
+
+.frame-bottom {
+    bottom: 18px;
+}
+
+.cinema-film-dot {
+    position: absolute;
+    z-index: 1;
+
+    width: 5px;
+    height: 8px;
+
+    border-radius: 2px;
+
+    background:
+        rgba(112, 69, 77, 0.07);
+}
+
+.dot-1 {
+    left: 13px;
+    top: 43px;
+}
+
+.dot-2 {
+    left: 13px;
+    bottom: 43px;
+}
+
+.dot-3 {
+    right: 13px;
+    top: 43px;
+}
+
+.dot-4 {
+    right: 13px;
+    bottom: 43px;
+}
+
+
+@media screen and (max-width: 700px) {
+
+    .cinema-entry {
+        min-height: 320px;
+
+        padding: 27px 22px;
+
+        grid-template-columns: 1fr;
+        gap: 22px;
+
+        border-radius: 22px;
+    }
+
+    .cinema-entry-poster {
+        min-height: 132px;
+
+        order: -1;
+
+        width: min(260px, 82%);
+        justify-self: end;
+    }
+
+    .cinema-entry h2 {
+        font-size: 46px;
+    }
+}
+
+
+@media screen and (max-width: 430px) {
+
+    .cinema-entry {
+        min-height: 340px;
+    }
+
+    .cinema-entry-poster {
+        width: 73%;
+        min-height: 118px;
+    }
+
+    .cinema-entry-poster strong {
+        margin: 12px 0 10px;
+        font-size: 35px;
+    }
+
+    .cinema-entry-description {
+        font-size: 10px;
+    }
+}

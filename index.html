@@ -22,138 +22,416 @@
     <link rel="stylesheet" href="home-platform.css">
     <link rel="stylesheet" href="heartbeat-home.css">
     <link rel="stylesheet" href="home-editorial-luxury.css">
+    <link rel="stylesheet" href="celestial-hero.css">
 </head>
 
 <body>
 
-    <header class="header modern-header">
+    <header
+        id="celestialHero"
+        class="celestial-hero"
+    >
 
-        <div class="dekorasi-header dekorasi-satu"></div>
-        <div class="dekorasi-header dekorasi-dua"></div>
+        <!-- ================================================
+             CELESTIAL ATMOSPHERE
+        ================================================= -->
+        <div
+            class="celestial-hero-atmosphere"
+            aria-hidden="true"
+        >
 
-        <div class="container header-content">
+            <div class="celestial-hero-aurora aurora-one"></div>
+            <div class="celestial-hero-aurora aurora-two"></div>
 
-            <div class="brand-area">
+            <div
+                id="celestialHeroStars"
+                class="celestial-hero-stars"
+            ></div>
 
-                <div class="logo-ruang-cerita">
-                    <span>RC</span>
-                </div>
 
-                <div class="brand-text">
-                    <p class="header-label">
-                        Galih & Wisye Private Space
-                    </p>
+            <div class="celestial-hero-moon">
 
-                    <h1>Ruang Cerita</h1>
-
-                    <p class="header-description">
-                        Tempat kecil untuk menyimpan cerita,
-                        memahami hari, dan menjaga momen kita.
-                    </p>
-                </div>
-
-                <button
-                    id="logoutButton"
-                    class="logout-button"
-                    type="button"
-                >
-                    🔒 Keluar
-                </button>
+                <span class="moon-surface moon-crater-one"></span>
+                <span class="moon-surface moon-crater-two"></span>
+                <span class="moon-surface moon-crater-three"></span>
 
             </div>
 
 
-            <!-- Pemutar musik -->
-            <div class="music-area">
+            <div class="celestial-hero-orbit orbit-alpha"></div>
+            <div class="celestial-hero-orbit orbit-beta"></div>
+            <div class="celestial-hero-orbit orbit-gamma"></div>
 
-                <div class="music-player">
 
-                    <p class="music-caption">
-                        Musik untuk menemani ruang kita
-                    </p>
+            <svg
+                class="celestial-hero-constellation constellation-left"
+                viewBox="0 0 310 180"
+                aria-hidden="true"
+            >
+                <path d="M20 130 L75 92 L129 110 L183 56 L250 76 L286 32" />
+                <path d="M75 92 L96 35" />
+                <path d="M183 56 L214 126" />
 
-                    <p
-                        id="musicTitle"
-                        class="music-title"
-                    >
-                        Memuat lagu...
-                    </p>
+                <circle cx="20" cy="130" r="2.3" />
+                <circle cx="75" cy="92" r="2.9" />
+                <circle cx="129" cy="110" r="2.2" />
+                <circle cx="183" cy="56" r="2.8" />
+                <circle cx="250" cy="76" r="2.2" />
+                <circle cx="286" cy="32" r="2.1" />
+                <circle cx="96" cy="35" r="2.0" />
+                <circle cx="214" cy="126" r="2.0" />
+            </svg>
 
-                    <div class="music-controls">
 
-                        <button
-                            type="button"
-                            id="prevMusic"
-                            class="music-control-button"
-                            aria-label="Lagu sebelumnya"
-                            title="Lagu sebelumnya"
-                        >
-                            ⏮
-                        </button>
+            <span class="celestial-shooting-star shooting-one"></span>
+            <span class="celestial-shooting-star shooting-two"></span>
 
-                        <button
-                            type="button"
-                            id="musicToggle"
-                            class="music-button"
-                            aria-label="Putar atau jeda musik"
-                        >
-                            <span
-                                id="musicIcon"
-                                class="music-icon"
-                            >
-                                ▶
-                            </span>
 
-                            <span id="musicText">
-                                Putar
-                            </span>
-                        </button>
+            <div class="celestial-hero-grain"></div>
+            <div class="celestial-hero-vignette"></div>
 
-                        <button
-                            type="button"
-                            id="nextMusic"
-                            class="music-control-button"
-                            aria-label="Lagu berikutnya"
-                            title="Lagu berikutnya"
-                        >
-                            ⏭
-                        </button>
+        </div>
+
+
+        <div class="container celestial-hero-container">
+
+            <!-- ================================================
+                 BRAND / STORY
+            ================================================= -->
+            <section class="celestial-brand">
+
+                <div class="celestial-brand-topline">
+
+                    <div class="celestial-brand-mark">
+                        <span>RC</span>
+                    </div>
+
+
+                    <div class="celestial-brand-meta">
+
+                        <p>
+                            GALIH <span>×</span> WISYE
+                        </p>
+
+                        <small>
+                            PRIVATE DIGITAL SPACE
+                        </small>
 
                     </div>
 
-                    <select
-                        id="musicSelect"
-                        class="music-select"
-                        aria-label="Pilih lagu"
-                    >
-                        <!-- Pilihan lagu dibuat oleh musik.js -->
-                    </select>
+                </div>
 
-                    <label class="volume-control">
 
-                        <span>Volume</span>
+                <div class="celestial-brand-copy">
 
-                        <input
-                            type="range"
-                            id="musicVolume"
-                            min="0"
-                            max="1"
-                            step="0.05"
-                            value="0.35"
-                            aria-label="Volume musik"
+                    <p class="celestial-brand-eyebrow">
+                        ✦ A SMALL UNIVERSE OF OUR OWN
+                    </p>
+
+
+                    <h1>
+                        Ruang
+                        <span>Cerita.</span>
+                    </h1>
+
+
+                    <p class="celestial-brand-serif">
+                        A place for the days we choose to keep.
+                    </p>
+
+
+                    <p class="celestial-brand-description">
+                        Tempat kecil untuk menyimpan cerita,
+                        memahami hari, dan menjaga momen kita —
+                        pelan-pelan menjadi semesta yang hanya milik kita.
+                    </p>
+
+
+                    <div class="celestial-brand-actions">
+
+                        <a
+                            href="universe.html"
+                            class="celestial-primary-link"
                         >
+                            Enter Our Universe
+                            <span>↗</span>
+                        </a>
 
-                    </label>
+                        <a
+                            href="writing-room.html"
+                            class="celestial-quiet-link"
+                        >
+                            Write Something
+                            <span>→</span>
+                        </a>
+
+                    </div>
 
                 </div>
 
-                <audio
-                    id="backgroundMusic"
-                    preload="metadata"
-                ></audio>
 
-            </div>
+                <div class="celestial-brand-footnote">
 
+                    <span>
+                        PRIVATE EXPERIENCE
+                    </span>
+
+                    <i></i>
+
+                    <span>
+                        EST. 2026
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================================================
+                 FLOATING PRIVATE SOUNDTRACK
+            ================================================= -->
+            <section class="celestial-sound-stage">
+
+                <div class="celestial-sound-halo"></div>
+
+
+                <div class="music-area celestial-music-area">
+
+                    <div class="music-player celestial-music-console">
+
+                        <div class="celestial-music-heading">
+
+                            <div class="celestial-music-status">
+
+                                <span
+                                    class="celestial-live-dot"
+                                    aria-hidden="true"
+                                ></span>
+
+                                <div>
+                                    <small>
+                                        PRIVATE SOUNDTRACK
+                                    </small>
+
+                                    <span>
+                                        Music for this room
+                                    </span>
+                                </div>
+
+                            </div>
+
+
+                            <span
+                                class="celestial-music-note"
+                                aria-hidden="true"
+                            >
+                                ♪
+                            </span>
+
+                        </div>
+
+
+                        <div class="celestial-now-playing">
+
+                            <div
+                                class="celestial-vinyl"
+                                aria-hidden="true"
+                            >
+                                <span></span>
+                            </div>
+
+
+                            <div class="celestial-track-copy">
+
+                                <p class="music-caption">
+                                    NOW PLAYING
+                                </p>
+
+                                <p
+                                    id="musicTitle"
+                                    class="music-title"
+                                >
+                                    Memuat lagu...
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="music-controls celestial-music-controls">
+
+                            <button
+                                type="button"
+                                id="prevMusic"
+                                class="music-control-button celestial-track-button"
+                                aria-label="Lagu sebelumnya"
+                                title="Lagu sebelumnya"
+                            >
+                                <span aria-hidden="true">‹</span>
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="musicToggle"
+                                class="music-button celestial-play-button"
+                                aria-label="Putar atau jeda musik"
+                            >
+
+                                <span
+                                    id="musicIcon"
+                                    class="music-icon"
+                                >
+                                    ▶
+                                </span>
+
+                                <span id="musicText">
+                                    Putar
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="nextMusic"
+                                class="music-control-button celestial-track-button"
+                                aria-label="Lagu berikutnya"
+                                title="Lagu berikutnya"
+                            >
+                                <span aria-hidden="true">›</span>
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="celestial-equalizer"
+                            aria-hidden="true"
+                        >
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </div>
+
+
+                        <details class="celestial-sound-settings">
+
+                            <summary>
+                                <span>
+                                    Soundtrack settings
+                                </span>
+
+                                <b aria-hidden="true">
+                                    +
+                                </b>
+                            </summary>
+
+
+                            <div class="celestial-sound-settings-panel">
+
+                                <label class="celestial-select-control">
+
+                                    <span>
+                                        SONG
+                                    </span>
+
+                                    <select
+                                        id="musicSelect"
+                                        class="music-select"
+                                        aria-label="Pilih lagu"
+                                    >
+                                        <!-- Pilihan lagu dibuat oleh musik.js -->
+                                    </select>
+
+                                </label>
+
+
+                                <label class="volume-control celestial-volume-control">
+
+                                    <span>
+                                        VOLUME
+                                    </span>
+
+                                    <input
+                                        type="range"
+                                        id="musicVolume"
+                                        min="0"
+                                        max="1"
+                                        step="0.05"
+                                        value="0.35"
+                                        aria-label="Volume musik"
+                                    >
+
+                                </label>
+
+                            </div>
+
+                        </details>
+
+                    </div>
+
+
+                    <audio
+                        id="backgroundMusic"
+                        preload="metadata"
+                    ></audio>
+
+                </div>
+
+
+                <div
+                    class="celestial-sound-caption"
+                    aria-hidden="true"
+                >
+                    <span>01</span>
+
+                    <i></i>
+
+                    <p>
+                        SOUND ON · STAY A LITTLE LONGER
+                    </p>
+                </div>
+
+            </section>
+
+
+            <button
+                id="logoutButton"
+                class="celestial-logout"
+                type="button"
+                aria-label="Keluar dari Ruang Cerita"
+                title="Keluar dari Ruang Cerita"
+            >
+                <span aria-hidden="true">
+                    ◌
+                </span>
+
+                <span>
+                    Keluar
+                </span>
+            </button>
+
+        </div>
+
+
+        <div
+            class="celestial-hero-bottom-line"
+            aria-hidden="true"
+        >
+            <span></span>
+            <b>✦</b>
+            <span></span>
         </div>
 
     </header>
@@ -731,6 +1009,9 @@
 
     <!-- Konfigurasi koneksi Supabase -->
     <script src="supabase-config.js"></script>
+
+    <!-- Atmosfer Celestial Editorial Hero -->
+    <script src="celestial-hero.js"></script>
 
     <!-- Homepage gateway + jumlah cerita -->
     <script src="home-gateway.js"></script>

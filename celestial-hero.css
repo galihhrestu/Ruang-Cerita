@@ -1,0 +1,2242 @@
+/* =========================================================
+   RUANG CERITA — CELESTIAL EDITORIAL HERO V1
+
+   Header-only luxury redesign.
+   Loaded AFTER all existing homepage styles so the rest of
+   Ruang Cerita is not redesigned or disturbed.
+========================================================= */
+
+:root {
+    --rc-hero-night: #091411;
+    --rc-hero-forest: #10261e;
+    --rc-hero-emerald: #1a382c;
+
+    --rc-hero-ivory: #fff9ef;
+    --rc-hero-ivory-soft: rgba(255, 249, 239, 0.72);
+
+    --rc-hero-rose: #e6a9b9;
+    --rc-hero-gold: #d9ba8c;
+    --rc-hero-sage: #aac1b2;
+
+    --rc-hero-line: rgba(255, 249, 239, 0.10);
+}
+
+
+/* =========================================================
+   MAIN HERO
+========================================================= */
+
+.celestial-hero {
+    position: relative;
+    isolation: isolate;
+
+    min-height: 446px;
+
+    margin-bottom: 48px;
+
+    overflow: hidden;
+
+    color: var(--rc-hero-ivory);
+
+    background:
+        linear-gradient(
+            125deg,
+            var(--rc-hero-night) 0%,
+            var(--rc-hero-forest) 45%,
+            #18392d 100%
+        );
+
+    border-radius:
+        0
+        0
+        32px
+        32px;
+
+    box-shadow:
+        0 34px 90px
+        rgba(18, 42, 33, 0.18);
+}
+
+.celestial-hero::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    background:
+        radial-gradient(
+            circle at 77% 26%,
+            rgba(239, 201, 157, 0.14),
+            transparent 20%
+        ),
+        radial-gradient(
+            circle at 55% 110%,
+            rgba(102, 153, 127, 0.17),
+            transparent 36%
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.09),
+            transparent 32%,
+            rgba(255, 255, 255, 0.015)
+        );
+}
+
+
+/* =========================================================
+   ATMOSPHERE
+========================================================= */
+
+.celestial-hero-atmosphere {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.celestial-hero-aurora {
+    position: absolute;
+
+    border-radius: 50%;
+
+    filter: blur(2px);
+
+    opacity: 0.46;
+}
+
+.aurora-one {
+    width: 760px;
+    height: 380px;
+
+    top: -250px;
+    left: 30%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(186, 113, 147, 0.14),
+            rgba(77, 132, 105, 0.05) 47%,
+            transparent 72%
+        );
+
+    transform:
+        rotate(-9deg);
+
+    animation:
+        celestialAuroraFloat
+        12s ease-in-out
+        infinite;
+}
+
+.aurora-two {
+    width: 640px;
+    height: 330px;
+
+    right: -230px;
+    bottom: -220px;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(177, 204, 184, 0.11),
+            rgba(229, 171, 190, 0.05) 48%,
+            transparent 75%
+        );
+
+    transform:
+        rotate(22deg);
+
+    animation:
+        celestialAuroraFloat
+        14s ease-in-out
+        infinite reverse;
+}
+
+@keyframes celestialAuroraFloat {
+
+    0%,
+    100% {
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            rotate(-9deg);
+    }
+
+    50% {
+        transform:
+            translate3d(
+                18px,
+                10px,
+                0
+            )
+            rotate(-5deg);
+    }
+}
+
+
+/* =========================================================
+   STARS
+========================================================= */
+
+.celestial-hero-stars {
+    position: absolute;
+    inset: 0;
+
+    opacity: 0.77;
+}
+
+.celestial-hero-star {
+    position: absolute;
+
+    width: var(--star-size);
+    height: var(--star-size);
+
+    border-radius: 50%;
+
+    background:
+        rgba(
+            255,
+            239,
+            213,
+            var(--star-opacity)
+        );
+
+    box-shadow:
+        0 0 9px
+        rgba(
+            249,
+            214,
+            178,
+            calc(
+                var(--star-opacity)
+                * 0.52
+            )
+        );
+
+    animation:
+        celestialStarTwinkle
+        var(--star-duration)
+        ease-in-out
+        infinite;
+
+    animation-delay:
+        var(--star-delay);
+}
+
+@keyframes celestialStarTwinkle {
+
+    0%,
+    100% {
+        opacity: 0.30;
+        transform: scale(0.70);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.16);
+    }
+}
+
+
+/* =========================================================
+   MOON
+========================================================= */
+
+.celestial-hero-moon {
+    position: absolute;
+
+    width:
+        clamp(
+            230px,
+            20vw,
+            335px
+        );
+
+    aspect-ratio: 1;
+
+    right:
+        clamp(
+            160px,
+            17vw,
+            320px
+        );
+
+    top: -122px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 35%,
+            #fff8df 0%,
+            #f3d9b0 28%,
+            #c99e79 62%,
+            #8c675e 100%
+        );
+
+    box-shadow:
+        0 0 35px
+        rgba(247, 213, 169, 0.30),
+        0 0 115px
+        rgba(218, 172, 123, 0.19);
+
+    opacity: 0.60;
+
+    transform:
+        translate3d(
+            var(--hero-parallax-x, 0),
+            var(--hero-parallax-y, 0),
+            0
+        );
+
+    transition:
+        transform 0.35s ease-out;
+}
+
+.celestial-hero-moon::after {
+    content: "";
+
+    position: absolute;
+
+    width: 102%;
+    height: 102%;
+
+    top: -10%;
+    left: -31%;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #10261e,
+            #17362b
+        );
+
+    box-shadow:
+        inset
+        -13px
+        -10px
+        24px
+        rgba(255, 255, 255, 0.015);
+}
+
+.moon-surface {
+    position: absolute;
+
+    z-index: 1;
+
+    border-radius: 50%;
+
+    background:
+        rgba(132, 92, 77, 0.14);
+}
+
+.moon-crater-one {
+    width: 36px;
+    height: 24px;
+
+    left: 56%;
+    top: 33%;
+}
+
+.moon-crater-two {
+    width: 18px;
+    height: 18px;
+
+    left: 72%;
+    top: 55%;
+}
+
+.moon-crater-three {
+    width: 25px;
+    height: 17px;
+
+    left: 48%;
+    top: 67%;
+}
+
+
+/* =========================================================
+   ORBITS / CONSTELLATION / SHOOTING STAR
+========================================================= */
+
+.celestial-hero-orbit {
+    position: absolute;
+
+    right: 6%;
+
+    border:
+        1px solid
+        rgba(255, 238, 218, 0.09);
+
+    border-radius: 50%;
+
+    transform-origin: center;
+}
+
+.orbit-alpha {
+    width: 400px;
+    height: 145px;
+
+    top: 133px;
+
+    transform:
+        rotate(-18deg);
+}
+
+.orbit-beta {
+    width: 335px;
+    height: 123px;
+
+    top: 151px;
+    right: 10%;
+
+    transform:
+        rotate(26deg);
+}
+
+.orbit-gamma {
+    width: 470px;
+    height: 190px;
+
+    right: -3%;
+    top: 112px;
+
+    border-color:
+        rgba(255, 238, 218, 0.045);
+
+    transform:
+        rotate(9deg);
+}
+
+.celestial-hero-constellation {
+    position: absolute;
+
+    width: 295px;
+
+    left: -30px;
+    bottom: 8px;
+
+    opacity: 0.17;
+}
+
+.celestial-hero-constellation path {
+    fill: none;
+
+    stroke:
+        rgba(255, 231, 197, 0.67);
+
+    stroke-width: 0.85;
+
+    stroke-dasharray:
+        2 4;
+}
+
+.celestial-hero-constellation circle {
+    fill:
+        rgba(255, 239, 214, 0.86);
+}
+
+.celestial-shooting-star {
+    position: absolute;
+
+    width: 76px;
+    height: 1px;
+
+    opacity: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 241, 219, 0.82)
+        );
+
+    transform:
+        rotate(-28deg);
+
+    animation:
+        celestialShootingStar
+        9s linear
+        infinite;
+}
+
+.celestial-shooting-star::after {
+    content: "";
+
+    position: absolute;
+
+    right: -1px;
+    top: -1px;
+
+    width: 3px;
+    height: 3px;
+
+    border-radius: 50%;
+
+    background: #fff6e7;
+
+    box-shadow:
+        0 0 9px
+        rgba(255, 238, 209, 0.83);
+}
+
+.shooting-one {
+    top: 98px;
+    right: 29%;
+
+    animation-delay: 1.5s;
+}
+
+.shooting-two {
+    top: 238px;
+    right: 7%;
+
+    animation-delay: 6s;
+}
+
+@keyframes celestialShootingStar {
+
+    0%,
+    84% {
+        opacity: 0;
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            rotate(-28deg);
+    }
+
+    86% {
+        opacity: 0.80;
+    }
+
+    91% {
+        opacity: 0;
+
+        transform:
+            translate3d(
+                -155px,
+                91px,
+                0
+            )
+            rotate(-28deg);
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   GRAIN + VIGNETTE
+========================================================= */
+
+.celestial-hero-grain {
+    position: absolute;
+    inset: 0;
+
+    opacity: 0.17;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
+
+    mix-blend-mode:
+        soft-light;
+}
+
+.celestial-hero-vignette {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 45%,
+            rgba(5, 13, 11, 0.22) 80%,
+            rgba(4, 10, 8, 0.45) 100%
+        );
+}
+
+
+/* =========================================================
+   HERO CONTAINER
+========================================================= */
+
+.celestial-hero-container {
+    position: relative;
+    z-index: 4;
+
+    min-height: 446px;
+
+    padding:
+        52px
+        0
+        43px;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.23fr)
+        minmax(330px, 0.77fr);
+
+    align-items: center;
+    gap:
+        clamp(
+            48px,
+            7vw,
+            105px
+        );
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.celestial-brand {
+    position: relative;
+
+    min-width: 0;
+}
+
+.celestial-brand-topline {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.celestial-brand-mark {
+    position: relative;
+
+    width: 58px;
+    height: 58px;
+
+    display: grid;
+    place-items: center;
+
+    flex: 0 0 auto;
+
+    border:
+        1px solid
+        rgba(255, 248, 238, 0.19);
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.09),
+            rgba(255, 255, 255, 0.028)
+        );
+
+    box-shadow:
+        inset
+        0
+        1px
+        0
+        rgba(255, 255, 255, 0.14),
+        0
+        18px
+        45px
+        rgba(0, 0, 0, 0.18);
+
+    backdrop-filter:
+        blur(12px);
+
+    -webkit-backdrop-filter:
+        blur(12px);
+}
+
+.celestial-brand-mark::after {
+    content: "";
+
+    position: absolute;
+    inset: 7px;
+
+    border:
+        1px solid
+        rgba(230, 169, 185, 0.13);
+
+    border-radius: 12px;
+}
+
+.celestial-brand-mark span {
+    position: relative;
+    z-index: 2;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.celestial-brand-meta p,
+.celestial-brand-meta small {
+    display: block;
+
+    margin: 0;
+}
+
+.celestial-brand-meta p {
+    color: var(--rc-hero-ivory);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.celestial-brand-meta p span {
+    margin:
+        0
+        4px;
+
+    color: var(--rc-hero-rose);
+}
+
+.celestial-brand-meta small {
+    margin-top: 4px;
+
+    color:
+        rgba(255, 249, 239, 0.35);
+
+    font-size: 6px;
+    font-weight: 700;
+
+    letter-spacing: 0.17em;
+}
+
+.celestial-brand-copy {
+    margin-top: 23px;
+}
+
+.celestial-brand-eyebrow {
+    margin: 0;
+
+    color: var(--rc-hero-rose);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: 0.20em;
+}
+
+.celestial-brand h1 {
+    margin:
+        8px
+        0
+        0;
+
+    color: var(--rc-hero-ivory);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            69px,
+            7vw,
+            96px
+        );
+
+    font-weight: 600;
+
+    line-height: 0.83;
+    letter-spacing: -5.2px;
+}
+
+.celestial-brand h1 span {
+    display: block;
+
+    margin-left:
+        clamp(
+            40px,
+            5vw,
+            69px
+        );
+
+    color:
+        rgba(255, 249, 239, 0.93);
+}
+
+.celestial-brand-serif {
+    margin:
+        18px
+        0
+        0;
+
+    color: var(--rc-hero-gold);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            13px,
+            1.5vw,
+            17px
+        );
+
+    font-style: italic;
+
+    letter-spacing: -0.2px;
+}
+
+.celestial-brand-description {
+    max-width: 560px;
+
+    margin:
+        13px
+        0
+        0;
+
+    color:
+        rgba(255, 249, 239, 0.56);
+
+    font-size: 10px;
+    line-height: 1.73;
+}
+
+.celestial-brand-actions {
+    margin-top: 22px;
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.celestial-primary-link,
+.celestial-quiet-link {
+    min-height: 42px;
+
+    padding:
+        0
+        14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    border-radius: 12px;
+
+    font-size: 8px;
+    font-weight: 800;
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.celestial-primary-link {
+    border:
+        1px solid
+        rgba(239, 193, 206, 0.16);
+
+    color: #201417;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5dcc8,
+            #e7adbd
+        );
+
+    box-shadow:
+        0 15px 38px
+        rgba(229, 167, 184, 0.14);
+}
+
+.celestial-quiet-link {
+    border:
+        1px solid
+        rgba(255, 249, 239, 0.11);
+
+    color:
+        rgba(255, 249, 239, 0.73);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.celestial-primary-link:hover,
+.celestial-quiet-link:hover {
+    transform:
+        translateY(-2px);
+}
+
+.celestial-primary-link:hover {
+    box-shadow:
+        0 19px 44px
+        rgba(229, 167, 184, 0.20);
+}
+
+.celestial-quiet-link:hover {
+    border-color:
+        rgba(255, 249, 239, 0.20);
+
+    background:
+        rgba(255, 255, 255, 0.055);
+}
+
+.celestial-brand-footnote {
+    width:
+        min(
+            465px,
+            100%
+        );
+
+    margin-top: 27px;
+
+    display: grid;
+    grid-template-columns:
+        auto
+        1fr
+        auto;
+
+    align-items: center;
+    gap: 11px;
+
+    color:
+        rgba(255, 249, 239, 0.24);
+
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+}
+
+.celestial-brand-footnote i {
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 249, 239, 0.08),
+            rgba(230, 169, 185, 0.22),
+            rgba(255, 249, 239, 0.08)
+        );
+}
+
+
+/* =========================================================
+   SOUND STAGE
+========================================================= */
+
+.celestial-sound-stage {
+    position: relative;
+
+    min-width: 0;
+
+    justify-self: end;
+
+    width:
+        min(
+            100%,
+            405px
+        );
+}
+
+.celestial-sound-halo {
+    position: absolute;
+
+    width: 280px;
+    height: 280px;
+
+    left: 50%;
+    top: 50%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(226, 161, 183, 0.13),
+            rgba(222, 184, 139, 0.055) 35%,
+            transparent 70%
+        );
+
+    filter: blur(3px);
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+
+    pointer-events: none;
+}
+
+.celestial-music-area {
+    position: relative;
+    z-index: 3;
+
+    width: 100%;
+
+    display: block;
+}
+
+.celestial-music-console {
+    position: relative;
+    isolation: isolate;
+
+    width: 100%;
+    min-width: 0;
+
+    padding:
+        19px
+        19px
+        15px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255, 249, 239, 0.11);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.075),
+            rgba(255, 255, 255, 0.025)
+        );
+
+    box-shadow:
+        inset
+        0
+        1px
+        0
+        rgba(255, 255, 255, 0.12),
+        0
+        30px
+        70px
+        rgba(0, 0, 0, 0.22);
+
+    backdrop-filter:
+        blur(22px)
+        saturate(120%);
+
+    -webkit-backdrop-filter:
+        blur(22px)
+        saturate(120%);
+}
+
+.celestial-music-console::before {
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    right: -75px;
+    top: -88px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(231, 167, 188, 0.14),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+.celestial-music-heading {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.celestial-music-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.celestial-live-dot {
+    width: 6px;
+    height: 6px;
+
+    flex: 0 0 auto;
+
+    border-radius: 50%;
+
+    background: var(--rc-hero-rose);
+
+    box-shadow:
+        0 0 0
+        5px
+        rgba(230, 169, 185, 0.07),
+        0 0 14px
+        rgba(230, 169, 185, 0.36);
+
+    animation:
+        celestialLivePulse
+        2.2s ease-in-out
+        infinite;
+}
+
+@keyframes celestialLivePulse {
+
+    0%,
+    100% {
+        opacity: 0.58;
+        transform: scale(0.86);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.celestial-music-status small,
+.celestial-music-status span {
+    display: block;
+}
+
+.celestial-music-status small {
+    color:
+        rgba(255, 249, 239, 0.63);
+
+    font-size: 5.5px;
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+}
+
+.celestial-music-status span {
+    margin-top: 2px;
+
+    color:
+        rgba(255, 249, 239, 0.30);
+
+    font-size: 5.5px;
+}
+
+.celestial-music-note {
+    color:
+        rgba(230, 169, 185, 0.65);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 18px;
+}
+
+.celestial-now-playing {
+    position: relative;
+    z-index: 2;
+
+    margin-top: 17px;
+
+    display: grid;
+    grid-template-columns:
+        52px
+        minmax(0, 1fr);
+
+    align-items: center;
+    gap: 12px;
+}
+
+.celestial-vinyl {
+    position: relative;
+
+    width: 52px;
+    height: 52px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(255, 249, 239, 0.10);
+
+    border-radius: 50%;
+
+    background:
+        repeating-radial-gradient(
+            circle,
+            #17151a 0 3px,
+            #211c22 4px 5px
+        );
+
+    box-shadow:
+        0 10px 28px
+        rgba(0, 0, 0, 0.24);
+
+    animation:
+        celestialVinylSpin
+        14s linear
+        infinite;
+}
+
+.celestial-vinyl::before {
+    content: "";
+
+    width: 19px;
+    height: 19px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--rc-hero-rose),
+            var(--rc-hero-gold)
+        );
+}
+
+.celestial-vinyl span {
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: #17151a;
+}
+
+@keyframes celestialVinylSpin {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.celestial-track-copy {
+    min-width: 0;
+}
+
+.celestial-music-console .music-caption {
+    margin: 0;
+
+    color:
+        rgba(255, 249, 239, 0.27);
+
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+
+    text-align: left;
+}
+
+.celestial-music-console .music-title {
+    max-width: 100%;
+
+    margin:
+        4px
+        0
+        0;
+
+    overflow: hidden;
+
+    color: var(--rc-hero-ivory);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            17px,
+            2vw,
+            22px
+        );
+
+    font-weight: 600;
+
+    line-height: 1.18;
+
+    text-align: left;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   MUSIC CONTROLS
+========================================================= */
+
+.celestial-music-controls {
+    position: relative;
+    z-index: 2;
+
+    margin:
+        15px
+        0
+        0;
+
+    display: grid;
+    grid-template-columns:
+        43px
+        minmax(0, 1fr)
+        43px;
+
+    align-items: center;
+    gap: 7px;
+}
+
+.celestial-music-console
+.celestial-track-button,
+.celestial-music-console
+.celestial-play-button {
+    height: 43px;
+    min-height: 43px;
+
+    margin: 0;
+    padding: 0;
+
+    border-radius: 12px;
+
+    box-shadow: none;
+}
+
+.celestial-music-console
+.celestial-track-button {
+    width: 43px;
+
+    border:
+        1px solid
+        rgba(255, 249, 239, 0.09);
+
+    color:
+        rgba(255, 249, 239, 0.62);
+
+    background:
+        rgba(255, 255, 255, 0.028);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 20px;
+}
+
+.celestial-music-console
+.celestial-track-button:hover {
+    transform: translateY(-1px);
+
+    background:
+        rgba(255, 255, 255, 0.06);
+}
+
+.celestial-music-console
+.celestial-play-button {
+    width: 100%;
+    min-width: 0;
+
+    border:
+        1px solid
+        rgba(246, 221, 194, 0.34);
+
+    color: #25191d;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5dcc8,
+            #e4a5b8
+        );
+
+    box-shadow:
+        0 11px 28px
+        rgba(226, 160, 181, 0.11);
+
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.celestial-music-console
+.celestial-play-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 15px 34px
+        rgba(226, 160, 181, 0.17);
+}
+
+.celestial-music-console
+.celestial-play-button
+.music-icon {
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   EQUALIZER
+========================================================= */
+
+.celestial-equalizer {
+    position: relative;
+    z-index: 2;
+
+    height: 24px;
+
+    margin-top: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+
+    opacity: 0.36;
+
+    overflow: hidden;
+}
+
+.celestial-equalizer i {
+    width: 1px;
+
+    flex: 1 1 auto;
+
+    max-width: 18px;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--rc-hero-rose),
+            rgba(255, 249, 239, 0.22)
+        );
+
+    animation:
+        celestialEqualizer
+        1.7s ease-in-out
+        infinite;
+}
+
+.celestial-equalizer i:nth-child(1) {
+    height: 6px;
+}
+
+.celestial-equalizer i:nth-child(2) {
+    height: 15px;
+    animation-delay: -0.2s;
+}
+
+.celestial-equalizer i:nth-child(3) {
+    height: 10px;
+    animation-delay: -0.55s;
+}
+
+.celestial-equalizer i:nth-child(4) {
+    height: 19px;
+    animation-delay: -0.35s;
+}
+
+.celestial-equalizer i:nth-child(5) {
+    height: 12px;
+    animation-delay: -0.8s;
+}
+
+.celestial-equalizer i:nth-child(6) {
+    height: 21px;
+    animation-delay: -0.15s;
+}
+
+.celestial-equalizer i:nth-child(7) {
+    height: 8px;
+    animation-delay: -0.7s;
+}
+
+.celestial-equalizer i:nth-child(8) {
+    height: 16px;
+    animation-delay: -0.45s;
+}
+
+.celestial-equalizer i:nth-child(9) {
+    height: 11px;
+    animation-delay: -0.6s;
+}
+
+.celestial-equalizer i:nth-child(10) {
+    height: 20px;
+    animation-delay: -0.27s;
+}
+
+.celestial-equalizer i:nth-child(11) {
+    height: 13px;
+    animation-delay: -0.75s;
+}
+
+.celestial-equalizer i:nth-child(12) {
+    height: 7px;
+    animation-delay: -0.4s;
+}
+
+@keyframes celestialEqualizer {
+
+    0%,
+    100% {
+        transform: scaleY(0.42);
+        opacity: 0.32;
+    }
+
+    50% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   SOUND SETTINGS
+========================================================= */
+
+.celestial-sound-settings {
+    position: relative;
+    z-index: 2;
+
+    margin-top: 4px;
+}
+
+.celestial-sound-settings summary {
+    min-height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-top:
+        1px solid
+        rgba(255, 249, 239, 0.07);
+
+    color:
+        rgba(255, 249, 239, 0.34);
+
+    cursor: pointer;
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.09em;
+
+    list-style: none;
+}
+
+.celestial-sound-settings summary::-webkit-details-marker {
+    display: none;
+}
+
+.celestial-sound-settings summary b {
+    color: var(--rc-hero-rose);
+
+    font-size: 13px;
+    font-weight: 400;
+
+    transition:
+        transform 0.18s ease;
+}
+
+.celestial-sound-settings[open]
+summary b {
+    transform:
+        rotate(45deg);
+}
+
+.celestial-sound-settings-panel {
+    padding:
+        8px
+        0
+        3px;
+
+    display: grid;
+    gap: 10px;
+}
+
+.celestial-select-control {
+    display: grid;
+    gap: 5px;
+}
+
+.celestial-select-control > span,
+.celestial-volume-control > span {
+    color:
+        rgba(255, 249, 239, 0.26);
+
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+}
+
+.celestial-music-console
+.music-select {
+    width: 100%;
+
+    min-height: 37px;
+
+    margin: 0;
+
+    padding:
+        0
+        10px;
+
+    border:
+        1px solid
+        rgba(255, 249, 239, 0.08);
+
+    border-radius: 10px;
+
+    color:
+        rgba(255, 249, 239, 0.76);
+
+    background: #183027;
+
+    outline: none;
+
+    font-size: 7px;
+}
+
+.celestial-volume-control {
+    display: grid;
+    grid-template-columns:
+        auto
+        1fr;
+
+    align-items: center;
+    gap: 9px;
+
+    margin: 0;
+
+    color:
+        rgba(255, 249, 239, 0.45);
+
+    font-size: 7px;
+}
+
+.celestial-volume-control input {
+    width: 100%;
+
+    accent-color:
+        var(--rc-hero-rose);
+}
+
+
+/* =========================================================
+   SOUND CAPTION + LOGOUT
+========================================================= */
+
+.celestial-sound-caption {
+    width:
+        calc(
+            100% - 20px
+        );
+
+    margin:
+        10px
+        auto
+        0;
+
+    display: grid;
+    grid-template-columns:
+        auto
+        1fr
+        auto;
+
+    align-items: center;
+    gap: 8px;
+
+    color:
+        rgba(255, 249, 239, 0.18);
+}
+
+.celestial-sound-caption span,
+.celestial-sound-caption p {
+    margin: 0;
+
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.10em;
+}
+
+.celestial-sound-caption i {
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 249, 239, 0.04),
+            rgba(230, 169, 185, 0.18)
+        );
+}
+
+.celestial-logout {
+    position: absolute;
+
+    top: 20px;
+    right: 0;
+
+    min-height: 37px;
+
+    padding:
+        0
+        11px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    border:
+        1px solid
+        rgba(255, 249, 239, 0.10);
+
+    border-radius: 11px;
+
+    color:
+        rgba(255, 249, 239, 0.50);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+}
+
+.celestial-logout:hover {
+    transform:
+        translateY(-1px);
+
+    color: var(--rc-hero-ivory);
+
+    border-color:
+        rgba(255, 249, 239, 0.18);
+
+    background:
+        rgba(255, 255, 255, 0.05);
+}
+
+
+/* =========================================================
+   BOTTOM DIVIDER
+========================================================= */
+
+.celestial-hero-bottom-line {
+    position: absolute;
+
+    left: 50%;
+    bottom: 16px;
+    z-index: 5;
+
+    width:
+        min(
+            300px,
+            40vw
+        );
+
+    display: grid;
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+    align-items: center;
+    gap: 9px;
+
+    color:
+        rgba(230, 169, 185, 0.42);
+
+    transform:
+        translateX(-50%);
+}
+
+.celestial-hero-bottom-line span {
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 249, 239, 0.13)
+        );
+}
+
+.celestial-hero-bottom-line span:last-child {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 249, 239, 0.13),
+            transparent
+        );
+}
+
+.celestial-hero-bottom-line b {
+    font-size: 7px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media screen and (max-width: 960px) {
+
+    .celestial-hero-container {
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(300px, 0.70fr);
+
+        gap: 35px;
+    }
+
+    .celestial-brand h1 {
+        font-size:
+            clamp(
+                63px,
+                8vw,
+                78px
+            );
+    }
+
+    .celestial-hero-moon {
+        right: 9%;
+    }
+}
+
+
+/* =========================================================
+   MOBILE — DESIGNED SEPARATELY, NOT A STACKED DESKTOP
+========================================================= */
+
+@media screen and (max-width: 760px) {
+
+    .celestial-hero {
+        min-height: 0;
+
+        margin-bottom: 36px;
+
+        border-radius:
+            0
+            0
+            25px
+            25px;
+
+        box-shadow:
+            0 25px 65px
+            rgba(18, 42, 33, 0.17);
+    }
+
+    .celestial-hero-container {
+        min-height: 0;
+
+        width:
+            calc(
+                100% - 28px
+            );
+
+        padding:
+            26px
+            0
+            39px;
+
+        grid-template-columns: 1fr;
+
+        gap: 28px;
+    }
+
+
+    /* -----------------------------------------------------
+       Mobile visual atmosphere
+    ----------------------------------------------------- */
+
+    .celestial-hero-moon {
+        width: 190px;
+
+        right: -78px;
+        top: -65px;
+
+        opacity: 0.38;
+    }
+
+    .orbit-alpha {
+        width: 280px;
+        height: 95px;
+
+        right: -80px;
+        top: 78px;
+    }
+
+    .orbit-beta {
+        width: 240px;
+        height: 90px;
+
+        right: -56px;
+        top: 103px;
+    }
+
+    .orbit-gamma {
+        display: none;
+    }
+
+    .celestial-hero-constellation {
+        width: 190px;
+
+        left: -45px;
+        bottom: 125px;
+
+        opacity: 0.12;
+    }
+
+    .shooting-one {
+        top: 150px;
+        right: 15%;
+    }
+
+    .shooting-two {
+        display: none;
+    }
+
+
+    /* -----------------------------------------------------
+       Mobile brand
+    ----------------------------------------------------- */
+
+    .celestial-brand {
+        padding-right: 35px;
+    }
+
+    .celestial-brand-topline {
+        gap: 10px;
+    }
+
+    .celestial-brand-mark {
+        width: 47px;
+        height: 47px;
+
+        border-radius: 15px;
+    }
+
+    .celestial-brand-mark::after {
+        inset: 6px;
+
+        border-radius: 10px;
+    }
+
+    .celestial-brand-mark span {
+        font-size: 19px;
+    }
+
+    .celestial-brand-meta p {
+        font-size: 7px;
+    }
+
+    .celestial-brand-meta small {
+        font-size: 5px;
+    }
+
+    .celestial-brand-copy {
+        margin-top: 20px;
+    }
+
+    .celestial-brand-eyebrow {
+        font-size: 6px;
+    }
+
+    .celestial-brand h1 {
+        width: min-content;
+
+        margin-top: 7px;
+
+        font-size:
+            clamp(
+                56px,
+                18vw,
+                73px
+            );
+
+        line-height: 0.84;
+        letter-spacing: -4px;
+    }
+
+    .celestial-brand h1 span {
+        margin-left: 31px;
+    }
+
+    .celestial-brand-serif {
+        margin-top: 15px;
+
+        font-size: 13px;
+    }
+
+    .celestial-brand-description {
+        max-width: 340px;
+
+        margin-top: 10px;
+
+        font-size: 9px;
+        line-height: 1.65;
+    }
+
+    .celestial-brand-actions {
+        margin-top: 18px;
+
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1.12fr)
+            minmax(0, 0.88fr);
+
+        gap: 7px;
+    }
+
+    .celestial-primary-link,
+    .celestial-quiet-link {
+        min-height: 40px;
+
+        padding:
+            0
+            10px;
+
+        font-size: 7px;
+    }
+
+    .celestial-brand-footnote {
+        margin-top: 20px;
+
+        font-size: 4.5px;
+    }
+
+
+    /* -----------------------------------------------------
+       Mobile music becomes a compact sound dock
+    ----------------------------------------------------- */
+
+    .celestial-sound-stage {
+        width: 100%;
+
+        justify-self: stretch;
+    }
+
+    .celestial-sound-halo {
+        width: 240px;
+        height: 180px;
+    }
+
+    .celestial-music-console {
+        padding:
+            14px
+            14px
+            10px;
+
+        border-radius: 18px;
+    }
+
+    .celestial-music-heading {
+        display: none;
+    }
+
+    .celestial-now-playing {
+        margin-top: 0;
+
+        grid-template-columns:
+            40px
+            minmax(0, 1fr);
+
+        gap: 10px;
+    }
+
+    .celestial-vinyl {
+        width: 40px;
+        height: 40px;
+    }
+
+    .celestial-vinyl::before {
+        width: 15px;
+        height: 15px;
+    }
+
+    .celestial-music-console
+    .music-title {
+        font-size: 15px;
+    }
+
+    .celestial-music-controls {
+        margin-top: 11px;
+
+        grid-template-columns:
+            37px
+            minmax(0, 1fr)
+            37px;
+
+        gap: 6px;
+    }
+
+    .celestial-music-console
+    .celestial-track-button,
+    .celestial-music-console
+    .celestial-play-button {
+        height: 38px;
+        min-height: 38px;
+
+        border-radius: 11px;
+    }
+
+    .celestial-music-console
+    .celestial-track-button {
+        width: 37px;
+    }
+
+    .celestial-equalizer {
+        display: none;
+    }
+
+    .celestial-sound-settings {
+        margin-top: 8px;
+    }
+
+    .celestial-sound-settings summary {
+        min-height: 31px;
+    }
+
+    .celestial-sound-caption {
+        display: none;
+    }
+
+
+    /* -----------------------------------------------------
+       Mobile logout
+    ----------------------------------------------------- */
+
+    .celestial-logout {
+        top: 25px;
+        right: 0;
+
+        width: 35px;
+        min-height: 35px;
+
+        padding: 0;
+
+        justify-content: center;
+
+        border-radius: 50%;
+    }
+
+    .celestial-logout span:last-child {
+        display: none;
+    }
+
+    .celestial-hero-bottom-line {
+        bottom: 12px;
+
+        width: 150px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media screen and (max-width: 390px) {
+
+    .celestial-hero-container {
+        width:
+            calc(
+                100% - 22px
+            );
+    }
+
+    .celestial-brand {
+        padding-right: 28px;
+    }
+
+    .celestial-brand h1 {
+        font-size:
+            clamp(
+                52px,
+                17vw,
+                64px
+            );
+    }
+
+    .celestial-brand-description {
+        max-width: 310px;
+    }
+
+    .celestial-brand-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .celestial-primary-link,
+    .celestial-quiet-link {
+        justify-content: space-between;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+    prefers-reduced-motion:
+    reduce
+) {
+
+    .celestial-hero *,
+    .celestial-hero *::before,
+    .celestial-hero *::after {
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+    }
+}

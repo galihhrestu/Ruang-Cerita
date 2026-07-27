@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#101119"
+    >
+
+    <title>Ruang Detak — The Heartbeat</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="heartbeat.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+
+
+<body>
+
+    <main
+        id="heartbeatApp"
+        class="heartbeat-app"
+    >
+
+        <canvas
+            id="ambientCanvas"
+            class="ambient-canvas"
+            aria-hidden="true"
+        ></canvas>
+
+        <div
+            class="film-grain"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="page-vignette"
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- =====================================================
+             INTRO
+        ====================================================== -->
+        <section
+            id="introOverlay"
+            class="intro-overlay"
+        >
+
+            <div class="intro-mark">
+                <span></span>
+                <b>♥</b>
+                <span></span>
+            </div>
+
+            <p class="intro-eyebrow">
+                RUANG DETAK
+            </p>
+
+            <h1>
+                The Heartbeat
+            </h1>
+
+            <p class="intro-names">
+                Galih
+                <span>×</span>
+                Wisye
+            </p>
+
+            <p
+                id="introStatus"
+                class="intro-status"
+            >
+                Mendengarkan ritme dari hari-hari kalian...
+            </p>
+
+        </section>
+
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+        <header class="heartbeat-topbar">
+
+            <a
+                href="index.html"
+                class="glass-button back-button"
+            >
+                <span>←</span>
+                <span class="desktop-label">
+                    Ruang Cerita
+                </span>
+            </a>
+
+
+            <div class="heartbeat-brand">
+
+                <p>
+                    RUANG DETAK
+                </p>
+
+                <strong>
+                    The Heartbeat
+                </strong>
+
+                <span>
+                    Galih × Wisye
+                </span>
+
+            </div>
+
+
+            <nav class="topbar-actions">
+
+                <a
+                    href="universe.html"
+                    class="glass-button icon-button"
+                    title="Our Universe"
+                    aria-label="Buka Our Universe"
+                >
+                    ✦
+                </a>
+
+                <a
+                    href="our-story.html"
+                    class="glass-button icon-button"
+                    title="Our Story"
+                    aria-label="Buka Our Story"
+                >
+                    🎞
+                </a>
+
+                <button
+                    id="focusModeButton"
+                    type="button"
+                    class="glass-button icon-button"
+                    title="Focus Mode"
+                    aria-label="Aktifkan Focus Mode"
+                >
+                    ◉
+                </button>
+
+            </nav>
+
+        </header>
+
+
+        <!-- =====================================================
+             HERO
+        ====================================================== -->
+        <section class="heartbeat-hero">
+
+            <div class="heartbeat-hero-copy">
+
+                <p class="section-kicker">
+                    LIVING PORTRAIT
+                </p>
+
+                <h1>
+                    Two rhythms.<br>
+                    <em>One space.</em>
+                </h1>
+
+                <p class="hero-description">
+                    Sebuah karya visual hidup yang dibentuk otomatis
+                    dari Daily Check-in kalian.
+                    Tidak ada nilai benar atau salah—
+                    hanya dua ritme yang hadir di hari yang sama.
+                </p>
+
+
+                <div class="hero-mini-facts">
+
+                    <div>
+                        <span>DATE</span>
+
+                        <strong id="heroDate">
+                            —
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>STREAK</span>
+
+                        <strong id="heroStreak">
+                            —
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>STATE</span>
+
+                        <strong id="heroState">
+                            —
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="heartbeat-art-column">
+
+                <div class="date-control">
+
+                    <button
+                        id="previousDayButton"
+                        type="button"
+                        class="date-arrow"
+                        aria-label="Hari sebelumnya"
+                    >
+                        ←
+                    </button>
+
+
+                    <div class="date-display">
+
+                        <small>
+                            DAILY FINGERPRINT
+                        </small>
+
+                        <strong id="selectedDateLabel">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        id="nextDayButton"
+                        type="button"
+                        class="date-arrow"
+                        aria-label="Hari berikutnya"
+                    >
+                        →
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="heartbeatArtwork"
+                    class="heartbeat-artwork"
+                >
+
+                    <canvas
+                        id="heartbeatCanvas"
+                        aria-label="Visual generatif Ruang Detak"
+                    ></canvas>
+
+
+                    <div
+                        id="heartbeatStatus"
+                        class="heartbeat-status"
+                    >
+
+                        <small>
+                            CURRENT STATE
+                        </small>
+
+                        <strong>
+                            MENUNGGU DATA
+                        </strong>
+
+                        <span>
+                            Ruang ini sedang membentuk ritmenya.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="artwork-actions">
+
+                    <button
+                        id="randomDayButton"
+                        type="button"
+                        class="subtle-action"
+                    >
+                        ✦ Take Me Back
+                    </button>
+
+                    <a
+                        href="checkin.html"
+                        class="subtle-action"
+                    >
+                        🌙 Daily Check-in
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             DAILY DATA
+        ====================================================== -->
+        <section
+            id="dailyDetailsSection"
+            class="daily-details-section"
+        >
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="section-kicker">
+                        TODAY'S MATERIAL
+                    </p>
+
+                    <h2>
+                        The two colors behind the artwork.
+                    </h2>
+                </div>
+
+                <p id="dailyNarrative">
+                    Memuat ritme...
+                </p>
+
+            </div>
+
+
+            <div class="person-grid">
+
+                <article
+                    id="galihCard"
+                    class="person-card"
+                >
+                    <div class="person-card-heading">
+                        <span class="person-initial">
+                            G
+                        </span>
+
+                        <div>
+                            <small>RHYTHM I</small>
+                            <h3>Galih</h3>
+                        </div>
+                    </div>
+
+                    <div
+                        id="galihData"
+                        class="person-card-data"
+                    ></div>
+                </article>
+
+
+                <article
+                    id="wisyeCard"
+                    class="person-card"
+                >
+                    <div class="person-card-heading">
+                        <span class="person-initial">
+                            W
+                        </span>
+
+                        <div>
+                            <small>RHYTHM II</small>
+                            <h3>Wisye</h3>
+                        </div>
+                    </div>
+
+                    <div
+                        id="wisyeData"
+                        class="person-card-data"
+                    ></div>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PULSE ARCHIVE
+        ====================================================== -->
+        <section class="archive-section">
+
+            <div class="section-heading compact">
+
+                <div>
+                    <p class="section-kicker">
+                        PULSE ARCHIVE
+                    </p>
+
+                    <h2>
+                        Every day leaves a different signature.
+                    </h2>
+                </div>
+
+                <p>
+                    Pilih satu jejak untuk kembali ke ritme hari tersebut.
+                </p>
+
+            </div>
+
+
+            <div
+                id="archiveGrid"
+                class="archive-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- =====================================================
+             OUR RHYTHM
+        ====================================================== -->
+        <section class="our-rhythm-section">
+
+            <div class="rhythm-copy">
+
+                <p class="section-kicker">
+                    MONTHLY ARTWORK
+                </p>
+
+                <h2>
+                    Our Rhythm
+                </h2>
+
+                <p id="rhythmNarrative">
+                    Setiap hari dalam satu bulan digabung menjadi
+                    satu karya generatif yang hanya dimiliki bulan itu.
+                </p>
+
+
+                <div class="month-control">
+
+                    <button
+                        id="previousMonthButton"
+                        type="button"
+                        aria-label="Bulan sebelumnya"
+                    >
+                        ←
+                    </button>
+
+                    <div>
+                        <small>SELECTED MONTH</small>
+
+                        <strong id="selectedMonthLabel">
+                            —
+                        </strong>
+                    </div>
+
+                    <button
+                        id="nextMonthButton"
+                        type="button"
+                        aria-label="Bulan berikutnya"
+                    >
+                        →
+                    </button>
+
+                </div>
+
+
+                <div class="rhythm-stats">
+
+                    <div>
+                        <span>COMPLETE</span>
+                        <strong id="monthComplete">
+                            —
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>RESTORED</span>
+                        <strong id="monthRestored">
+                            —
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>COMMON NEED</span>
+                        <strong id="monthNeed">
+                            —
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>DAY RATING</span>
+                        <strong id="monthRating">
+                            —
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="rhythm-art-card">
+
+                <canvas
+                    id="rhythmCanvas"
+                    aria-label="Our Rhythm monthly generative artwork"
+                ></canvas>
+
+                <div class="rhythm-art-caption">
+
+                    <small>
+                        OUR RHYTHM
+                    </small>
+
+                    <strong id="rhythmCaptionMonth">
+                        —
+                    </strong>
+
+                    <span>
+                        Galih × Wisye
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PHILOSOPHY
+        ====================================================== -->
+        <section class="heartbeat-epilogue">
+
+            <span>♥</span>
+
+            <blockquote>
+                “Tidak semua hari harus memiliki ritme yang sama.
+                Yang membuatnya berarti adalah kalian tetap punya
+                ruang untuk hadir.”
+            </blockquote>
+
+            <p>
+                RUANG DETAK · GALIH × WISYE
+            </p>
+
+        </section>
+
+
+        <!-- =====================================================
+             MUSIC
+        ====================================================== -->
+        <aside class="heartbeat-music">
+
+            <div class="heartbeat-music-copy">
+
+                <span class="music-bars" aria-hidden="true">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </span>
+
+                <div>
+                    <small>SOUNDSCAPE</small>
+
+                    <strong id="musicTitle">
+                        Memuat lagu...
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="heartbeat-music-controls">
+
+                <button
+                    id="prevMusic"
+                    type="button"
+                    aria-label="Lagu sebelumnya"
+                >
+                    ‹
+                </button>
+
+                <button
+                    id="musicToggle"
+                    type="button"
+                    class="music-play"
+                    aria-label="Putar atau jeda musik"
+                >
+                    <span id="musicIcon">▶</span>
+
+                    <span
+                        id="musicText"
+                        class="visually-hidden"
+                    >
+                        Putar
+                    </span>
+                </button>
+
+                <button
+                    id="nextMusic"
+                    type="button"
+                    aria-label="Lagu berikutnya"
+                >
+                    ›
+                </button>
+
+                <details class="music-more">
+
+                    <summary
+                        title="Pengaturan musik"
+                        aria-label="Pengaturan musik"
+                    >
+                        ⋯
+                    </summary>
+
+                    <div class="music-more-panel">
+
+                        <label>
+                            <span>Lagu</span>
+
+                            <select
+                                id="musicSelect"
+                                aria-label="Pilih lagu"
+                            ></select>
+                        </label>
+
+                        <label>
+                            <span>Volume</span>
+
+                            <input
+                                id="musicVolume"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.05"
+                                value="0.35"
+                                aria-label="Volume musik"
+                            >
+                        </label>
+
+                    </div>
+
+                </details>
+
+            </div>
+
+        </aside>
+
+
+        <audio
+            id="backgroundMusic"
+            preload="metadata"
+        ></audio>
+
+
+        <!-- =====================================================
+             FOCUS MODE
+        ====================================================== -->
+        <div
+            id="focusOverlay"
+            class="focus-overlay"
+            hidden
+        >
+
+            <button
+                id="closeFocusButton"
+                type="button"
+                class="focus-close"
+            >
+                ×
+            </button>
+
+            <p class="focus-kicker">
+                RUANG DETAK
+            </p>
+
+            <canvas
+                id="focusCanvas"
+                aria-label="Ruang Detak Focus Mode"
+            ></canvas>
+
+            <div class="focus-caption">
+
+                <strong id="focusState">
+                    —
+                </strong>
+
+                <span id="focusDate">
+                    —
+                </span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="heartbeat.js"></script>
+    <script src="musik.js"></script>
+
+</body>
+
+</html>

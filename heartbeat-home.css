@@ -1,0 +1,450 @@
+/* =========================================================
+   RUANG DETAK — HOMEPAGE SIGNATURE EXPERIENCE
+========================================================= */
+
+.heartbeat-entry {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    min-height: 295px;
+
+    margin-bottom: 15px;
+    padding: 36px 38px;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(230px, 330px);
+
+    align-items: center;
+    gap: 36px;
+
+    border:
+        1px solid
+        rgba(103, 75, 109, 0.18);
+
+    border-radius: 28px;
+
+    color: #fff8ef;
+    text-decoration: none;
+
+    background:
+        radial-gradient(
+            circle at 83% 48%,
+            rgba(213, 118, 151, 0.20),
+            transparent 26%
+        ),
+        radial-gradient(
+            circle at 15% 18%,
+            rgba(120, 137, 167, 0.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            #151523,
+            #1b1724 54%,
+            #211824
+        );
+
+    box-shadow:
+        0 28px 70px
+        rgba(47, 38, 55, 0.22);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.heartbeat-entry:hover {
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(239, 195, 208, 0.25);
+
+    box-shadow:
+        0 35px 82px
+        rgba(47, 38, 55, 0.30);
+}
+
+.heartbeat-entry-copy {
+    position: relative;
+    z-index: 4;
+
+    width:
+        min(
+            600px,
+            100%
+        );
+}
+
+.heartbeat-entry-kicker {
+    margin: 0 0 7px;
+
+    color: #df91a9;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.20em;
+}
+
+.heartbeat-entry h2 {
+    margin: 0;
+
+    color: #fff8ef;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            44px,
+            6vw,
+            64px
+        );
+
+    font-weight: 600;
+
+    line-height: 0.95;
+    letter-spacing: -2.2px;
+}
+
+.heartbeat-entry-subtitle {
+    margin:
+        10px
+        0
+        0;
+
+    color: #efc3d0;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 14px;
+    font-style: italic;
+}
+
+.heartbeat-entry-description {
+    width:
+        min(
+            570px,
+            100%
+        );
+
+    margin:
+        15px
+        0
+        0;
+
+    color:
+        rgba(255, 248, 239, 0.59);
+
+    font-size: 11px;
+    line-height: 1.75;
+}
+
+.heartbeat-entry-meta {
+    margin-top: 20px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.heartbeat-entry-meta span {
+    padding:
+        6px
+        9px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 999px;
+
+    color:
+        rgba(255, 248, 239, 0.70);
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.heartbeat-entry-cta {
+    margin-top: 21px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #efc3d0;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.heartbeat-entry-art {
+    position: relative;
+    z-index: 3;
+
+    min-height: 220px;
+
+    display: grid;
+    place-items: center;
+}
+
+.heartbeat-entry-orb {
+    position: relative;
+
+    width:
+        min(
+            205px,
+            70vw
+        );
+
+    aspect-ratio: 1;
+
+    border:
+        1px solid
+        rgba(239, 195, 208, 0.16);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 43% 40%,
+            rgba(255, 240, 235, 0.90) 0%,
+            rgba(213, 118, 151, 0.60) 8%,
+            rgba(213, 118, 151, 0.18) 22%,
+            transparent 51%
+        );
+
+    box-shadow:
+        0 0 38px
+        rgba(213, 118, 151, 0.17),
+        inset
+        0 0 50px
+        rgba(255, 255, 255, 0.02);
+
+    animation:
+        heartbeat-home-breathe
+        2.8s ease-in-out
+        infinite;
+}
+
+.heartbeat-entry-orb::before,
+.heartbeat-entry-orb::after {
+    content: "";
+
+    position: absolute;
+
+    border:
+        1px solid
+        rgba(239, 195, 208, 0.13);
+
+    border-radius: 50%;
+}
+
+.heartbeat-entry-orb::before {
+    inset: 19% -13%;
+
+    transform:
+        rotate(24deg);
+
+    animation:
+        heartbeat-home-orbit
+        10s linear
+        infinite;
+}
+
+.heartbeat-entry-orb::after {
+    inset: -11% 24%;
+
+    border-color:
+        rgba(191, 208, 200, 0.11);
+
+    transform:
+        rotate(-30deg);
+
+    animation:
+        heartbeat-home-orbit-reverse
+        13s linear
+        infinite;
+}
+
+.heartbeat-entry-core {
+    position: absolute;
+    inset: 0;
+
+    display: grid;
+    place-items: center;
+
+    color: #fff5ef;
+
+    font-size: 25px;
+
+    text-shadow:
+        0 0 23px
+        rgba(255, 235, 229, 0.72);
+}
+
+.heartbeat-entry-particle {
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: #efc3d0;
+
+    box-shadow:
+        0 0 13px
+        rgba(239, 195, 208, 0.65);
+
+    animation:
+        heartbeat-home-particle
+        3.6s ease-in-out
+        infinite;
+}
+
+.hb-p1 {
+    left: 12%;
+    top: 27%;
+}
+
+.hb-p2 {
+    right: 6%;
+    top: 37%;
+
+    animation-delay:
+        0.7s;
+}
+
+.hb-p3 {
+    right: 23%;
+    bottom: 10%;
+
+    animation-delay:
+        1.4s;
+}
+
+.hb-p4 {
+    left: 21%;
+    bottom: 18%;
+
+    animation-delay:
+        2.1s;
+}
+
+@keyframes heartbeat-home-breathe {
+    0%,
+    100% {
+        transform:
+            scale(0.96);
+
+        box-shadow:
+            0 0 32px
+            rgba(213, 118, 151, 0.13);
+    }
+
+    50% {
+        transform:
+            scale(1.035);
+
+        box-shadow:
+            0 0 58px
+            rgba(213, 118, 151, 0.25);
+    }
+}
+
+@keyframes heartbeat-home-orbit {
+    to {
+        transform:
+            rotate(384deg);
+    }
+}
+
+@keyframes heartbeat-home-orbit-reverse {
+    to {
+        transform:
+            rotate(-390deg);
+    }
+}
+
+@keyframes heartbeat-home-particle {
+    0%,
+    100% {
+        opacity: 0.27;
+        transform:
+            scale(0.7);
+    }
+
+    50% {
+        opacity: 1;
+        transform:
+            scale(1.25);
+    }
+}
+
+
+@media screen and (max-width: 700px) {
+
+    .heartbeat-entry {
+        min-height: 390px;
+
+        padding:
+            28px
+            22px;
+
+        grid-template-columns:
+            1fr;
+
+        gap: 16px;
+
+        border-radius: 22px;
+    }
+
+    .heartbeat-entry-art {
+        min-height: 170px;
+
+        order: -1;
+    }
+
+    .heartbeat-entry-orb {
+        width: 160px;
+    }
+
+    .heartbeat-entry h2 {
+        font-size: 47px;
+    }
+}
+
+
+@media screen and (max-width: 430px) {
+
+    .heartbeat-entry {
+        min-height: 405px;
+    }
+
+    .heartbeat-entry h2 {
+        font-size: 43px;
+    }
+
+    .heartbeat-entry-description {
+        font-size: 10px;
+    }
+
+    .heartbeat-entry-orb {
+        width: 145px;
+    }
+}

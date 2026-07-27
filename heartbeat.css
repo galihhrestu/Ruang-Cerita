@@ -1,0 +1,2358 @@
+/* =========================================================
+   RUANG CERITA — RUANG DETAK / THE HEARTBEAT V1
+========================================================= */
+
+:root {
+    --night: #101119;
+    --night-2: #151621;
+    --night-3: #1d1924;
+
+    --ivory: #fff8ef;
+    --ivory-soft: #eadfd6;
+    --muted: rgba(255, 248, 239, 0.62);
+    --muted-2: rgba(255, 248, 239, 0.36);
+
+    --rose: #d57a98;
+    --rose-soft: #efc2d0;
+    --rose-deep: #a64f68;
+
+    --sage: #9fb4a7;
+    --sage-soft: #cbd9d0;
+
+    --gold: #d7ad7a;
+
+    --line: rgba(255, 248, 239, 0.10);
+
+    --glass:
+        rgba(29, 23, 31, 0.56);
+
+    --glass-strong:
+        rgba(24, 20, 27, 0.82);
+
+    --shadow:
+        0 26px 85px
+        rgba(0, 0, 0, 0.34);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    background: var(--night);
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    color: var(--ivory);
+
+    background:
+        var(--night);
+
+    font-family:
+        "DM Sans",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+body.focus-active {
+    overflow: hidden;
+}
+
+button,
+select,
+input {
+    font: inherit;
+}
+
+button,
+a {
+    color: inherit;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+
+/* =========================================================
+   AMBIENT BACKGROUND
+========================================================= */
+
+.heartbeat-app {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 17% 8%,
+            rgba(111, 89, 142, 0.13),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 84% 20%,
+            rgba(213, 122, 152, 0.11),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 52% 76%,
+            rgba(117, 145, 131, 0.08),
+            transparent 31%
+        ),
+        linear-gradient(
+            180deg,
+            #0e1018 0%,
+            #12131c 42%,
+            #17131b 100%
+        );
+}
+
+.ambient-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+}
+
+.film-grain {
+    position: fixed;
+    inset: -30%;
+    z-index: 2;
+
+    opacity: 0.055;
+
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.20) 0 0.6px,
+            transparent 0.8px
+        );
+
+    background-size:
+        4px 4px;
+
+    animation:
+        grain-drift
+        0.34s steps(2)
+        infinite;
+}
+
+@keyframes grain-drift {
+    0% {
+        transform:
+            translate(-1%, 0.5%);
+    }
+
+    50% {
+        transform:
+            translate(0.7%, -0.8%);
+    }
+
+    100% {
+        transform:
+            translate(-0.4%, 1%);
+    }
+}
+
+.page-vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 40%,
+            rgba(0, 0, 0, 0.17) 71%,
+            rgba(0, 0, 0, 0.43) 100%
+        );
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(63, 41, 56, 0.85),
+            rgba(17, 17, 25, 0.98) 48%,
+            #0e0f16 100%
+        );
+
+    transition:
+        opacity 0.9s ease,
+        visibility 0.9s ease;
+}
+
+.intro-overlay.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.intro-mark {
+    width: 160px;
+
+    display: grid;
+    grid-template-columns:
+        1fr auto 1fr;
+
+    align-items: center;
+    gap: 11px;
+
+    color: var(--rose-soft);
+}
+
+.intro-mark span {
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(239, 194, 208, 0.40)
+        );
+}
+
+.intro-mark span:last-child {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(239, 194, 208, 0.40),
+            transparent
+        );
+}
+
+.intro-mark b {
+    font-size: 20px;
+
+    animation:
+        intro-heart
+        1.7s ease-in-out
+        infinite;
+}
+
+@keyframes intro-heart {
+    0%,
+    100% {
+        transform: scale(0.88);
+        opacity: 0.55;
+    }
+
+    50% {
+        transform: scale(1.12);
+        opacity: 1;
+    }
+}
+
+.intro-eyebrow {
+    margin: 22px 0 0;
+
+    color: var(--rose);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.24em;
+}
+
+.intro-overlay h1 {
+    margin: 7px 0 0;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            54px,
+            10vw,
+            96px
+        );
+
+    font-weight: 500;
+
+    line-height: 0.95;
+    letter-spacing: -4px;
+}
+
+.intro-names {
+    margin: 18px 0 0;
+
+    color: var(--ivory-soft);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 16px;
+
+    letter-spacing: 0.11em;
+}
+
+.intro-names span {
+    margin: 0 9px;
+
+    color: var(--rose);
+}
+
+.intro-status {
+    margin: 22px 0 0;
+
+    color: var(--muted-2);
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   COMMON
+========================================================= */
+
+.glass-button {
+    min-height: 43px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 0 13px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 14px;
+
+    color: var(--ivory-soft);
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.16);
+
+    backdrop-filter:
+        blur(16px);
+
+    -webkit-backdrop-filter:
+        blur(16px);
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+}
+
+.glass-button:hover {
+    transform: translateY(-1px);
+
+    border-color:
+        rgba(239, 194, 208, 0.22);
+
+    background:
+        rgba(255, 255, 255, 0.055);
+}
+
+.icon-button {
+    width: 43px;
+    height: 43px;
+
+    padding: 0;
+
+    font-size: 15px;
+}
+
+.section-kicker {
+    margin: 0;
+
+    color: var(--rose);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.22em;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.heartbeat-topbar {
+    position: relative;
+    z-index: 50;
+
+    width:
+        min(
+            1420px,
+            calc(100% - 32px)
+        );
+
+    min-height: 78px;
+
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+    align-items: center;
+    gap: 16px;
+}
+
+.back-button {
+    justify-self: start;
+}
+
+.heartbeat-brand {
+    text-align: center;
+}
+
+.heartbeat-brand p {
+    margin: 0;
+
+    color: var(--rose);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: 0.20em;
+}
+
+.heartbeat-brand strong {
+    display: block;
+
+    margin-top: 2px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.heartbeat-brand > span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--muted-2);
+
+    font-size: 7px;
+}
+
+.topbar-actions {
+    justify-self: end;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.heartbeat-hero {
+    position: relative;
+    z-index: 10;
+
+    width:
+        min(
+            1280px,
+            calc(100% - 34px)
+        );
+
+    min-height:
+        calc(
+            100vh - 100px
+        );
+
+    margin: 0 auto;
+
+    padding:
+        44px
+        0
+        70px;
+
+    display: grid;
+    grid-template-columns:
+        minmax(300px, 0.75fr)
+        minmax(500px, 1.25fr);
+
+    align-items: center;
+    gap: clamp(30px, 6vw, 90px);
+}
+
+.heartbeat-hero-copy {
+    align-self: center;
+}
+
+.heartbeat-hero-copy h1 {
+    margin:
+        10px
+        0
+        0;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            52px,
+            6.7vw,
+            86px
+        );
+
+    font-weight: 500;
+
+    line-height: 0.98;
+    letter-spacing: -3.6px;
+}
+
+.heartbeat-hero-copy h1 em {
+    color: var(--rose-soft);
+
+    font-weight: 500;
+}
+
+.hero-description {
+    width:
+        min(
+            510px,
+            100%
+        );
+
+    margin:
+        22px
+        0
+        0;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.hero-mini-facts {
+    margin-top: 28px;
+
+    display: grid;
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 7px;
+}
+
+.hero-mini-facts > div {
+    min-height: 78px;
+
+    padding:
+        13px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.07);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.hero-mini-facts span,
+.hero-mini-facts strong {
+    display: block;
+}
+
+.hero-mini-facts span {
+    color: var(--muted-2);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+.hero-mini-facts strong {
+    margin-top: 4px;
+
+    color: var(--ivory-soft);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   HEARTBEAT ART
+========================================================= */
+
+.heartbeat-art-column {
+    min-width: 0;
+}
+
+.date-control {
+    width:
+        min(
+            590px,
+            100%
+        );
+
+    margin:
+        0
+        auto
+        12px;
+
+    display: grid;
+    grid-template-columns:
+        42px
+        1fr
+        42px;
+
+    align-items: center;
+    gap: 7px;
+}
+
+.date-arrow,
+.month-control button {
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 13px;
+
+    color: var(--ivory-soft);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    cursor: pointer;
+}
+
+.date-arrow:disabled,
+.month-control button:disabled {
+    opacity: 0.25;
+
+    cursor: default;
+}
+
+.date-display {
+    text-align: center;
+}
+
+.date-display small,
+.date-display strong {
+    display: block;
+}
+
+.date-display small {
+    color: var(--muted-2);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.17em;
+}
+
+.date-display strong {
+    margin-top: 3px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.heartbeat-artwork {
+    position: relative;
+
+    width:
+        min(
+            620px,
+            100%
+        );
+
+    aspect-ratio: 1;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(239, 194, 208, 0.13);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(61, 41, 54, 0.28),
+            rgba(26, 23, 31, 0.22) 48%,
+            rgba(15, 16, 24, 0.55) 72%,
+            rgba(13, 14, 22, 0.80) 100%
+        );
+
+    box-shadow:
+        0 0 80px
+        rgba(213, 122, 152, 0.10),
+        inset
+        0 0 80px
+        rgba(255, 255, 255, 0.02);
+}
+
+.heartbeat-artwork::before,
+.heartbeat-artwork::after {
+    content: "";
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.heartbeat-artwork::before {
+    inset: 7%;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.035);
+}
+
+.heartbeat-artwork::after {
+    inset: 17%;
+
+    border:
+        1px dashed
+        rgba(255, 248, 239, 0.025);
+}
+
+#heartbeatCanvas,
+#rhythmCanvas,
+#focusCanvas {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+}
+
+.heartbeat-status {
+    position: absolute;
+
+    left: 50%;
+    bottom: 12%;
+
+    width:
+        min(
+            270px,
+            68%
+        );
+
+    padding:
+        10px
+        13px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 14px;
+
+    background:
+        rgba(15, 15, 23, 0.53);
+
+    backdrop-filter:
+        blur(15px);
+
+    transform:
+        translateX(-50%);
+
+    text-align: center;
+
+    pointer-events: none;
+}
+
+.heartbeat-status small,
+.heartbeat-status strong,
+.heartbeat-status span {
+    display: block;
+}
+
+.heartbeat-status small {
+    color: var(--muted-2);
+
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.15em;
+}
+
+.heartbeat-status strong {
+    margin-top: 3px;
+
+    color: var(--rose-soft);
+
+    font-size: 9px;
+
+    letter-spacing: 0.06em;
+}
+
+.heartbeat-status span {
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 7px;
+    line-height: 1.45;
+}
+
+.artwork-actions {
+    margin-top: 13px;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.subtle-action {
+    min-height: 39px;
+
+    padding:
+        0
+        12px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 12px;
+
+    color: var(--muted);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.daily-details-section,
+.archive-section,
+.our-rhythm-section,
+.heartbeat-epilogue {
+    position: relative;
+    z-index: 10;
+
+    width:
+        min(
+            1180px,
+            calc(100% - 34px)
+        );
+
+    margin:
+        0 auto
+        70px;
+}
+
+.daily-details-section,
+.archive-section {
+    padding:
+        27px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(39, 31, 41, 0.47),
+            rgba(19, 18, 26, 0.47)
+        );
+
+    box-shadow:
+        var(--shadow);
+
+    backdrop-filter:
+        blur(17px);
+}
+
+.section-heading {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(240px, 0.72fr);
+
+    align-items: end;
+    gap: 28px;
+}
+
+.section-heading h2 {
+    margin:
+        5px
+        0
+        0;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            29px,
+            4vw,
+            43px
+        );
+
+    font-weight: 500;
+
+    line-height: 1.1;
+}
+
+.section-heading > p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.section-heading.compact {
+    align-items: center;
+}
+
+
+/* =========================================================
+   PERSON CARDS
+========================================================= */
+
+.person-grid {
+    margin-top: 24px;
+
+    display: grid;
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 9px;
+}
+
+.person-card {
+    min-height: 220px;
+
+    padding:
+        20px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.07);
+
+    border-radius: 19px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.person-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.person-initial {
+    width: 39px;
+    height: 39px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    color: var(--ivory);
+
+    background:
+        rgba(213, 122, 152, 0.12);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 15px;
+}
+
+#wisyeCard
+.person-initial {
+    background:
+        rgba(159, 180, 167, 0.12);
+}
+
+.person-card-heading small {
+    display: block;
+
+    color: var(--muted-2);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+.person-card-heading h3 {
+    margin:
+        2px
+        0
+        0;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.person-card-data {
+    margin-top: 21px;
+
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            1fr
+        );
+
+    gap: 7px;
+}
+
+.person-data-item {
+    min-height: 69px;
+
+    padding:
+        11px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.055);
+
+    border-radius: 13px;
+
+    background:
+        rgba(255, 255, 255, 0.02);
+}
+
+.person-data-item span,
+.person-data-item strong {
+    display: block;
+}
+
+.person-data-item span {
+    color: var(--muted-2);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.11em;
+}
+
+.person-data-item strong {
+    margin-top: 4px;
+
+    color: var(--ivory-soft);
+
+    font-size: 10px;
+}
+
+.person-empty {
+    grid-column: 1 / -1;
+
+    min-height: 100px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--muted-2);
+
+    border:
+        1px dashed
+        rgba(255, 248, 239, 0.07);
+
+    border-radius: 14px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   ARCHIVE
+========================================================= */
+
+.archive-grid {
+    margin-top: 22px;
+
+    display: grid;
+    grid-template-columns:
+        repeat(
+            6,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap: 7px;
+}
+
+.archive-card {
+    min-width: 0;
+
+    padding:
+        10px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.06);
+
+    border-radius: 16px;
+
+    color: inherit;
+
+    background:
+        rgba(255, 255, 255, 0.02);
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+}
+
+.archive-card:hover,
+.archive-card.active {
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(213, 122, 152, 0.24);
+
+    background:
+        rgba(213, 122, 152, 0.055);
+}
+
+.archive-card canvas {
+    width: 100%;
+    aspect-ratio: 1;
+
+    display: block;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(51, 38, 49, 0.35),
+            rgba(15, 15, 23, 0.50)
+        );
+}
+
+.archive-card-date {
+    margin-top: 9px;
+
+    display: block;
+
+    color: var(--ivory-soft);
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.archive-card-state {
+    display: block;
+
+    margin-top: 2px;
+
+    overflow: hidden;
+
+    color: var(--muted-2);
+
+    font-size: 6px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   OUR RHYTHM
+========================================================= */
+
+.our-rhythm-section {
+    display: grid;
+    grid-template-columns:
+        minmax(280px, 0.78fr)
+        minmax(500px, 1.22fr);
+
+    align-items: center;
+    gap:
+        clamp(
+            32px,
+            6vw,
+            80px
+        );
+}
+
+.rhythm-copy h2 {
+    margin:
+        6px
+        0
+        0;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            48px,
+            6.5vw,
+            76px
+        );
+
+    font-weight: 500;
+
+    line-height: 1;
+    letter-spacing: -3px;
+}
+
+.rhythm-copy > p:not(.section-kicker) {
+    margin:
+        18px
+        0
+        0;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    line-height: 1.75;
+}
+
+.month-control {
+    margin-top: 23px;
+
+    display: grid;
+    grid-template-columns:
+        42px
+        minmax(0, 1fr)
+        42px;
+
+    align-items: center;
+    gap: 7px;
+}
+
+.month-control > div {
+    min-height: 57px;
+
+    padding:
+        8px
+        12px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.07);
+
+    border-radius: 13px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.month-control small {
+    color: var(--muted-2);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.11em;
+}
+
+.month-control strong {
+    margin-top: 2px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.rhythm-stats {
+    margin-top: 12px;
+
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            1fr
+        );
+
+    gap: 6px;
+}
+
+.rhythm-stats > div {
+    min-height: 70px;
+
+    padding:
+        11px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.055);
+
+    border-radius: 13px;
+
+    background:
+        rgba(255, 255, 255, 0.02);
+}
+
+.rhythm-stats span {
+    color: var(--muted-2);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.11em;
+}
+
+.rhythm-stats strong {
+    margin-top: 4px;
+
+    color: var(--ivory-soft);
+
+    font-size: 10px;
+}
+
+.rhythm-art-card {
+    position: relative;
+
+    width:
+        min(
+            650px,
+            100%
+        );
+
+    aspect-ratio: 1;
+
+    justify-self: end;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(159, 180, 167, 0.13);
+
+    border-radius: 28px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(39, 45, 45, 0.23),
+            rgba(20, 18, 27, 0.66)
+        );
+
+    box-shadow:
+        var(--shadow);
+}
+
+.rhythm-art-card::before {
+    content: "";
+
+    position: absolute;
+    inset: 6%;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.035);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.rhythm-art-caption {
+    position: absolute;
+
+    left: 50%;
+    bottom: 7%;
+
+    min-width: 180px;
+
+    padding:
+        9px
+        14px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 13px;
+
+    background:
+        rgba(15, 15, 23, 0.50);
+
+    backdrop-filter:
+        blur(15px);
+
+    transform:
+        translateX(-50%);
+
+    text-align: center;
+}
+
+.rhythm-art-caption small,
+.rhythm-art-caption strong,
+.rhythm-art-caption span {
+    display: block;
+}
+
+.rhythm-art-caption small {
+    color: var(--muted-2);
+
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+.rhythm-art-caption strong {
+    margin-top: 2px;
+
+    color: var(--sage-soft);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.rhythm-art-caption span {
+    margin-top: 2px;
+
+    color: var(--muted-2);
+
+    font-size: 6px;
+}
+
+
+/* =========================================================
+   EPILOGUE
+========================================================= */
+
+.heartbeat-epilogue {
+    padding:
+        45px
+        25px;
+
+    text-align: center;
+}
+
+.heartbeat-epilogue > span {
+    color: var(--rose-soft);
+
+    font-size: 20px;
+}
+
+.heartbeat-epilogue blockquote {
+    width:
+        min(
+            650px,
+            100%
+        );
+
+    margin:
+        16px
+        auto
+        0;
+
+    color: var(--ivory-soft);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            20px,
+            3vw,
+            30px
+        );
+
+    font-style: italic;
+
+    line-height: 1.5;
+}
+
+.heartbeat-epilogue p {
+    margin:
+        18px
+        0
+        0;
+
+    color: var(--muted-2);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+.heartbeat-music {
+    position: fixed;
+
+    z-index: 70;
+
+    left: 18px;
+    bottom: 18px;
+
+    max-width:
+        min(
+            420px,
+            calc(
+                100vw - 36px
+            )
+        );
+
+    min-height: 48px;
+
+    padding:
+        6px
+        7px
+        6px
+        11px;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 15px;
+
+    background:
+        rgba(17, 17, 25, 0.66);
+
+    box-shadow:
+        0 16px 45px
+        rgba(0, 0, 0, 0.28);
+
+    backdrop-filter:
+        blur(18px);
+}
+
+.heartbeat-music-copy {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.heartbeat-music-copy small,
+.heartbeat-music-copy strong {
+    display: block;
+}
+
+.heartbeat-music-copy small {
+    color: var(--muted-2);
+
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.13em;
+}
+
+.heartbeat-music-copy strong {
+    max-width: 160px;
+
+    margin-top: 2px;
+
+    overflow: hidden;
+
+    color: var(--ivory-soft);
+
+    font-size: 7px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.music-bars {
+    height: 18px;
+
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.music-bars i {
+    width: 2px;
+
+    border-radius: 99px;
+
+    background: var(--rose-soft);
+
+    animation:
+        music-bars
+        0.9s ease-in-out
+        infinite;
+}
+
+.music-bars i:nth-child(1) {
+    height: 6px;
+}
+
+.music-bars i:nth-child(2) {
+    height: 13px;
+
+    animation-delay: 0.16s;
+}
+
+.music-bars i:nth-child(3) {
+    height: 8px;
+
+    animation-delay: 0.30s;
+}
+
+@keyframes music-bars {
+    0%,
+    100% {
+        transform:
+            scaleY(0.5);
+        opacity: 0.4;
+    }
+
+    50% {
+        transform:
+            scaleY(1);
+        opacity: 1;
+    }
+}
+
+.heartbeat-music-controls {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.heartbeat-music-controls > button,
+.music-more summary {
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 9px;
+
+    color: var(--ivory-soft);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    cursor: pointer;
+
+    list-style: none;
+}
+
+.heartbeat-music-controls
+.music-play {
+    border-radius: 50%;
+
+    color: #2a1c22;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f1ced9,
+            #d57a98
+        );
+
+    font-size: 8px;
+}
+
+.music-more {
+    position: relative;
+}
+
+.music-more summary::-webkit-details-marker {
+    display: none;
+}
+
+.music-more-panel {
+    position: absolute;
+
+    left: 0;
+    bottom:
+        calc(
+            100% + 11px
+        );
+
+    width: 250px;
+
+    padding: 13px;
+
+    display: grid;
+    gap: 11px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.09);
+
+    border-radius: 14px;
+
+    background:
+        rgba(22, 20, 28, 0.96);
+
+    box-shadow:
+        0 18px 50px
+        rgba(0, 0, 0, 0.36);
+}
+
+.music-more-panel label {
+    display: grid;
+    gap: 5px;
+}
+
+.music-more-panel label > span {
+    color: var(--muted-2);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.10em;
+}
+
+.music-more-panel select {
+    width: 100%;
+
+    padding:
+        8px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 9px;
+
+    color: var(--ivory-soft);
+
+    background:
+        #1a1821;
+
+    outline: none;
+
+    font-size: 8px;
+}
+
+.music-more-panel input {
+    width: 100%;
+
+    accent-color:
+        var(--rose);
+}
+
+
+/* =========================================================
+   FOCUS MODE
+========================================================= */
+
+.focus-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+
+    display: grid;
+    place-items: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #211924 0%,
+            #11121a 57%,
+            #0b0c12 100%
+        );
+}
+
+.focus-overlay::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 42%,
+            rgba(0, 0, 0, 0.45) 100%
+        );
+}
+
+#focusCanvas {
+    position: relative;
+    z-index: 2;
+
+    width:
+        min(
+            80vw,
+            820px
+        );
+
+    aspect-ratio: 1;
+}
+
+.focus-close {
+    position: absolute;
+
+    top: 20px;
+    right: 20px;
+    z-index: 5;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    border-radius: 50%;
+
+    color: var(--muted);
+
+    background:
+        rgba(255, 255, 255, 0.03);
+
+    font-size: 18px;
+}
+
+.focus-kicker {
+    position: absolute;
+
+    top: 22px;
+    left: 50%;
+    z-index: 4;
+
+    margin: 0;
+
+    color: var(--rose);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: 0.20em;
+
+    transform:
+        translateX(-50%);
+}
+
+.focus-caption {
+    position: absolute;
+
+    left: 50%;
+    bottom: 6%;
+    z-index: 5;
+
+    text-align: center;
+
+    transform:
+        translateX(-50%);
+}
+
+.focus-caption strong,
+.focus-caption span {
+    display: block;
+}
+
+.focus-caption strong {
+    color: var(--rose-soft);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.focus-caption span {
+    margin-top: 4px;
+
+    color: var(--muted-2);
+
+    font-size: 7px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 980px) {
+
+    .heartbeat-hero {
+        grid-template-columns: 1fr;
+
+        min-height: 0;
+
+        padding-top: 25px;
+    }
+
+    .heartbeat-hero-copy {
+        width:
+            min(
+                720px,
+                100%
+            );
+
+        text-align: center;
+
+        justify-self: center;
+    }
+
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .heartbeat-art-column {
+        width:
+            min(
+                670px,
+                100%
+            );
+
+        justify-self: center;
+    }
+
+    .our-rhythm-section {
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+    }
+
+    .rhythm-copy {
+        width:
+            min(
+                650px,
+                100%
+            );
+
+        text-align: center;
+
+        justify-self: center;
+    }
+
+    .rhythm-art-card {
+        justify-self: center;
+    }
+
+    .archive-grid {
+        grid-template-columns:
+            repeat(
+                4,
+                1fr
+            );
+    }
+}
+
+
+@media (max-width: 720px) {
+
+    .heartbeat-topbar {
+        width:
+            calc(
+                100% - 20px
+            );
+
+        min-height: 68px;
+
+        grid-template-columns:
+            42px
+            1fr
+            auto;
+    }
+
+    .back-button {
+        width: 42px;
+
+        padding: 0;
+    }
+
+    .desktop-label {
+        display: none;
+    }
+
+    .heartbeat-brand strong {
+        font-size: 17px;
+    }
+
+    .heartbeat-brand > span {
+        display: none;
+    }
+
+    .topbar-actions {
+        gap: 4px;
+    }
+
+    .topbar-actions
+    .icon-button {
+        width: 37px;
+        height: 37px;
+        min-height: 37px;
+
+        border-radius: 11px;
+
+        font-size: 13px;
+    }
+
+    .heartbeat-hero {
+        width:
+            calc(
+                100% - 20px
+            );
+
+        padding:
+            23px
+            0
+            52px;
+    }
+
+    .heartbeat-hero-copy h1 {
+        font-size: 50px;
+
+        letter-spacing: -2.5px;
+    }
+
+    .hero-description {
+        font-size: 10px;
+    }
+
+    .hero-mini-facts {
+        gap: 5px;
+    }
+
+    .hero-mini-facts > div {
+        min-height: 68px;
+
+        padding: 9px;
+    }
+
+    .heartbeat-artwork {
+        width:
+            min(
+                94vw,
+                570px
+            );
+    }
+
+    .heartbeat-status {
+        bottom: 9%;
+    }
+
+    .daily-details-section,
+    .archive-section,
+    .our-rhythm-section,
+    .heartbeat-epilogue {
+        width:
+            calc(
+                100% - 20px
+            );
+
+        margin-bottom: 48px;
+    }
+
+    .daily-details-section,
+    .archive-section {
+        padding: 19px;
+
+        border-radius: 20px;
+    }
+
+    .section-heading {
+        grid-template-columns: 1fr;
+
+        gap: 9px;
+    }
+
+    .section-heading > p {
+        font-size: 9px;
+    }
+
+    .person-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .archive-grid {
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+    }
+
+    .our-rhythm-section {
+        padding-top: 10px;
+    }
+
+    .rhythm-copy h2 {
+        font-size: 54px;
+    }
+
+    .heartbeat-music {
+        left: 10px;
+        bottom: 10px;
+
+        max-width:
+            calc(
+                100vw - 20px
+            );
+    }
+}
+
+
+@media (max-width: 460px) {
+
+    .heartbeat-brand p {
+        font-size: 6px;
+    }
+
+    .heartbeat-brand strong {
+        font-size: 15px;
+    }
+
+    .topbar-actions
+    a:first-child {
+        display: none;
+    }
+
+    .heartbeat-hero-copy h1 {
+        font-size: 43px;
+    }
+
+    .hero-mini-facts {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-mini-facts > div {
+        min-height: 55px;
+    }
+
+    .date-control {
+        grid-template-columns:
+            38px
+            1fr
+            38px;
+    }
+
+    .date-arrow,
+    .month-control button {
+        width: 38px;
+        height: 38px;
+    }
+
+    .heartbeat-status {
+        width: 72%;
+    }
+
+    .person-card-data {
+        grid-template-columns: 1fr;
+    }
+
+    .archive-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+    }
+
+    .rhythm-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .heartbeat-music-copy {
+        display: none;
+    }
+
+    .heartbeat-music {
+        padding: 5px;
+    }
+
+    .music-more-panel {
+        left: auto;
+        right: 0;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+    prefers-reduced-motion:
+    reduce
+) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration:
+            0.01ms
+            !important;
+
+        animation-iteration-count:
+            1
+            !important;
+
+        transition-duration:
+            0.01ms
+            !important;
+
+        scroll-behavior:
+            auto
+            !important;
+    }
+}

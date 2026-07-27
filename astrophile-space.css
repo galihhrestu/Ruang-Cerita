@@ -1503,3 +1503,202 @@ a {
         display: none;
     }
 }
+
+
+/* =========================================================
+   V4.2 — CLEAN SKY
+   The Living Sky counter panel is intentionally removed.
+========================================================= */
+
+.astrophile-living-panel {
+    display: none !important;
+}
+
+
+/* =========================================================
+   V4.2 — PHONE LANDSCAPE POLISH
+   A landscape phone must still feel cinematic and spacious.
+========================================================= */
+
+@media (
+    orientation: landscape
+) and (
+    pointer: coarse
+) {
+
+    .astrophile-experience-copy {
+        left:
+            max(
+                24px,
+                env(safe-area-inset-left)
+            );
+
+        top:
+            clamp(
+                92px,
+                19vh,
+                118px
+            );
+
+        max-width:
+            min(
+                43vw,
+                520px
+            );
+    }
+
+
+    .astrophile-experience-copy > p {
+        font-size: 5px;
+        letter-spacing: 0.16em;
+    }
+
+
+    .astrophile-experience-copy h1 {
+        margin-top: 5px;
+
+        font-size:
+            clamp(
+                48px,
+                7.7vw,
+                76px
+            );
+
+        line-height: 0.87;
+        letter-spacing: -3.7px;
+    }
+
+
+    .astrophile-experience-copy h1 span {
+        margin-left:
+            clamp(
+                25px,
+                3vw,
+                44px
+            );
+    }
+
+
+    .astrophile-experience-copy em {
+        margin-top: 9px;
+
+        font-size: 11px;
+    }
+
+
+    /*
+     * Keep the hint tiny and far from the main title.
+     */
+    .astrophile-interaction-hint {
+        left: auto;
+        right:
+            max(
+                22px,
+                env(safe-area-inset-right)
+            );
+
+        top: auto;
+        bottom:
+            calc(
+                max(
+                    34px,
+                    env(safe-area-inset-bottom)
+                )
+                + 21px
+            );
+
+        width:
+            min(
+                310px,
+                34vw
+            );
+
+        transform: none;
+
+        opacity: 0.66;
+    }
+
+
+    .astrophile-interaction-hint span,
+    .astrophile-interaction-hint small {
+        font-size: 4.6px;
+    }
+
+
+    .astrophile-bottom-signature {
+        width:
+            min(
+                430px,
+                42vw
+            );
+    }
+
+
+    .astrophile-toast {
+        right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
+
+        bottom:
+            calc(
+                max(
+                    38px,
+                    env(safe-area-inset-bottom)
+                )
+                + 55px
+            );
+
+        width:
+            min(
+                340px,
+                34vw
+            );
+    }
+}
+
+
+/* =========================================================
+   V4.2 — SHORT LANDSCAPE PHONE
+========================================================= */
+
+@media (
+    orientation: landscape
+) and (
+    pointer: coarse
+) and (
+    max-height: 520px
+) {
+
+    .astrophile-experience-copy {
+        top: 80px;
+    }
+
+
+    .astrophile-experience-copy h1 {
+        font-size:
+            clamp(
+                42px,
+                7vw,
+                62px
+            );
+    }
+
+
+    .astrophile-experience-copy em {
+        display: none;
+    }
+
+
+    .astrophile-interaction-hint {
+        bottom:
+            calc(
+                max(
+                    24px,
+                    env(safe-area-inset-bottom)
+                )
+                + 16px
+            );
+    }
+}

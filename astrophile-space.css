@@ -749,3 +749,432 @@ a {
         animation: none;
     }
 }
+
+
+/* =========================================================
+   LIVING SKY PANEL
+========================================================= */
+
+.astrophile-living-panel {
+    position: absolute;
+
+    left: clamp(20px, 3vw, 34px);
+    bottom: calc(max(80px, env(safe-area-inset-bottom)) + 34px);
+    z-index: 14;
+
+    width: min(420px, calc(100% - 40px));
+
+    padding: 16px 18px 18px;
+
+    border: 1px solid rgba(255, 247, 235, 0.09);
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(15, 21, 40, 0.58),
+            rgba(8, 12, 25, 0.36)
+        );
+
+    box-shadow:
+        0 22px 60px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.astrophile-living-panel > small {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: rgba(232, 183, 197, 0.82);
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.astrophile-living-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.astrophile-living-item {
+    padding: 12px 12px 11px;
+
+    border: 1px solid rgba(255, 247, 235, 0.08);
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.astrophile-living-item span,
+.astrophile-living-item strong {
+    display: block;
+}
+
+.astrophile-living-item span {
+    color: rgba(255, 247, 235, 0.50);
+
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.astrophile-living-item strong {
+    margin-top: 6px;
+
+    color: rgba(255, 244, 232, 0.96);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.astrophile-living-panel > p {
+    margin: 14px 0 0;
+
+    color: rgba(255, 247, 235, 0.62);
+
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.astrophile-toast {
+    position: absolute;
+
+    right: clamp(20px, 3vw, 34px);
+    bottom: calc(max(80px, env(safe-area-inset-bottom)) + 38px);
+    z-index: 19;
+
+    width: min(360px, calc(100% - 40px));
+
+    padding: 16px 17px 16px;
+
+    border: 1px solid rgba(255, 247, 235, 0.12);
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(16, 21, 37, 0.88),
+            rgba(10, 13, 24, 0.82)
+        );
+
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translate3d(0, 14px, 0) scale(0.98);
+
+    transition:
+        opacity 0.28s ease,
+        visibility 0.28s ease,
+        transform 0.34s ease;
+
+    pointer-events: none;
+}
+
+.astrophile-toast.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+.astrophile-toast small {
+    display: block;
+
+    color: rgba(232, 183, 197, 0.78);
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+.astrophile-toast strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.08;
+}
+
+.astrophile-toast p {
+    margin: 8px 0 0;
+
+    color: rgba(255, 247, 235, 0.64);
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   OVERLAYS
+========================================================= */
+
+.astrophile-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 28;
+
+    display: grid;
+    place-items: center;
+
+    padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+}
+
+.astrophile-overlay[hidden] {
+    display: none;
+}
+
+.astrophile-overlay-backdrop {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(2, 6, 16, 0.56);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.astrophile-overlay-card {
+    position: relative;
+    z-index: 2;
+
+    width: min(520px, 100%);
+
+    padding: 24px 24px 22px;
+
+    border: 1px solid rgba(255, 247, 235, 0.12);
+    border-radius: 28px;
+
+    background:
+        radial-gradient(circle at top right, rgba(232, 183, 197, 0.10), transparent 30%),
+        linear-gradient(180deg, rgba(20, 27, 47, 0.94), rgba(10, 14, 26, 0.92));
+
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+}
+
+.astrophile-overlay-card > small {
+    display: block;
+
+    color: rgba(232, 183, 197, 0.82);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+.astrophile-overlay-card h3 {
+    margin: 10px 0 0;
+
+    color: rgba(255, 247, 235, 0.98);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 600;
+    line-height: 1.04;
+}
+
+.astrophile-overlay-card p {
+    margin: 13px 0 0;
+
+    color: rgba(255, 247, 235, 0.70);
+
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.astrophile-overlay-button {
+    min-height: 46px;
+
+    padding: 0 18px;
+
+    border: 1px solid rgba(255, 247, 235, 0.10);
+    border-radius: 14px;
+
+    color: #120d13;
+
+    background:
+        linear-gradient(180deg, #f4dcc8, #e8b7c5);
+
+    box-shadow: 0 12px 32px rgba(232, 183, 197, 0.20);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+
+    cursor: pointer;
+}
+
+.astrophile-overlay-button-ghost {
+    color: rgba(255, 247, 235, 0.84);
+
+    background: rgba(255, 255, 255, 0.04);
+
+    box-shadow: none;
+}
+
+.astrophile-whisper-card {
+    text-align: center;
+}
+
+.astrophile-whisper-card p {
+    max-width: 36ch;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.astrophile-whisper-card .astrophile-overlay-button {
+    margin-top: 18px;
+}
+
+.astrophile-wish-field {
+    display: block;
+
+    margin-top: 18px;
+}
+
+.astrophile-wish-field > span {
+    display: block;
+
+    color: rgba(255, 247, 235, 0.74);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.astrophile-wish-field textarea {
+    width: 100%;
+    min-height: 132px;
+
+    margin-top: 10px;
+    padding: 14px 15px;
+
+    resize: vertical;
+
+    border: 1px solid rgba(255, 247, 235, 0.10);
+    border-radius: 18px;
+
+    color: rgba(255, 247, 235, 0.96);
+
+    background: rgba(255, 255, 255, 0.03);
+
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.astrophile-wish-field textarea::placeholder {
+    color: rgba(255, 247, 235, 0.36);
+}
+
+.astrophile-wish-field textarea:focus {
+    outline: none;
+    border-color: rgba(232, 183, 197, 0.42);
+    box-shadow: 0 0 0 4px rgba(232, 183, 197, 0.08);
+}
+
+.astrophile-wish-actions {
+    margin-top: 18px;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* =========================================================
+   MOBILE ADDITIONS
+========================================================= */
+
+@media screen and (max-width: 700px) {
+    .astrophile-living-panel {
+        left: 16px;
+        right: 16px;
+        bottom: calc(max(72px, env(safe-area-inset-bottom)) + 76px);
+        width: auto;
+
+        padding: 14px 14px 15px;
+        border-radius: 20px;
+    }
+
+    .astrophile-living-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .astrophile-living-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .astrophile-living-item strong {
+        margin-top: 0;
+        font-size: 16px;
+    }
+
+    .astrophile-living-panel > p {
+        font-size: 10px;
+    }
+
+    .astrophile-toast {
+        left: 16px;
+        right: 16px;
+        width: auto;
+        bottom: calc(max(18px, env(safe-area-inset-bottom)) + 96px);
+        padding: 14px 14px 15px;
+        border-radius: 18px;
+    }
+
+    .astrophile-toast strong {
+        font-size: 22px;
+    }
+
+    .astrophile-overlay-card {
+        width: min(100%, 100%);
+        padding: 20px 18px 18px;
+        border-radius: 22px;
+    }
+
+    .astrophile-overlay-card h3 {
+        font-size: 28px;
+    }
+
+    .astrophile-overlay-card p {
+        font-size: 13px;
+    }
+
+    .astrophile-wish-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+}

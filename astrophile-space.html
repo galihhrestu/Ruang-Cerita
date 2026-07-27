@@ -118,14 +118,164 @@
             aria-hidden="true"
         >
             <span>
-                TAP THE SKY
+                THE LIVING SKY
             </span>
 
             <i></i>
 
             <small>
-                make a wish ✦
+                tap the moon • find our stars • hold the sky ✦
             </small>
+        </div>
+
+
+        <section
+            class="astrophile-living-panel"
+            aria-label="Astrophile interactions"
+        >
+            <small>
+                ASTROPHILE’S SPACE — THE LIVING SKY
+            </small>
+
+            <div class="astrophile-living-grid">
+                <div class="astrophile-living-item">
+                    <span>
+                        🌌 Constellation of Us
+                    </span>
+
+                    <strong id="astrophileConstellationCount">
+                        0 / 4
+                    </strong>
+                </div>
+
+                <div class="astrophile-living-item">
+                    <span>
+                        ✦ Our Two Stars
+                    </span>
+
+                    <strong id="astrophileTwinStarsCount">
+                        0 / 2
+                    </strong>
+                </div>
+
+                <div class="astrophile-living-item">
+                    <span>
+                        ☄️ Wishes Sealed
+                    </span>
+
+                    <strong id="astrophileWishCount">
+                        0
+                    </strong>
+                </div>
+            </div>
+
+            <p>
+                Special stars are hidden in the night. Tap the moon for whispers, discover the stars of Galih and Wisye, and press &amp; hold the sky to seal a wish.
+            </p>
+        </section>
+
+
+        <div
+            class="astrophile-toast"
+            id="astrophileToast"
+            aria-live="polite"
+            aria-atomic="true"
+        >
+            <small id="astrophileToastEyebrow">
+                DISCOVERY
+            </small>
+
+            <strong id="astrophileToastTitle">
+                The sky noticed you.
+            </strong>
+
+            <p id="astrophileToastText">
+                A small celestial moment lives here.
+            </p>
+        </div>
+
+
+        <div
+            class="astrophile-overlay"
+            id="astrophileWhisperOverlay"
+            hidden
+        >
+            <div class="astrophile-overlay-backdrop" data-close-overlay></div>
+
+            <article class="astrophile-overlay-card astrophile-whisper-card">
+                <small id="astrophileWhisperEyebrow">
+                    MOON WHISPER
+                </small>
+
+                <h3 id="astrophileWhisperTitle">
+                    The moon is close tonight.
+                </h3>
+
+                <p id="astrophileWhisperText">
+                    She has something gentle to say.
+                </p>
+
+                <button
+                    type="button"
+                    class="astrophile-overlay-button"
+                    data-close-overlay
+                >
+                    Keep this close ✦
+                </button>
+            </article>
+        </div>
+
+
+        <div
+            class="astrophile-overlay"
+            id="astrophileWishOverlay"
+            hidden
+        >
+            <div class="astrophile-overlay-backdrop" data-close-overlay></div>
+
+            <article class="astrophile-overlay-card astrophile-wish-card">
+                <small>
+                    MAKE A WISH
+                </small>
+
+                <h3>
+                    Seal your wish into the sky.
+                </h3>
+
+                <p>
+                    Pressing and holding the night has called a quiet falling star. Leave a wish here, and let the sky keep it.
+                </p>
+
+                <label class="astrophile-wish-field">
+                    <span>
+                        What are you wishing for tonight?
+                    </span>
+
+                    <textarea
+                        id="astrophileWishInput"
+                        maxlength="220"
+                        placeholder="Write something soft, hopeful, or secret..."
+                    ></textarea>
+                </label>
+
+                <div class="astrophile-wish-actions">
+                    <button
+                        type="button"
+                        class="astrophile-overlay-button astrophile-overlay-button-ghost"
+                        data-close-overlay
+                    >
+                        Maybe later
+                    </button>
+
+                    <button
+                        type="button"
+                        class="astrophile-overlay-button"
+                        id="astrophileSaveWishButton"
+                    >
+                        Seal into the sky ✦
+                    </button>
+                </div>
+            </article>
         </div>
 
 

@@ -35,6 +35,76 @@
             "astrophileSkyState"
         );
 
+    const constellationCount =
+        document.getElementById(
+            "astrophileConstellationCount"
+        );
+
+    const twinStarsCount =
+        document.getElementById(
+            "astrophileTwinStarsCount"
+        );
+
+    const wishCount =
+        document.getElementById(
+            "astrophileWishCount"
+        );
+
+    const toast =
+        document.getElementById(
+            "astrophileToast"
+        );
+
+    const toastEyebrow =
+        document.getElementById(
+            "astrophileToastEyebrow"
+        );
+
+    const toastTitle =
+        document.getElementById(
+            "astrophileToastTitle"
+        );
+
+    const toastText =
+        document.getElementById(
+            "astrophileToastText"
+        );
+
+    const whisperOverlay =
+        document.getElementById(
+            "astrophileWhisperOverlay"
+        );
+
+    const whisperEyebrow =
+        document.getElementById(
+            "astrophileWhisperEyebrow"
+        );
+
+    const whisperTitle =
+        document.getElementById(
+            "astrophileWhisperTitle"
+        );
+
+    const whisperText =
+        document.getElementById(
+            "astrophileWhisperText"
+        );
+
+    const wishOverlay =
+        document.getElementById(
+            "astrophileWishOverlay"
+        );
+
+    const wishInput =
+        document.getElementById(
+            "astrophileWishInput"
+        );
+
+    const saveWishButton =
+        document.getElementById(
+            "astrophileSaveWishButton"
+        );
+
 
     if (
         !experience
@@ -166,6 +236,94 @@
     let treePoints =
         [];
 
+    let toastTimer =
+        null;
+
+    let longPressTimer =
+        null;
+
+    let longPressTriggered =
+        false;
+
+    let pointerDownInfo =
+        null;
+
+    let overlayOpen =
+        false;
+
+    let moonMetrics = {
+        x: 0,
+        y: 0,
+        radius: 0,
+        progress: 0,
+        isSuperMoon: false
+    };
+
+    const storagePrefix =
+        "ruangCerita.astrophile.livingSky.v4";
+
+    const constellationKey =
+        `${storagePrefix}.constellation`;
+
+    const twinStarsKey =
+        `${storagePrefix}.twinStars`;
+
+    const wishesKey =
+        `${storagePrefix}.wishes`;
+
+    const specialStars = {
+        constellation: [
+            {
+                id: "constellation-1",
+                label: "Star I",
+                x: 0.24,
+                y: 0.26
+            },
+            {
+                id: "constellation-2",
+                label: "Star II",
+                x: 0.31,
+                y: 0.19
+            },
+            {
+                id: "constellation-3",
+                label: "Star III",
+                x: 0.38,
+                y: 0.25
+            },
+            {
+                id: "constellation-4",
+                label: "Star IV",
+                x: 0.32,
+                y: 0.33
+            }
+        ],
+
+        twin: [
+            {
+                id: "galih-star",
+                label: "Galih",
+                x: 0.63,
+                y: 0.17
+            },
+            {
+                id: "wisye-star",
+                label: "Wisye",
+                x: 0.84,
+                y: 0.20
+            }
+        ]
+    };
+
+    let foundConstellation =
+        new Set();
+
+    let foundTwinStars =
+        new Set();
+
+    let wishes =
+        [];
+
 
     // ======================================================
     // SEEDED RANDOM
@@ -218,6 +376,541 @@
         );
     }
 
+
+
+    function loadStoredArray(
+        key
+    ) {
+        try {
+            const raw =
+                window.localStorage.getItem(
+                    key
+                );
+
+            if (!raw) {
+                return [];
+            }
+
+            const value =
+                JSON.parse(
+                    raw
+                );
+
+            return Array.isArray(
+                value
+            )
+                ? value
+                : [];
+        } catch (
+            error
+        ) {
+            return [];
+        }
+    }
+
+
+    function saveStoredArray(
+        key,
+        value
+    ) {
+        try {
+            window.localStorage.setItem(
+                key,
+                JSON.stringify(
+                    value
+                )
+            );
+        } catch (
+            error
+        ) {
+            // noop
+        }
+    }
+
+
+    function syncLivingSkyUI() {
+        if (
+            constellationCount
+        ) {
+            constellationCount.textContent =
+                `${foundConstellation.size} / ${specialStars.constellation.length}`;
+        }
+
+        if (
+            twinStarsCount
+        ) {
+            twinStarsCount.textContent =
+                `${foundTwinStars.size} / ${specialStars.twin.length}`;
+        }
+
+        if (
+            wishCount
+        ) {
+            wishCount.textContent =
+                `${wishes.length}`;
+        }
+    }
+
+
+    function initializeLivingSkyState() {
+        foundConstellation =
+            new Set(
+                loadStoredArray(
+                    constellationKey
+                )
+            );
+
+        foundTwinStars =
+            new Set(
+                loadStoredArray(
+                    twinStarsKey
+                )
+            );
+
+        wishes =
+            loadStoredArray(
+                wishesKey
+            );
+
+        syncLivingSkyUI();
+    }
+
+
+    function persistDiscoveries() {
+        saveStoredArray(
+            constellationKey,
+            Array.from(
+                foundConstellation
+            )
+        );
+
+        saveStoredArray(
+            twinStarsKey,
+            Array.from(
+                foundTwinStars
+            )
+        );
+    }
+
+
+    function showToastMessage(
+        eyebrow,
+        title,
+        text
+    ) {
+        if (!toast) {
+            return;
+        }
+
+        if (
+            toastEyebrow
+        ) {
+            toastEyebrow.textContent =
+                eyebrow;
+        }
+
+        if (
+            toastTitle
+        ) {
+            toastTitle.textContent =
+                title;
+        }
+
+        if (
+            toastText
+        ) {
+            toastText.textContent =
+                text;
+        }
+
+        toast.classList.add(
+            "show"
+        );
+
+        window.clearTimeout(
+            toastTimer
+        );
+
+        toastTimer =
+            window.setTimeout(
+                () => {
+                    toast.classList.remove(
+                        "show"
+                    );
+                },
+                4200
+            );
+    }
+
+
+    function openOverlay(
+        overlay
+    ) {
+        if (!overlay) {
+            return;
+        }
+
+        overlay.hidden =
+            false;
+
+        overlayOpen =
+            true;
+    }
+
+
+    function closeOverlay(
+        overlay
+    ) {
+        if (!overlay) {
+            return;
+        }
+
+        overlay.hidden =
+            true;
+
+        overlayOpen =
+            (
+                whisperOverlay
+                && !whisperOverlay.hidden
+            )
+            || (
+                wishOverlay
+                && !wishOverlay.hidden
+            );
+    }
+
+
+    function closeAnyOverlay() {
+        closeOverlay(
+            whisperOverlay
+        );
+
+        closeOverlay(
+            wishOverlay
+        );
+    }
+
+
+    function chooseMoonWhisper() {
+        const superMoonWhispers = [
+            {
+                eyebrow: "PINK SUPERMOON",
+                title: "Tonight the moon is blushing.",
+                text: "A pink supermoon always feels like a soft confession in the sky — as if the night itself wanted to look beautiful for someone it loves."
+            },
+            {
+                eyebrow: "PINK SUPERMOON",
+                title: "The moon came dressed in rose.",
+                text: "Some nights glow gently. This one glows like a heart. If the moon could admire someone tonight, it would probably look down and choose you."
+            }
+        ];
+
+        const regularWhispers = [
+            {
+                eyebrow: "MOON WHISPER",
+                title: "Look up a little longer.",
+                text: "Some people see the moon. Some people feel seen by it. Maybe tonight is one of those nights."
+            },
+            {
+                eyebrow: "MOON WHISPER",
+                title: "A quiet message for you.",
+                text: "Under the same moon, love does not have to be loud. Sometimes it only needs a sky, a little music, and the right person thinking of you."
+            },
+            {
+                eyebrow: "MOON WHISPER",
+                title: "The sky remembers softness.",
+                text: "If you ever wonder whether tenderness leaves a trace, look up. Even light takes its time, and still it arrives."
+            },
+            {
+                eyebrow: "MOON WHISPER",
+                title: "Someone made this night for you.",
+                text: "There are many beautiful things above us, but perhaps the most beautiful idea tonight is that this little sky exists because you love looking at it."
+            }
+        ];
+
+        const pool =
+            moonMetrics.isSuperMoon
+                ? superMoonWhispers
+                : regularWhispers;
+
+        return pool[
+            Math.floor(
+                randomRange(
+                    0,
+                    pool.length
+                )
+            )
+        ];
+    }
+
+
+    function triggerMoonWhisper() {
+        const whisper =
+            chooseMoonWhisper();
+
+        if (
+            whisperEyebrow
+        ) {
+            whisperEyebrow.textContent =
+                whisper.eyebrow;
+        }
+
+        if (
+            whisperTitle
+        ) {
+            whisperTitle.textContent =
+                whisper.title;
+        }
+
+        if (
+            whisperText
+        ) {
+            whisperText.textContent =
+                whisper.text;
+        }
+
+        openOverlay(
+            whisperOverlay
+        );
+    }
+
+
+    function saveWish() {
+        if (!wishInput) {
+            return;
+        }
+
+        const value =
+            wishInput.value
+                .trim();
+
+        if (!value) {
+            showToastMessage(
+                "MAKE A WISH",
+                "The sky is listening.",
+                "Write a little wish first, then seal it into the night."
+            );
+
+            return;
+        }
+
+        wishes.unshift({
+            text: value,
+            createdAt:
+                new Date()
+                    .toISOString()
+        });
+
+        wishes =
+            wishes.slice(
+                0,
+                30
+            );
+
+        saveStoredArray(
+            wishesKey,
+            wishes
+        );
+
+        syncLivingSkyUI();
+
+        wishInput.value =
+            "";
+
+        closeOverlay(
+            wishOverlay
+        );
+
+        showToastMessage(
+            "WISH SEALED",
+            "Your wish is in the sky.",
+            "A small falling star now carries your words somewhere gentle above the earth."
+        );
+    }
+
+
+    function openWishOverlay() {
+        if (
+            wishInput
+        ) {
+            wishInput.value =
+                "";
+        }
+
+        openOverlay(
+            wishOverlay
+        );
+
+        window.setTimeout(
+            () => {
+                wishInput?.focus();
+            },
+            60
+        );
+    }
+
+
+    function getSpecialStarPosition(
+        star
+    ) {
+        return {
+            x:
+                star.x
+                * width
+                + pointerX
+                * 0.18,
+            y:
+                star.y
+                * height
+                + pointerY
+                * 0.14
+        };
+    }
+
+
+    function getHitSpecialStar(
+        x,
+        y
+    ) {
+        const all = [
+            ...specialStars.constellation.map(
+                (
+                    star
+                ) => ({
+                    ...star,
+                    group:
+                        "constellation"
+                })
+            ),
+            ...specialStars.twin.map(
+                (
+                    star
+                ) => ({
+                    ...star,
+                    group:
+                        "twin"
+                })
+            )
+        ];
+
+        for (
+            const star of all
+        ) {
+            const position =
+                getSpecialStarPosition(
+                    star
+                );
+
+            const hitRadius =
+                mobile()
+                    ? 24
+                    : 18;
+
+            const distance =
+                Math.hypot(
+                    x - position.x,
+                    y - position.y
+                );
+
+            if (
+                distance <= hitRadius
+            ) {
+                return {
+                    ...star,
+                    position
+                };
+            }
+        }
+
+        return null;
+    }
+
+
+    function discoverStar(
+        star
+    ) {
+        if (
+            star.group === "constellation"
+        ) {
+            if (
+                foundConstellation.has(
+                    star.id
+                )
+            ) {
+                showToastMessage(
+                    "CONSTELLATION OF US",
+                    "That star is already glowing.",
+                    "Keep looking — the rest of the constellation is still waiting in the night."
+                );
+
+                return;
+            }
+
+            foundConstellation.add(
+                star.id
+            );
+
+            persistDiscoveries();
+            syncLivingSkyUI();
+
+            if (
+                foundConstellation.size
+                === specialStars.constellation.length
+            ) {
+                showToastMessage(
+                    "CONSTELLATION OF US",
+                    "The constellation is complete.",
+                    "Galih × Wisye now lives in the stars — some stories really are written in the sky."
+                );
+            } else {
+                showToastMessage(
+                    "CONSTELLATION OF US",
+                    `${foundConstellation.size} star${foundConstellation.size > 1 ? "s" : ""} found.`,
+                    "A few more special stars remain hidden in the night."
+                );
+            }
+
+            return;
+        }
+
+        if (
+            foundTwinStars.has(
+                star.id
+            )
+        ) {
+            showToastMessage(
+                "OUR TWO STARS",
+                `${star.label} is already shining.`,
+                "The sky is still keeping both names close."
+            );
+
+            return;
+        }
+
+        foundTwinStars.add(
+            star.id
+        );
+
+        persistDiscoveries();
+        syncLivingSkyUI();
+
+        if (
+            foundTwinStars.size
+            === specialStars.twin.length
+        ) {
+            showToastMessage(
+                "OUR TWO STARS",
+                "Galih and Wisye are connected.",
+                "Under the same sky, your two stars now glow with a line of quiet light between them."
+            );
+        } else {
+            showToastMessage(
+                "OUR TWO STARS",
+                `${star.label}'s star was found.`,
+                "One more star is waiting to be discovered."
+            );
+        }
+    }
 
     // ======================================================
     // SCENE
@@ -992,6 +1685,319 @@
     }
 
 
+
+    function drawSpecialStarGlow(
+        x,
+        y,
+        size,
+        alpha,
+        pink = false
+    ) {
+        context.beginPath();
+        context.arc(
+            x,
+            y,
+            size * 5.4,
+            0,
+            Math.PI * 2
+        );
+        context.fillStyle =
+            pink
+                ? rgba(
+                    255,
+                    188,
+                    214,
+                    alpha * 0.08
+                )
+                : rgba(
+                    255,
+                    236,
+                    208,
+                    alpha * 0.08
+                );
+        context.fill();
+
+        context.beginPath();
+        context.arc(
+            x,
+            y,
+            size,
+            0,
+            Math.PI * 2
+        );
+        context.fillStyle =
+            pink
+                ? rgba(
+                    255,
+                    228,
+                    236,
+                    alpha
+                )
+                : rgba(
+                    255,
+                    245,
+                    230,
+                    alpha
+                );
+        context.fill();
+    }
+
+
+    function drawInteractiveLines() {
+        const constellationPoints =
+            specialStars.constellation.map(
+                getSpecialStarPosition
+            );
+
+        const constellationMap =
+            specialStars.constellation.map(
+                (
+                    star,
+                    index
+                ) => ({
+                    star,
+                    point:
+                        constellationPoints[index]
+                })
+            );
+
+        const constellationEdges = [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 0],
+            [1, 3]
+        ];
+
+        context.save();
+        context.lineCap =
+            "round";
+        context.lineJoin =
+            "round";
+
+        for (
+            const edge of constellationEdges
+        ) {
+            const from =
+                constellationMap[
+                    edge[0]
+                ];
+            const to =
+                constellationMap[
+                    edge[1]
+                ];
+
+            if (
+                !foundConstellation.has(
+                    from.star.id
+                )
+                || !foundConstellation.has(
+                    to.star.id
+                )
+            ) {
+                continue;
+            }
+
+            context.beginPath();
+            context.moveTo(
+                from.point.x,
+                from.point.y
+            );
+            context.lineTo(
+                to.point.x,
+                to.point.y
+            );
+            context.strokeStyle =
+                rgba(
+                    255,
+                    225,
+                    202,
+                    0.18
+                );
+            context.lineWidth =
+                mobile()
+                    ? 1.3
+                    : 1.7;
+            context.stroke();
+        }
+
+        const galih =
+            specialStars.twin[0];
+        const wisye =
+            specialStars.twin[1];
+
+        if (
+            foundTwinStars.has(
+                galih.id
+            )
+            && foundTwinStars.has(
+                wisye.id
+            )
+        ) {
+            const from =
+                getSpecialStarPosition(
+                    galih
+                );
+            const to =
+                getSpecialStarPosition(
+                    wisye
+                );
+
+            context.beginPath();
+            context.moveTo(
+                from.x,
+                from.y
+            );
+            context.lineTo(
+                to.x,
+                to.y
+            );
+            context.strokeStyle =
+                rgba(
+                    255,
+                    188,
+                    214,
+                    0.26
+                );
+            context.lineWidth =
+                mobile()
+                    ? 1.6
+                    : 2;
+            context.stroke();
+        }
+
+        context.restore();
+    }
+
+
+    function drawInteractiveStars(
+        time
+    ) {
+        drawInteractiveLines();
+
+        const allStars = [
+            ...specialStars.constellation.map(
+                (
+                    star
+                ) => ({
+                    ...star,
+                    group:
+                        "constellation"
+                })
+            ),
+            ...specialStars.twin.map(
+                (
+                    star
+                ) => ({
+                    ...star,
+                    group:
+                        "twin"
+                })
+            )
+        ];
+
+        for (
+            const star of allStars
+        ) {
+            const position =
+                getSpecialStarPosition(
+                    star
+                );
+
+            const discovered =
+                star.group === "constellation"
+                    ? foundConstellation.has(
+                        star.id
+                    )
+                    : foundTwinStars.has(
+                        star.id
+                    );
+
+            const pulse =
+                0.70
+                + Math.sin(
+                    time * 2.2
+                    + position.x * 0.01
+                ) * 0.30;
+
+            const size =
+                (discovered ? 2.8 : 2.15)
+                * (
+                    mobile()
+                        ? 0.95
+                        : 1
+                )
+                * (
+                    0.96 + pulse * 0.14
+                );
+
+            drawSpecialStarGlow(
+                position.x,
+                position.y,
+                size,
+                discovered ? 0.96 : 0.84,
+                star.group === "twin"
+            );
+
+            if (
+                discovered
+            ) {
+                context.save();
+                context.fillStyle =
+                    star.group === "twin"
+                        ? rgba(
+                            255,
+                            221,
+                            233,
+                            0.72
+                        )
+                        : rgba(
+                            255,
+                            245,
+                            230,
+                            0.62
+                        );
+                context.font =
+                    `${mobile() ? 11 : 12}px DM Sans`;
+                context.textAlign =
+                    "center";
+                context.fillText(
+                    star.group === "twin"
+                        ? star.label
+                        : "✦",
+                    position.x,
+                    position.y - (mobile() ? 12 : 14)
+                );
+                context.restore();
+            }
+        }
+
+        if (
+            foundConstellation.size
+            === specialStars.constellation.length
+        ) {
+            context.save();
+            context.fillStyle =
+                rgba(
+                    255,
+                    245,
+                    230,
+                    0.46
+                );
+            context.font =
+                `${mobile() ? 16 : 20}px Playfair Display`;
+            context.textAlign =
+                "center";
+            context.fillText(
+                "Our Constellation",
+                width * 0.32 + pointerX * 0.12,
+                height * 0.38 + pointerY * 0.08
+            );
+            context.restore();
+        }
+    }
+
+
     // ======================================================
     // DISTANT PLANETS
     // ======================================================
@@ -1180,56 +2186,50 @@
                 time
             );
 
+        const nearFullDistance =
+            Math.min(
+                progress,
+                1 - progress
+            );
+
+        const isSuperMoon =
+            nearFullDistance
+            <= 0.055;
 
         if (
             phaseName
         ) {
             phaseName.textContent =
-                getPhaseLabel(
-                    progress
-                );
+                isSuperMoon
+                    ? "Pink Supermoon"
+                    : getPhaseLabel(
+                        progress
+                    );
         }
-
 
         const baseX =
             mobile()
-                ? width
-                    * 0.72
-                : width
-                    * 0.76;
-
+                ? width * 0.72
+                : width * 0.76;
 
         const baseY =
             mobile()
-                ? height
-                    * 0.28
-                : height
-                    * 0.27;
-
+                ? height * 0.28
+                : height * 0.27;
 
         const x =
             baseX
             + Math.sin(
-                time
-                * 0.035
-            )
-            * width
-            * 0.018
-            + pointerX
-            * 0.48;
-
+                time * 0.035
+            ) * width * 0.018
+            + pointerX * 0.48;
 
         const y =
             baseY
             + Math.cos(
-                time
-                * 0.029
-            )
-            * height
-            * 0.016
-            + pointerY
-            * 0.42;
-
+                time * 0.029
+            ) * height * 0.016
+            + pointerY * 0.42;
 
         const radius =
             Math.min(
@@ -1240,10 +2240,21 @@
                 mobile()
                     ? 0.105
                     : 0.095
+            )
+            * (
+                isSuperMoon
+                    ? 1.06
+                    : 1
             );
 
+        moonMetrics = {
+            x,
+            y,
+            radius,
+            progress,
+            isSuperMoon
+        };
 
-        // Moon halo stays visible even near new moon.
         const illumination =
             Math.abs(
                 Math.cos(
@@ -1252,245 +2263,210 @@
                 )
             );
 
-
         const haloAlpha =
-            0.08
-            + illumination
-            * 0.20;
-
+            (
+                0.08
+                + illumination * 0.20
+            )
+            * (
+                isSuperMoon
+                    ? 1.36
+                    : 1
+            );
 
         const halo =
-            context
-                .createRadialGradient(
-                    x,
-                    y,
-                    radius
-                    * 0.08,
-                    x,
-                    y,
-                    radius
-                    * 3.6
-                );
+            context.createRadialGradient(
+                x,
+                y,
+                radius * 0.08,
+                x,
+                y,
+                radius * 3.8
+            );
 
+        if (
+            isSuperMoon
+        ) {
+            halo.addColorStop(
+                0,
+                rgba(
+                    255,
+                    223,
+                    236,
+                    haloAlpha
+                )
+            );
 
-        halo.addColorStop(
-            0,
-            rgba(
-                255,
-                239,
-                205,
-                haloAlpha
-            )
-        );
+            halo.addColorStop(
+                0.34,
+                rgba(
+                    255,
+                    170,
+                    204,
+                    haloAlpha * 0.28
+                )
+            );
 
-        halo.addColorStop(
-            0.34,
-            rgba(
-                246,
-                218,
-                176,
-                haloAlpha
-                * 0.33
-            )
-        );
+            halo.addColorStop(
+                1,
+                "rgba(255,170,204,0)"
+            );
+        } else {
+            halo.addColorStop(
+                0,
+                rgba(
+                    255,
+                    239,
+                    205,
+                    haloAlpha
+                )
+            );
 
-        halo.addColorStop(
-            1,
-            "rgba(246,218,176,0)"
-        );
+            halo.addColorStop(
+                0.34,
+                rgba(
+                    246,
+                    218,
+                    176,
+                    haloAlpha * 0.33
+                )
+            );
 
+            halo.addColorStop(
+                1,
+                "rgba(246,218,176,0)"
+            );
+        }
 
         context.fillStyle =
             halo;
 
-
         context.beginPath();
-
-
         context.arc(
             x,
             y,
-            radius
-            * 3.6,
+            radius * 3.8,
             0,
-            Math.PI
-            * 2
+            Math.PI * 2
         );
-
-
         context.fill();
 
-
-        // Base dark moon disk.
         context.beginPath();
-
-
         context.arc(
             x,
             y,
             radius,
             0,
-            Math.PI
-            * 2
+            Math.PI * 2
         );
-
-
         context.fillStyle =
-            "#34313a";
-
-
+            isSuperMoon
+                ? "#483040"
+                : "#34313a";
         context.fill();
 
-
-        // Clip the illuminated surface to moon disk.
         context.save();
-
-
         context.beginPath();
-
-
         context.arc(
             x,
             y,
             radius,
             0,
-            Math.PI
-            * 2
+            Math.PI * 2
         );
-
-
         context.clip();
 
-
         const surface =
-            context
-                .createRadialGradient(
-                    x
-                    - radius
-                    * 0.34,
-                    y
-                    - radius
-                    * 0.32,
-                    radius
-                    * 0.04,
-                    x,
-                    y,
-                    radius
-                );
+            context.createRadialGradient(
+                x - radius * 0.34,
+                y - radius * 0.32,
+                radius * 0.04,
+                x,
+                y,
+                radius
+            );
 
-
-        surface.addColorStop(
-            0,
-            "#fff8e5"
-        );
-
-        surface.addColorStop(
-            0.40,
-            "#efdbb9"
-        );
-
-        surface.addColorStop(
-            0.76,
-            "#c1a487"
-        );
-
-        surface.addColorStop(
-            1,
-            "#756873"
-        );
-
+        if (
+            isSuperMoon
+        ) {
+            surface.addColorStop(
+                0,
+                "#fff5f8"
+            );
+            surface.addColorStop(
+                0.40,
+                "#ffd3e5"
+            );
+            surface.addColorStop(
+                0.76,
+                "#e2a5bd"
+            );
+            surface.addColorStop(
+                1,
+                "#8a5f74"
+            );
+        } else {
+            surface.addColorStop(
+                0,
+                "#fff8e5"
+            );
+            surface.addColorStop(
+                0.40,
+                "#efdbb9"
+            );
+            surface.addColorStop(
+                0.76,
+                "#c1a487"
+            );
+            surface.addColorStop(
+                1,
+                "#756873"
+            );
+        }
 
         context.fillStyle =
             surface;
-
-
         context.fillRect(
-            x
-            - radius,
-            y
-            - radius,
-            radius
-            * 2,
-            radius
-            * 2
+            x - radius,
+            y - radius,
+            radius * 2,
+            radius * 2
         );
 
-
-        // Shadow overlay creates the changing phase.
-        // First half = waning, second half = waxing.
         const firstHalf =
-            progress
-            <= 0.5;
-
+            progress <= 0.5;
 
         const local =
             firstHalf
-                ? progress
-                / 0.5
-                : (
-                    progress
-                    - 0.5
-                )
-                / 0.5;
+                ? progress / 0.5
+                : (progress - 0.5) / 0.5;
 
-
-        // Full -> new: shadow moves rightward across moon.
-        // New -> full: shadow moves leftward out.
         const shadowOffset =
             firstHalf
-                ? (
-                    -radius
-                    * 1.7
-                    + local
-                    * radius
-                    * 3.4
-                )
-                : (
-                    radius
-                    * 1.7
-                    - local
-                    * radius
-                    * 3.4
-                );
-
+                ? (-radius * 1.7 + local * radius * 3.4)
+                : (radius * 1.7 - local * radius * 3.4);
 
         context.beginPath();
-
-
         context.ellipse(
-            x
-            + shadowOffset,
+            x + shadowOffset,
             y,
-            radius
-            * 1.18,
-            radius
-            * 1.02,
+            radius * 1.18,
+            radius * 1.02,
             0,
             0,
-            Math.PI
-            * 2
+            Math.PI * 2
         );
-
-
         context.fillStyle =
-            "rgba(25,24,33,0.965)";
-
-
+            isSuperMoon
+                ? "rgba(32,21,31,0.965)"
+                : "rgba(25,24,33,0.965)";
         context.fill();
 
-
-        // At/near new moon, deepen whole disk.
         const newMoonFactor =
             Math.max(
                 0,
-                1
-                - Math.abs(
-                    progress
-                    - 0.5
-                )
-                / 0.18
+                1 - Math.abs(progress - 0.5) / 0.18
             );
-
 
         if (
             newMoonFactor > 0
@@ -1500,129 +2476,76 @@
                     15,
                     16,
                     25,
-                    newMoonFactor
-                    * 0.62
+                    newMoonFactor * 0.62
                 );
 
-
             context.fillRect(
-                x
-                - radius,
-                y
-                - radius,
-                radius
-                * 2,
-                radius
-                * 2
+                x - radius,
+                y - radius,
+                radius * 2,
+                radius * 2
             );
         }
 
-
-        // Craters remain subtle.
         context.globalAlpha =
             0.075
-            * (
-                0.30
-                + illumination
-                * 0.70
-            );
-
+            * (0.30 + illumination * 0.70);
 
         const craters = [
-            [
-                -0.28,
-                -0.16,
-                0.17
-            ],
-            [
-                0.19,
-                -0.28,
-                0.10
-            ],
-            [
-                0.31,
-                0.10,
-                0.14
-            ],
-            [
-                -0.10,
-                0.31,
-                0.12
-            ],
-            [
-                0.03,
-                0.04,
-                0.20
-            ]
+            [-0.28, -0.16, 0.17],
+            [0.19, -0.28, 0.10],
+            [0.31, 0.10, 0.14],
+            [-0.10, 0.31, 0.12],
+            [0.03, 0.04, 0.20]
         ];
 
-
         for (
-            const crater
-            of craters
+            const crater of craters
         ) {
             context.beginPath();
-
-
             context.arc(
-                x
-                + crater[0]
-                * radius,
-                y
-                + crater[1]
-                * radius,
-                crater[2]
-                * radius,
+                x + crater[0] * radius,
+                y + crater[1] * radius,
+                crater[2] * radius,
                 0,
-                Math.PI
-                * 2
+                Math.PI * 2
             );
-
-
             context.fillStyle =
-                "#4c4651";
-
-
+                isSuperMoon
+                    ? "#6d5361"
+                    : "#4c4651";
             context.fill();
         }
 
-
         context.restore();
 
-
-        // Moon edge.
         context.beginPath();
-
-
         context.arc(
             x,
             y,
             radius,
             0,
-            Math.PI
-            * 2
+            Math.PI * 2
         );
-
-
         context.strokeStyle =
-            rgba(
-                255,
-                240,
-                212,
-                0.12
-                + illumination
-                * 0.14
-            );
-
-
+            isSuperMoon
+                ? rgba(
+                    255,
+                    227,
+                    236,
+                    0.18 + illumination * 0.16
+                )
+                : rgba(
+                    255,
+                    240,
+                    212,
+                    0.12 + illumination * 0.14
+                );
         context.lineWidth =
             Math.max(
                 1,
-                radius
-                * 0.018
+                radius * 0.018
             );
-
-
         context.stroke();
     }
 
@@ -2722,6 +3645,7 @@
         drawMilkyWay(time);
         drawAurora(time);
         drawStars(time);
+        drawInteractiveStars(time);
         drawPlanets(time);
         drawMoon(time);
         drawClouds(time);
@@ -2843,11 +3767,8 @@
                 return;
             }
 
-
             const rect =
-                experience
-                    .getBoundingClientRect();
-
+                experience.getBoundingClientRect();
 
             targetPointerX =
                 (
@@ -2860,7 +3781,6 @@
                 )
                 * 9;
 
-
             targetPointerY =
                 (
                     (
@@ -2871,6 +3791,18 @@
                     - 0.5
                 )
                 * 7;
+
+            if (
+                pointerDownInfo
+                && Math.hypot(
+                    event.clientX - pointerDownInfo.clientX,
+                    event.clientY - pointerDownInfo.clientY
+                ) > 10
+            ) {
+                window.clearTimeout(
+                    longPressTimer
+                );
+            }
         }
     );
 
@@ -2878,11 +3810,73 @@
     experience.addEventListener(
         "pointerleave",
         () => {
-            targetPointerX =
-                0;
+            targetPointerX = 0;
+            targetPointerY = 0;
 
-            targetPointerY =
-                0;
+            window.clearTimeout(
+                longPressTimer
+            );
+            pointerDownInfo = null;
+        }
+    );
+
+
+    experience.addEventListener(
+        "pointerdown",
+        (
+            event
+        ) => {
+            if (
+                overlayOpen
+                || event.target.closest(
+                    "a,button,textarea"
+                )
+            ) {
+                return;
+            }
+
+            pointerDownInfo = {
+                clientX:
+                    event.clientX,
+                clientY:
+                    event.clientY
+            };
+
+            longPressTriggered = false;
+
+            window.clearTimeout(
+                longPressTimer
+            );
+
+            longPressTimer =
+                window.setTimeout(
+                    () => {
+                        longPressTriggered = true;
+
+                        const rect =
+                            experience.getBoundingClientRect();
+
+                        spawnMeteor(
+                            Math.min(
+                                width * 0.94,
+                                Math.max(
+                                    width * 0.12,
+                                    pointerDownInfo.clientX - rect.left
+                                )
+                            ),
+                            Math.min(
+                                height * 0.66,
+                                Math.max(
+                                    height * 0.05,
+                                    pointerDownInfo.clientY - rect.top
+                                )
+                            )
+                        );
+
+                        openWishOverlay();
+                    },
+                    620
+                );
         }
     );
 
@@ -2892,44 +3886,119 @@
         (
             event
         ) => {
+            window.clearTimeout(
+                longPressTimer
+            );
+
             if (
-                reducedMotion
-                || event.target
-                    .closest(
-                        "a"
-                    )
+                overlayOpen
+                || event.target.closest(
+                    "a,button,textarea"
+                )
             ) {
+                pointerDownInfo = null;
+                longPressTriggered = false;
                 return;
             }
 
+            if (
+                longPressTriggered
+            ) {
+                pointerDownInfo = null;
+                longPressTriggered = false;
+                return;
+            }
 
             const rect =
-                experience
-                    .getBoundingClientRect();
+                experience.getBoundingClientRect();
 
+            const clickX =
+                event.clientX - rect.left;
+            const clickY =
+                event.clientY - rect.top;
+
+            const starHit =
+                getHitSpecialStar(
+                    clickX,
+                    clickY
+                );
+
+            if (
+                starHit
+            ) {
+                discoverStar(
+                    starHit
+                );
+
+                pointerDownInfo = null;
+                return;
+            }
+
+            if (
+                Math.hypot(
+                    clickX - moonMetrics.x,
+                    clickY - moonMetrics.y
+                ) <= moonMetrics.radius * 1.15
+            ) {
+                triggerMoonWhisper();
+                pointerDownInfo = null;
+                return;
+            }
 
             spawnMeteor(
                 Math.min(
-                    width
-                    * 0.96,
+                    width * 0.96,
                     Math.max(
-                        width
-                        * 0.16,
-                        event.clientX
-                        - rect.left
+                        width * 0.16,
+                        clickX
                     )
                 ),
                 Math.min(
-                    height
-                    * 0.67,
+                    height * 0.67,
                     Math.max(
-                        height
-                        * 0.06,
-                        event.clientY
-                        - rect.top
+                        height * 0.06,
+                        clickY
                     )
                 )
             );
+
+            pointerDownInfo = null;
+        }
+    );
+
+
+    document.addEventListener(
+        "click",
+        (
+            event
+        ) => {
+            if (
+                event.target.matches(
+                    "[data-close-overlay]"
+                )
+            ) {
+                closeAnyOverlay();
+            }
+        }
+    );
+
+
+    saveWishButton?.addEventListener(
+        "click",
+        saveWish
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        (
+            event
+        ) => {
+            if (
+                event.key === "Escape"
+            ) {
+                closeAnyOverlay();
+            }
         }
     );
 
@@ -2975,6 +4044,8 @@
     // ======================================================
     // START
     // ======================================================
+
+    initializeLivingSkyState();
 
     resize();
 

@@ -1,0 +1,1161 @@
+/* =========================================================
+   RUANG CERITA — EDITORIAL LUXURY HOME LAYOUT V1
+
+   Purpose:
+   - Preserve the visual identity of every existing card.
+   - Replace the "one full-width card after another" rhythm.
+   - Desktop: editorial hierarchy and two-column zones.
+   - Mobile: premium horizontal snap galleries.
+   - Loaded AFTER home-platform.css + heartbeat-home.css.
+========================================================= */
+
+:root {
+    --editorial-ink: #34292b;
+    --editorial-rose: #b85b6d;
+    --editorial-rose-soft: #d99aaa;
+    --editorial-sage: #597663;
+    --editorial-line: rgba(77, 60, 57, 0.12);
+    --editorial-paper: rgba(255, 255, 255, 0.50);
+}
+
+
+/* =========================================================
+   PLATFORM FLOW
+========================================================= */
+
+.ruang-platform {
+    margin-bottom: 38px;
+}
+
+.ruang-platform-heading {
+    margin-bottom: 34px;
+}
+
+.universe-editorial-prelude {
+    margin:
+        0
+        4px
+        10px;
+
+    display: grid;
+    grid-template-columns:
+        auto
+        auto
+        minmax(60px, 1fr);
+
+    align-items: center;
+    gap: 11px;
+}
+
+.universe-editorial-number,
+.editorial-zone-number {
+    display: grid;
+    place-items: center;
+
+    width: 30px;
+    height: 30px;
+
+    border:
+        1px solid
+        rgba(184, 91, 109, 0.18);
+
+    border-radius: 50%;
+
+    color: var(--editorial-rose);
+
+    background:
+        rgba(255, 255, 255, 0.44);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    box-shadow:
+        0 7px 20px
+        rgba(85, 61, 57, 0.05);
+}
+
+.universe-editorial-prelude > div:nth-child(2) {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+}
+
+.universe-editorial-prelude p {
+    margin: 0;
+
+    color: var(--editorial-rose);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.universe-editorial-prelude
+> div:nth-child(2)
+> span {
+    color: #8d837d;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 11px;
+    font-style: italic;
+}
+
+.universe-editorial-line {
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(184, 91, 109, 0.17),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   ZONE HEADINGS
+========================================================= */
+
+.editorial-zone {
+    position: relative;
+
+    margin-top: 46px;
+}
+
+.editorial-zone-heading {
+    margin:
+        0
+        4px
+        13px;
+
+    display: grid;
+    grid-template-columns:
+        auto
+        minmax(0, auto)
+        1fr;
+
+    align-items: center;
+    gap: 11px;
+}
+
+.editorial-zone-heading-copy {
+    min-width: 0;
+}
+
+.editorial-zone-heading-copy p {
+    margin: 0;
+
+    color: var(--editorial-rose);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.editorial-zone-heading-copy h3 {
+    margin:
+        2px
+        0
+        0;
+
+    color: #635b57;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 12px;
+    font-weight: 600;
+    font-style: italic;
+
+    line-height: 1.35;
+}
+
+.editorial-zone-heading::after {
+    content: "";
+
+    height: 1px;
+
+    margin-left: 4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(184, 91, 109, 0.17),
+            transparent
+        );
+}
+
+.editorial-zone-heading-daily
+.editorial-zone-number {
+    border-color:
+        rgba(89, 118, 99, 0.18);
+
+    color: var(--editorial-sage);
+}
+
+.editorial-zone-heading-daily
+.editorial-zone-heading-copy p {
+    color: var(--editorial-sage);
+}
+
+.editorial-zone-heading-daily::after {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(89, 118, 99, 0.17),
+            transparent
+        );
+}
+
+.mobile-swipe-hint {
+    display: none;
+}
+
+
+/* =========================================================
+   HERO — OUR UNIVERSE
+========================================================= */
+
+.ruang-platform
+.universe-entry {
+    min-height: 350px;
+
+    margin-bottom: 0;
+
+    box-shadow:
+        0 35px 82px
+        rgba(64, 45, 47, 0.22);
+}
+
+.ruang-platform
+.universe-entry::after {
+    content: "01";
+
+    position: absolute;
+
+    right: 25px;
+    bottom: 20px;
+    z-index: 3;
+
+    color:
+        rgba(255, 248, 239, 0.14);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 38px;
+    font-weight: 600;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   SIGNATURE EDITORIAL GRID
+========================================================= */
+
+.signature-editorial-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 15px;
+
+    align-items: stretch;
+}
+
+.signature-editorial-grid
+> a {
+    min-width: 0;
+
+    margin: 0;
+}
+
+
+/* ---------------------------------------------------------
+   OUR STORY inside half-width editorial card
+--------------------------------------------------------- */
+
+.signature-editorial-grid
+.cinema-entry {
+    position: relative;
+
+    min-height: 455px;
+
+    padding: 31px;
+
+    display: block;
+
+    border-radius: 27px;
+}
+
+.signature-editorial-grid
+.cinema-entry-content {
+    position: relative;
+    z-index: 4;
+
+    max-width: 88%;
+
+    padding-bottom: 150px;
+}
+
+.signature-editorial-grid
+.cinema-entry h2 {
+    font-size:
+        clamp(
+            46px,
+            5vw,
+            58px
+        );
+}
+
+.signature-editorial-grid
+.cinema-entry-description {
+    max-width: 94%;
+
+    font-size: 11px;
+    line-height: 1.65;
+}
+
+.signature-editorial-grid
+.cinema-entry-meta {
+    max-width: 92%;
+}
+
+.signature-editorial-grid
+.cinema-entry-poster {
+    position: absolute;
+
+    right: 24px;
+    bottom: 23px;
+    z-index: 3;
+
+    width:
+        min(
+            45%,
+            205px
+        );
+
+    min-height: 126px;
+
+    justify-self: auto;
+
+    transform:
+        rotate(1.3deg);
+
+    box-shadow:
+        0 22px 43px
+        rgba(51, 30, 37, 0.18);
+
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
+}
+
+.signature-editorial-grid
+.cinema-entry:hover
+.cinema-entry-poster {
+    transform:
+        rotate(0deg)
+        translateY(-3px);
+
+    box-shadow:
+        0 27px 52px
+        rgba(51, 30, 37, 0.24);
+}
+
+.signature-editorial-grid
+.cinema-entry::after {
+    content: "02A";
+
+    position: absolute;
+
+    left: 30px;
+    bottom: 25px;
+
+    color:
+        rgba(82, 48, 58, 0.19);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+
+/* ---------------------------------------------------------
+   HEARTBEAT inside half-width editorial card
+--------------------------------------------------------- */
+
+.signature-editorial-grid
+.heartbeat-entry {
+    position: relative;
+
+    min-height: 455px;
+
+    padding: 31px;
+
+    display: block;
+
+    border-radius: 27px;
+}
+
+.signature-editorial-grid
+.heartbeat-entry-copy {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+    max-width: 92%;
+}
+
+.signature-editorial-grid
+.heartbeat-entry h2 {
+    font-size:
+        clamp(
+            46px,
+            5vw,
+            58px
+        );
+}
+
+.signature-editorial-grid
+.heartbeat-entry-description {
+    max-width: 84%;
+
+    font-size: 10.5px;
+    line-height: 1.68;
+}
+
+.signature-editorial-grid
+.heartbeat-entry-meta {
+    max-width: 82%;
+}
+
+.signature-editorial-grid
+.heartbeat-entry-art {
+    position: absolute;
+
+    right: -15px;
+    bottom: -18px;
+    z-index: 2;
+
+    width: 235px;
+    min-height: 235px;
+
+    opacity: 0.92;
+
+    pointer-events: none;
+
+    transition:
+        transform 0.30s ease,
+        opacity 0.30s ease;
+}
+
+.signature-editorial-grid
+.heartbeat-entry:hover
+.heartbeat-entry-art {
+    transform:
+        translate(
+            -5px,
+            -5px
+        )
+        scale(1.025);
+
+    opacity: 1;
+}
+
+.signature-editorial-grid
+.heartbeat-entry-orb {
+    width: 195px;
+}
+
+.signature-editorial-grid
+.heartbeat-entry::after {
+    content: "02B";
+
+    position: absolute;
+
+    left: 30px;
+    bottom: 25px;
+
+    color:
+        rgba(255, 248, 239, 0.12);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   DAILY EDITORIAL GRID
+========================================================= */
+
+.editorial-zone-daily {
+    margin-top: 50px;
+}
+
+.daily-editorial-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 15px;
+
+    align-items: stretch;
+}
+
+.daily-editorial-grid
+> a {
+    height: 100%;
+
+    margin: 0;
+
+    min-width: 0;
+    min-height: 265px;
+
+    border-radius: 24px;
+}
+
+
+/* ---------------------------------------------------------
+   Daily Check-in
+--------------------------------------------------------- */
+
+.daily-editorial-grid
+.daily-checkin-entry {
+    padding: 28px 27px;
+
+    grid-template-columns:
+        70px
+        minmax(0, 1fr);
+
+    gap: 20px;
+
+    align-items: center;
+}
+
+.daily-editorial-grid
+.daily-checkin-entry-icon {
+    width: 70px;
+    height: 70px;
+
+    border-radius: 22px;
+}
+
+.daily-editorial-grid
+.daily-checkin-entry-icon span {
+    font-size: 30px;
+}
+
+.daily-editorial-grid
+.daily-checkin-entry-content h2 {
+    font-size:
+        clamp(
+            31px,
+            3.5vw,
+            39px
+        );
+}
+
+.daily-editorial-grid
+.daily-checkin-entry-description {
+    max-width: 100%;
+
+    margin:
+        8px
+        0
+        13px;
+
+    font-size: 11px;
+    line-height: 1.60;
+}
+
+.daily-editorial-grid
+.daily-checkin-entry-meta {
+    margin-bottom: 14px;
+}
+
+.daily-editorial-grid
+.daily-checkin-entry-meta span {
+    padding:
+        5px
+        7px;
+
+    font-size: 9px;
+}
+
+.daily-editorial-grid
+.daily-checkin-entry-cta {
+    font-size: 10px;
+}
+
+
+/* ---------------------------------------------------------
+   Couple Pulse
+--------------------------------------------------------- */
+
+.daily-editorial-grid
+.couple-pulse-entry {
+    padding: 28px 27px;
+
+    grid-template-columns:
+        70px
+        minmax(0, 1fr);
+
+    gap: 20px;
+
+    align-items: center;
+}
+
+.daily-editorial-grid
+.couple-pulse-entry-icon {
+    width: 70px;
+    height: 70px;
+
+    border-radius: 22px;
+
+    font-size: 29px;
+}
+
+.daily-editorial-grid
+.couple-pulse-entry h2 {
+    max-width: 92%;
+
+    font-size:
+        clamp(
+            24px,
+            2.8vw,
+            31px
+        );
+
+    line-height: 1.18;
+}
+
+.daily-editorial-grid
+.couple-pulse-entry-description {
+    margin:
+        8px
+        0
+        13px;
+
+    font-size: 10.5px;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   WRITING TRANSITION
+========================================================= */
+
+.ruang-platform-divider {
+    position: relative;
+
+    margin-top: 52px;
+}
+
+.ruang-platform-divider::before,
+.ruang-platform-divider::after {
+    opacity: 0.82;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media screen and (max-width: 920px) {
+
+    .signature-editorial-grid
+    .cinema-entry-content {
+        max-width: 95%;
+    }
+
+    .signature-editorial-grid
+    .cinema-entry-description,
+    .signature-editorial-grid
+    .heartbeat-entry-description {
+        max-width: 100%;
+    }
+
+    .signature-editorial-grid
+    .heartbeat-entry-meta {
+        max-width: 100%;
+    }
+
+    .daily-editorial-grid
+    .daily-checkin-entry,
+    .daily-editorial-grid
+    .couple-pulse-entry {
+        padding: 24px 21px;
+
+        grid-template-columns: 1fr;
+
+        align-content: start;
+
+        gap: 14px;
+    }
+
+    .daily-editorial-grid
+    .daily-checkin-entry-icon,
+    .daily-editorial-grid
+    .couple-pulse-entry-icon {
+        width: 58px;
+        height: 58px;
+
+        border-radius: 18px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE — HORIZONTAL EDITORIAL GALLERIES
+========================================================= */
+
+@media screen and (max-width: 700px) {
+
+    .ruang-platform-heading {
+        margin-bottom: 27px;
+    }
+
+    .universe-editorial-prelude {
+        grid-template-columns:
+            auto
+            1fr;
+
+        margin-bottom: 9px;
+    }
+
+    .universe-editorial-line {
+        display: none;
+    }
+
+    .universe-editorial-prelude
+    > div:nth-child(2) {
+        display: block;
+    }
+
+    .universe-editorial-prelude
+    > div:nth-child(2)
+    > span {
+        display: block;
+
+        margin-top: 1px;
+
+        font-size: 10px;
+    }
+
+    .ruang-platform
+    .universe-entry {
+        min-height: 360px;
+    }
+
+
+    /* ---------------------------------------------
+       Zone heading
+    --------------------------------------------- */
+
+    .editorial-zone {
+        margin-top: 43px;
+    }
+
+    .editorial-zone-heading {
+        grid-template-columns:
+            auto
+            minmax(0, 1fr)
+            auto;
+
+        margin:
+            0
+            2px
+            12px;
+    }
+
+    .editorial-zone-heading::after {
+        display: none;
+    }
+
+    .editorial-zone-heading-copy h3 {
+        max-width: 250px;
+
+        font-size: 11px;
+    }
+
+    .mobile-swipe-hint {
+        display: block;
+
+        align-self: end;
+
+        padding-bottom: 2px;
+
+        color: #9a8e88;
+
+        font-size: 7px;
+        font-weight: 700;
+
+        white-space: nowrap;
+    }
+
+
+    /* ---------------------------------------------
+       Signature horizontal snap
+    --------------------------------------------- */
+
+    .signature-editorial-grid,
+    .daily-editorial-grid {
+        width:
+            calc(
+                100% + 20px
+            );
+
+        margin-left: -10px;
+
+        padding:
+            2px
+            10px
+            15px;
+
+        display: flex;
+
+        gap: 11px;
+
+        overflow-x: auto;
+        overflow-y: visible;
+
+        scroll-snap-type:
+            x mandatory;
+
+        scroll-padding:
+            10px;
+
+        overscroll-behavior-x:
+            contain;
+
+        scrollbar-width:
+            none;
+
+        -webkit-overflow-scrolling:
+            touch;
+    }
+
+    .signature-editorial-grid::-webkit-scrollbar,
+    .daily-editorial-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .signature-editorial-grid
+    > a {
+        flex:
+            0
+            0
+            min(
+                86vw,
+                410px
+            );
+
+        min-width: 0;
+
+        scroll-snap-align:
+            center;
+    }
+
+
+    /* ---------------------------------------------
+       Our Story mobile gallery card
+    --------------------------------------------- */
+
+    .signature-editorial-grid
+    .cinema-entry {
+        min-height: 430px;
+
+        padding: 27px 24px;
+
+        border-radius: 23px;
+    }
+
+    .signature-editorial-grid
+    .cinema-entry-content {
+        max-width: 100%;
+
+        padding-bottom: 146px;
+    }
+
+    .signature-editorial-grid
+    .cinema-entry h2 {
+        font-size: 47px;
+    }
+
+    .signature-editorial-grid
+    .cinema-entry-description {
+        max-width: 100%;
+    }
+
+    .signature-editorial-grid
+    .cinema-entry-poster {
+        right: 22px;
+        bottom: 21px;
+
+        width: 180px;
+        min-height: 117px;
+    }
+
+
+    /* ---------------------------------------------
+       Heartbeat mobile gallery card
+    --------------------------------------------- */
+
+    .signature-editorial-grid
+    .heartbeat-entry {
+        min-height: 430px;
+
+        padding: 27px 24px;
+
+        border-radius: 23px;
+    }
+
+    .signature-editorial-grid
+    .heartbeat-entry-copy {
+        max-width: 100%;
+    }
+
+    .signature-editorial-grid
+    .heartbeat-entry h2 {
+        font-size: 46px;
+    }
+
+    .signature-editorial-grid
+    .heartbeat-entry-description {
+        max-width: 100%;
+    }
+
+    .signature-editorial-grid
+    .heartbeat-entry-meta {
+        max-width: 100%;
+    }
+
+    .signature-editorial-grid
+    .heartbeat-entry-art {
+        right: -18px;
+        bottom: -17px;
+
+        width: 205px;
+        min-height: 205px;
+
+        opacity: 0.78;
+    }
+
+    .signature-editorial-grid
+    .heartbeat-entry-orb {
+        width: 170px;
+    }
+
+
+    /* ---------------------------------------------
+       Daily horizontal snap
+    --------------------------------------------- */
+
+    .editorial-zone-daily {
+        margin-top: 39px;
+    }
+
+    .daily-editorial-grid
+    > a {
+        flex:
+            0
+            0
+            min(
+                82vw,
+                370px
+            );
+
+        min-height: 286px;
+
+        scroll-snap-align:
+            center;
+    }
+
+    .daily-editorial-grid
+    .daily-checkin-entry,
+    .daily-editorial-grid
+    .couple-pulse-entry {
+        padding: 24px 22px;
+
+        display: grid;
+        grid-template-columns: 1fr;
+
+        gap: 13px;
+
+        align-content: start;
+    }
+
+    .daily-editorial-grid
+    .daily-checkin-entry-content h2 {
+        font-size: 34px;
+    }
+
+    .daily-editorial-grid
+    .couple-pulse-entry h2 {
+        max-width: 100%;
+
+        font-size: 27px;
+    }
+
+    .daily-editorial-grid
+    .daily-checkin-entry-description,
+    .daily-editorial-grid
+    .couple-pulse-entry-description {
+        font-size: 10.5px;
+    }
+
+    .daily-editorial-grid
+    .daily-checkin-entry-cta {
+        width: auto;
+
+        min-height: 0;
+        padding: 0;
+
+        justify-content: flex-start;
+
+        border-radius: 0;
+
+        color: #a9485f;
+        background: transparent;
+    }
+
+    .ruang-platform-divider {
+        margin-top: 35px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media screen and (max-width: 430px) {
+
+    .editorial-zone-number,
+    .universe-editorial-number {
+        width: 27px;
+        height: 27px;
+
+        font-size: 9px;
+    }
+
+    .editorial-zone-heading-copy p,
+    .universe-editorial-prelude p {
+        font-size: 7px;
+    }
+
+    .editorial-zone-heading-copy h3 {
+        font-size: 10px;
+    }
+
+    .mobile-swipe-hint {
+        font-size: 6.5px;
+    }
+
+    .signature-editorial-grid
+    > a {
+        flex-basis:
+            min(
+                88vw,
+                380px
+            );
+    }
+
+    .signature-editorial-grid
+    .cinema-entry,
+    .signature-editorial-grid
+    .heartbeat-entry {
+        min-height: 420px;
+
+        padding:
+            25px
+            21px;
+    }
+
+    .signature-editorial-grid
+    .cinema-entry h2,
+    .signature-editorial-grid
+    .heartbeat-entry h2 {
+        font-size: 42px;
+    }
+
+    .signature-editorial-grid
+    .cinema-entry-content {
+        padding-bottom: 142px;
+    }
+
+    .signature-editorial-grid
+    .cinema-entry-poster {
+        width: 168px;
+    }
+
+    .signature-editorial-grid
+    .heartbeat-entry-art {
+        width: 190px;
+        min-height: 190px;
+    }
+
+    .signature-editorial-grid
+    .heartbeat-entry-orb {
+        width: 155px;
+    }
+
+    .daily-editorial-grid
+    > a {
+        flex-basis:
+            min(
+                85vw,
+                345px
+            );
+
+        min-height: 290px;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY / REDUCED MOTION
+========================================================= */
+
+@media (
+    prefers-reduced-motion:
+    reduce
+) {
+
+    .signature-editorial-grid,
+    .daily-editorial-grid {
+        scroll-behavior: auto;
+    }
+}

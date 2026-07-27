@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
 
@@ -8,196 +9,389 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Detail Tulisan - Ruang Cerita</title>
-
-    <!-- Font modern dan estetik -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
+    <meta
+        name="theme-color"
+        content="#121426"
     >
 
+    <title>Membaca Cerita — Ruang Cerita</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap"
         rel="stylesheet"
     >
 
-    <!-- Menghubungkan ke file CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-luxury.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
 </head>
+
 
 <body>
 
-    <!-- Bagian atas website -->
-    <header class="header modern-header">
+    <div
+        id="readingProgress"
+        class="reading-progress"
+        aria-hidden="true"
+    ></div>
 
-        <!-- Ornamen latar header -->
-        <div class="dekorasi-header dekorasi-satu"></div>
-        <div class="dekorasi-header dekorasi-dua"></div>
 
-        <div class="container header-content">
+    <div class="celestial-background" aria-hidden="true">
 
-            <!-- Logo dan nama website -->
-            <div class="brand-area">
+        <div class="celestial-glow glow-one"></div>
+        <div class="celestial-glow glow-two"></div>
 
-                <div class="logo-ruang-cerita">
-                    <span>RC</span>
+        <div class="moon-crescent">
+            <div class="moon-crater crater-one"></div>
+            <div class="moon-crater crater-two"></div>
+            <div class="moon-crater crater-three"></div>
+        </div>
+
+        <div class="cloud cloud-left-one"></div>
+        <div class="cloud cloud-left-two"></div>
+        <div class="cloud cloud-right-one"></div>
+        <div class="cloud cloud-right-two"></div>
+
+        <div
+            id="starField"
+            class="star-field"
+        ></div>
+
+        <svg
+            class="constellation constellation-left"
+            viewBox="0 0 320 210"
+            aria-hidden="true"
+        >
+            <g class="constellation-lines">
+                <path d="M38 141 L92 104 L145 126 L191 72 L254 92" />
+                <path d="M92 104 L112 52" />
+                <path d="M145 126 L177 166" />
+            </g>
+
+            <g class="constellation-points">
+                <circle cx="38" cy="141" r="2.4" />
+                <circle cx="92" cy="104" r="3" />
+                <circle cx="145" cy="126" r="2.5" />
+                <circle cx="191" cy="72" r="3.1" />
+                <circle cx="254" cy="92" r="2.3" />
+                <circle cx="112" cy="52" r="2.3" />
+                <circle cx="177" cy="166" r="2.2" />
+            </g>
+        </svg>
+
+        <svg
+            class="constellation constellation-right"
+            viewBox="0 0 330 240"
+            aria-hidden="true"
+        >
+            <g class="constellation-lines">
+                <path d="M52 70 L111 96 L165 64 L211 117 L278 93" />
+                <path d="M111 96 L89 153 L153 184 L211 117" />
+            </g>
+
+            <g class="constellation-points">
+                <circle cx="52" cy="70" r="2.4" />
+                <circle cx="111" cy="96" r="3" />
+                <circle cx="165" cy="64" r="2.5" />
+                <circle cx="211" cy="117" r="3.1" />
+                <circle cx="278" cy="93" r="2.3" />
+                <circle cx="89" cy="153" r="2.3" />
+                <circle cx="153" cy="184" r="2.2" />
+            </g>
+        </svg>
+
+    </div>
+
+
+    <header class="reading-topbar">
+
+        <div class="topbar-inner">
+
+            <a
+                href="index.html"
+                class="reading-brand"
+                aria-label="Kembali ke Ruang Cerita"
+            >
+                <span class="brand-mark">
+                    <span>✦</span>
+                </span>
+
+                <span class="brand-copy">
+                    <small>GALIH × WISYE</small>
+                    <strong>Ruang Cerita</strong>
+                </span>
+            </a>
+
+
+            <nav
+                class="reading-nav"
+                aria-label="Navigasi Ruang Cerita"
+            >
+                <a href="index.html">
+                    Beranda
+                </a>
+
+                <a href="universe.html">
+                    Our Universe
+                </a>
+
+                <a href="our-story.html">
+                    Our Story
+                </a>
+
+                <span class="nav-current">
+                    Cerita
+                </span>
+            </nav>
+
+
+            <div class="topbar-actions">
+
+                <div class="music-dock">
+
+                    <div class="music-now">
+
+                        <span class="music-equalizer" aria-hidden="true">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </span>
+
+                        <div>
+                            <small>READING SOUNDTRACK</small>
+
+                            <strong
+                                id="musicTitle"
+                                class="music-title"
+                            >
+                                Memuat lagu...
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="music-actions">
+
+                        <button
+                            type="button"
+                            id="prevMusic"
+                            class="music-mini-button"
+                            aria-label="Lagu sebelumnya"
+                            title="Lagu sebelumnya"
+                        >
+                            ‹
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="musicToggle"
+                            class="music-main-button"
+                            aria-label="Putar atau jeda musik"
+                        >
+                            <span id="musicIcon">
+                                ▶
+                            </span>
+
+                            <span
+                                id="musicText"
+                                class="visually-hidden"
+                            >
+                                Putar
+                            </span>
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="nextMusic"
+                            class="music-mini-button"
+                            aria-label="Lagu berikutnya"
+                            title="Lagu berikutnya"
+                        >
+                            ›
+                        </button>
+
+                    </div>
+
+
+                    <details class="music-options">
+
+                        <summary
+                            aria-label="Pengaturan musik"
+                            title="Pengaturan musik"
+                        >
+                            ⋯
+                        </summary>
+
+                        <div class="music-options-panel">
+
+                            <label>
+                                <span>Lagu</span>
+
+                                <select
+                                    id="musicSelect"
+                                    aria-label="Pilih lagu"
+                                ></select>
+                            </label>
+
+
+                            <label>
+                                <span>Volume</span>
+
+                                <input
+                                    type="range"
+                                    id="musicVolume"
+                                    min="0"
+                                    max="1"
+                                    step="0.05"
+                                    value="0.35"
+                                    aria-label="Volume musik"
+                                >
+                            </label>
+
+                        </div>
+
+                    </details>
+
                 </div>
 
-                <div class="brand-text">
 
-                    <p class="header-label">
-                        Personal Writing Space
-                    </p>
-
-                    <h1>Ruang Cerita</h1>
-
-                    <p class="header-description">
-                        Baca kembali cerita, pemikiran,
-                        dan pengalaman yang telah kamu simpan.
-                    </p>
-                    <button 
-    id="logoutButton"
-    class="logout-button"
-    type="button"
->
-    🔒 Keluar
-</button>
-
-                </div>
+                <button
+                    id="logoutButton"
+                    class="logout-button-reading"
+                    type="button"
+                    title="Keluar dari Ruang Cerita"
+                    aria-label="Keluar dari Ruang Cerita"
+                >
+                    ⌁
+                </button>
 
             </div>
 
-            <!-- Tombol musik -->
-            <!-- Pemutar musik -->
-<div class="music-area">
-
-    <div class="music-player">
-
-        <p class="music-caption">
-            Musik untuk menemani membaca
-        </p>
-
-        <p id="musicTitle" class="music-title">
-            Memuat lagu...
-        </p>
-
-        <div class="music-controls">
-
-            <button
-                type="button"
-                id="prevMusic"
-                class="music-control-button"
-                aria-label="Lagu sebelumnya"
-                title="Lagu sebelumnya"
-            >
-                ⏮
-            </button>
-
-            <button
-                type="button"
-                id="musicToggle"
-                class="music-button"
-                aria-label="Putar atau jeda musik"
-            >
-                <span id="musicIcon" class="music-icon">
-                    ▶
-                </span>
-
-                <span id="musicText">
-                    Putar
-                </span>
-            </button>
-
-            <button
-                type="button"
-                id="nextMusic"
-                class="music-control-button"
-                aria-label="Lagu berikutnya"
-                title="Lagu berikutnya"
-            >
-                ⏭
-            </button>
-
         </div>
 
-        <select
-            id="musicSelect"
-            class="music-select"
-            aria-label="Pilih lagu"
-        >
-            <!-- Pilihan lagu dibuat oleh musik.js -->
-        </select>
+    </header>
 
-        <label class="volume-control">
 
-            <span>Volume</span>
+    <main class="reading-shell">
 
-            <input
-                type="range"
-                id="musicVolume"
-                min="0"
-                max="1"
-                step="0.05"
-                value="0.35"
-                aria-label="Volume musik"
+        <section class="reading-toolbar">
+
+            <a
+                href="index.html"
+                class="back-to-stories"
+            >
+                <span>←</span>
+                Kembali ke Daftar Tulisan
+            </a>
+
+
+            <div class="toolbar-right">
+
+                <a
+                    href="universe.html"
+                    class="toolbar-link"
+                >
+                    ✦ Lihat Semesta
+                </a>
+
+                <a
+                    href="our-story.html"
+                    class="toolbar-link"
+                >
+                    🎞 Ruang Sinema
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <section class="celestial-reading-frame">
+
+            <div
+                class="frame-star frame-star-one"
+                aria-hidden="true"
+            >
+                ✦
+            </div>
+
+            <div
+                class="frame-star frame-star-two"
+                aria-hidden="true"
+            >
+                ✧
+            </div>
+
+            <div
+                class="frame-star frame-star-three"
+                aria-hidden="true"
+            >
+                ·
+            </div>
+
+
+            <article
+                id="detailTulisan"
+                class="story-paper"
             >
 
-        </label>
+                <div class="story-loading">
 
-    </div>
+                    <span>✦</span>
+
+                    <p>
+                        Membuka cerita dari semesta kalian...
+                    </p>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <section class="reading-epilogue">
+
+            <span class="epilogue-icon">
+                ✦
+            </span>
+
+            <blockquote>
+                “Setiap cerita adalah satu cahaya kecil
+                yang membuat semesta kalian semakin terang.”
+            </blockquote>
+
+            <div class="epilogue-line">
+                <span></span>
+                <b>♥</b>
+                <span></span>
+            </div>
+
+            <p>
+                RUANG CERITA · GALIH × WISYE
+            </p>
+
+        </section>
+
+    </main>
+
 
     <audio
         id="backgroundMusic"
         preload="metadata"
     ></audio>
 
-</div>
 
-        </div>
-
-    </header>
-
-    <!-- Isi utama halaman -->
-    <main class="container">
-
-        <section class="detail-section">
-
-            <!-- Tombol kembali -->
-            <a
-                href="index.html"
-                class="btn-kembali"
-            >
-                ← Kembali ke Daftar Tulisan
-            </a>
-
-            <!-- Tempat isi tulisan ditampilkan -->
-            <article
-                id="detailTulisan"
-                class="detail-tulisan"
-            >
-                <p class="status-detail">
-                    Sedang membuka tulisan...
-                </p>
-            </article>
-
-        </section>
-
-    </main>
-
-    <!-- Library Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- Konfigurasi koneksi Supabase -->
-<script src="supabase-config.js"></script>
-
-<!-- Sistem detail tulisan -->
-<script src="detail.js"></script>
-
-<!-- Pemutar musik -->
-<script src="musik.js"></script>
+    <script src="detail.js"></script>
+    <script src="musik.js"></script>
 
 </body>
+
 </html>

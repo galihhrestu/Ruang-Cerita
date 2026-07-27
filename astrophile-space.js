@@ -271,49 +271,27 @@
     const wishesKey =
         `${storagePrefix}.wishes`;
 
-    const specialStars = {
-        constellation: [
-            {
-                id: "constellation-1",
-                label: "Star I",
-                x: 0.24,
-                y: 0.26
-            },
-            {
-                id: "constellation-2",
-                label: "Star II",
-                x: 0.31,
-                y: 0.19
-            },
-            {
-                id: "constellation-3",
-                label: "Star III",
-                x: 0.38,
-                y: 0.25
-            },
-            {
-                id: "constellation-4",
-                label: "Star IV",
-                x: 0.32,
-                y: 0.33
-            }
-        ],
+    let specialStars = {
+        constellation:
+            [],
 
-        twin: [
-            {
-                id: "galih-star",
-                label: "Galih",
-                x: 0.63,
-                y: 0.17
-            },
-            {
-                id: "wisye-star",
-                label: "Wisye",
-                x: 0.84,
-                y: 0.20
-            }
-        ]
+        twin:
+            []
     };
+
+
+    let specialLayoutReady =
+        false;
+
+
+    let specialLayoutViewport = {
+        width:
+            0,
+
+        height:
+            0
+    };
+
 
     let foundConstellation =
         new Set();
@@ -453,43 +431,37 @@
 
 
     function initializeLivingSkyState() {
+        /*
+         * Discoveries are intentionally session-only.
+         * Every refresh / new visit starts with a fresh sky:
+         * 0/4 constellation, 0/2 twin stars, and new positions.
+         */
         foundConstellation =
-            new Set(
-                loadStoredArray(
-                    constellationKey
-                )
-            );
+            new Set();
+
 
         foundTwinStars =
-            new Set(
-                loadStoredArray(
-                    twinStarsKey
-                )
-            );
+            new Set();
 
+
+        /*
+         * Wishes remain personal memories and therefore stay stored.
+         */
         wishes =
             loadStoredArray(
                 wishesKey
             );
+
 
         syncLivingSkyUI();
     }
 
 
     function persistDiscoveries() {
-        saveStoredArray(
-            constellationKey,
-            Array.from(
-                foundConstellation
-            )
-        );
-
-        saveStoredArray(
-            twinStarsKey,
-            Array.from(
-                foundTwinStars
-            )
-        );
+        /*
+         * Intentionally not persisted.
+         * Constellation + Our Two Stars reset on every refresh.
+         */
     }
 
 
@@ -750,6 +722,536 @@
     }
 
 
+    function freshRandom() {
+        if (
+            window.crypto
+            && typeof window.crypto.getRandomValues
+                === "function"
+        ) {
+            const values =
+                new Uint32Array(
+                    1
+                );
+
+
+            window.crypto.getRandomValues(
+                values
+            );
+
+
+            return (
+                values[0]
+                / 4294967295
+            );
+        }
+
+
+        return Math.random();
+    }
+
+
+    function freshRange(
+        min,
+        max
+    ) {
+        return (
+            min
+            + freshRandom()
+            * (
+                max
+                - min
+            )
+        );
+    }
+
+
+    function normalizedRect(
+        element,
+        padding = 0
+    ) {
+        if (
+            !element
+            || width <= 0
+            || height <= 0
+        ) {
+            return null;
+        }
+
+
+        const rect =
+            element
+                .getBoundingClientRect();
+
+
+        const experienceRect =
+            experience
+                .getBoundingClientRect();
+
+
+        return {
+            left:
+                (
+                    rect.left
+                    - experienceRect.left
+                    - padding
+                )
+                / width,
+
+            right:
+                (
+                    rect.right
+                    - experienceRect.left
+                    + padding
+                )
+                / width,
+
+            top:
+                (
+                    rect.top
+                    - experienceRect.top
+                    - padding
+                )
+                / height,
+
+            bottom:
+                (
+                    rect.bottom
+                    - experienceRect.top
+                    + padding
+                )
+                / height
+        };
+    }
+
+
+    function isPointInsideRect(
+        point,
+        rect
+    ) {
+        if (!rect) {
+            return false;
+        }
+
+
+        return (
+            point.x
+            >= rect.left
+            && point.x
+            <= rect.right
+            && point.y
+            >= rect.top
+            && point.y
+            <= rect.bottom
+        );
+    }
+
+
+    function getForbiddenSpecialStarRects() {
+        const copy =
+            document.querySelector(
+                ".astrophile-experience-copy"
+            );
+
+
+        const topbar =
+            document.querySelector(
+                ".astrophile-experience-topbar"
+            );
+
+
+        const living =
+            document.querySelector(
+                ".astrophile-living-panel"
+            );
+
+
+        const signature =
+            document.querySelector(
+                ".astrophile-bottom-signature"
+            );
+
+
+        return [
+            normalizedRect(
+                copy,
+                mobile()
+                    ? 22
+                    : 30
+            ),
+
+            normalizedRect(
+                topbar,
+                18
+            ),
+
+            normalizedRect(
+                living,
+                mobile()
+                    ? 18
+                    : 24
+            ),
+
+            normalizedRect(
+                signature,
+                12
+            )
+        ].filter(
+            Boolean
+        );
+    }
+
+
+    function isSafeSpecialPoint(
+        point,
+        existing = []
+    ) {
+        const edgeX =
+            mobile()
+                ? 0.065
+                : 0.045;
+
+
+        const minY =
+            mobile()
+                ? 0.30
+                : 0.14;
+
+
+        const maxY =
+            mobile()
+                ? 0.71
+                : 0.70;
+
+
+        if (
+            point.x < edgeX
+            || point.x > 1 - edgeX
+            || point.y < minY
+            || point.y > maxY
+        ) {
+            return false;
+        }
+
+
+        const forbidden =
+            getForbiddenSpecialStarRects();
+
+
+        if (
+            forbidden.some(
+                (
+                    rect
+                ) =>
+                    isPointInsideRect(
+                        point,
+                        rect
+                    )
+            )
+        ) {
+            return false;
+        }
+
+
+        /*
+         * Keep discoveries out of the moon itself.
+         */
+        if (
+            moonMetrics.radius > 0
+        ) {
+            const px =
+                point.x
+                * width;
+
+
+            const py =
+                point.y
+                * height;
+
+
+            if (
+                Math.hypot(
+                    px
+                    - moonMetrics.x,
+                    py
+                    - moonMetrics.y
+                )
+                < moonMetrics.radius
+                    * 1.65
+            ) {
+                return false;
+            }
+        }
+
+
+        /*
+         * Prevent special stars from collapsing into each other.
+         */
+        const minimumDistance =
+            mobile()
+                ? 0.085
+                : 0.065;
+
+
+        if (
+            existing.some(
+                (
+                    star
+                ) =>
+                    Math.hypot(
+                        point.x
+                        - star.x,
+                        point.y
+                        - star.y
+                    )
+                    < minimumDistance
+            )
+        ) {
+            return false;
+        }
+
+
+        return true;
+    }
+
+
+    function findSafeSpecialPoint(
+        existing = []
+    ) {
+        for (
+            let attempt = 0;
+            attempt < 180;
+            attempt++
+        ) {
+            const candidate = {
+                x:
+                    freshRange(
+                        mobile()
+                            ? 0.10
+                            : 0.07,
+                        mobile()
+                            ? 0.90
+                            : 0.93
+                    ),
+
+                y:
+                    freshRange(
+                        mobile()
+                            ? 0.34
+                            : 0.17,
+                        mobile()
+                            ? 0.66
+                            : 0.66
+                    )
+            };
+
+
+            if (
+                isSafeSpecialPoint(
+                    candidate,
+                    existing
+                )
+            ) {
+                return candidate;
+            }
+        }
+
+
+        /*
+         * Rare fallback — still deliberately below the title zone.
+         */
+        return {
+            x:
+                freshRange(
+                    0.18,
+                    0.82
+                ),
+
+            y:
+                freshRange(
+                    mobile()
+                        ? 0.48
+                        : 0.42,
+                    mobile()
+                        ? 0.61
+                        : 0.60
+                )
+        };
+    }
+
+
+    function generateSpecialStarLayout() {
+        const all =
+            [];
+
+
+        const constellation =
+            [];
+
+
+        for (
+            let index = 0;
+            index < 4;
+            index++
+        ) {
+            const point =
+                findSafeSpecialPoint(
+                    all
+                );
+
+
+            const star = {
+                id:
+                    `constellation-${
+                        index
+                        + 1
+                    }`,
+
+                label:
+                    `Star ${
+                        index
+                        + 1
+                    }`,
+
+                x:
+                    point.x,
+
+                y:
+                    point.y
+            };
+
+
+            constellation.push(
+                star
+            );
+
+
+            all.push(
+                star
+            );
+        }
+
+
+        const twin =
+            [];
+
+
+        for (
+            let index = 0;
+            index < 2;
+            index++
+        ) {
+            const point =
+                findSafeSpecialPoint(
+                    all
+                );
+
+
+            const star = {
+                id:
+                    index === 0
+                        ? "galih-star"
+                        : "wisye-star",
+
+                label:
+                    index === 0
+                        ? "Galih"
+                        : "Wisye",
+
+                x:
+                    point.x,
+
+                y:
+                    point.y
+            };
+
+
+            twin.push(
+                star
+            );
+
+
+            all.push(
+                star
+            );
+        }
+
+
+        specialStars = {
+            constellation,
+            twin
+        };
+
+
+        /*
+         * Discoveries must always start disconnected on a fresh load.
+         */
+        foundConstellation.clear();
+        foundTwinStars.clear();
+
+
+        specialLayoutReady =
+            true;
+
+
+        specialLayoutViewport = {
+            width,
+            height
+        };
+
+
+        syncLivingSkyUI();
+    }
+
+
+    function ensureSpecialStarLayout() {
+        if (
+            !specialLayoutReady
+        ) {
+            generateSpecialStarLayout();
+
+            return;
+        }
+
+
+        /*
+         * Only rebuild after a major orientation/viewport shift.
+         * Normal mobile browser chrome resizing should not move stars.
+         */
+        const widthChange =
+            Math.abs(
+                width
+                - specialLayoutViewport.width
+            )
+            / Math.max(
+                1,
+                specialLayoutViewport.width
+            );
+
+
+        const heightChange =
+            Math.abs(
+                height
+                - specialLayoutViewport.height
+            )
+            / Math.max(
+                1,
+                specialLayoutViewport.height
+            );
+
+
+        if (
+            (
+                widthChange > 0.28
+                || heightChange > 0.28
+            )
+            && foundConstellation.size === 0
+            && foundTwinStars.size === 0
+        ) {
+            generateSpecialStarLayout();
+        }
+    }
+
+
     function getSpecialStarPosition(
         star
     ) {
@@ -772,6 +1274,19 @@
         x,
         y
     ) {
+        ensureSpecialStarLayout();
+
+
+        if (
+            specialStars.constellation.length
+            !== 4
+            || specialStars.twin.length
+            !== 2
+        ) {
+            return null;
+        }
+
+
         const all = [
             ...specialStars.constellation.map(
                 (
@@ -1141,6 +1656,15 @@
 
 
         buildScene();
+
+
+        /*
+         * Generate discovery stars only after the real viewport and
+         * DOM-safe zones are known.
+         */
+        window.requestAnimationFrame(
+            ensureSpecialStarLayout
+        );
     }
 
 
@@ -1873,6 +2397,19 @@
     function drawInteractiveStars(
         time
     ) {
+        ensureSpecialStarLayout();
+
+
+        if (
+            specialStars.constellation.length
+            !== 4
+            || specialStars.twin.length
+            !== 2
+        ) {
+            return;
+        }
+
+
         drawInteractiveLines();
 
         const allStars = [

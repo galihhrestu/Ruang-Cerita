@@ -2240,3 +2240,1295 @@ summary b {
             0.01ms !important;
     }
 }
+
+
+/* =========================================================
+   V2 — LIVING NIGHT SKY
+   Visual atmosphere only.
+   No changes to header layout, typography, music, CTA, or content.
+========================================================= */
+
+/* ---------------------------------------------------------
+   Entire original star field now has a slow celestial drift.
+--------------------------------------------------------- */
+
+.celestial-hero-stars {
+    will-change: transform;
+
+    animation:
+        rcNightStarfieldDrift
+        34s ease-in-out
+        infinite alternate;
+}
+
+@keyframes rcNightStarfieldDrift {
+    0% {
+        transform:
+            translate3d(
+                -4px,
+                -2px,
+                0
+            )
+            scale(1.01);
+    }
+
+    50% {
+        transform:
+            translate3d(
+                8px,
+                5px,
+                0
+            )
+            scale(1.018);
+    }
+
+    100% {
+        transform:
+            translate3d(
+                -2px,
+                9px,
+                0
+            )
+            scale(1.012);
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Moon becomes brighter, deeper, and continuously moving.
+--------------------------------------------------------- */
+
+.celestial-hero-moon {
+    opacity: 0.88;
+
+    filter:
+        saturate(0.86)
+        brightness(1.08);
+
+    box-shadow:
+        0 0 28px
+        rgba(255, 235, 195, 0.48),
+        0 0 88px
+        rgba(250, 212, 161, 0.28),
+        0 0 170px
+        rgba(226, 173, 120, 0.17);
+
+    will-change:
+        transform,
+        filter;
+
+    animation:
+        rcMoonVoyage
+        16s ease-in-out
+        infinite;
+}
+
+.celestial-hero-moon::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -42%;
+
+    z-index: -2;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 237, 202, 0.19) 0%,
+            rgba(243, 198, 145, 0.085) 29%,
+            transparent 68%
+        );
+
+    filter: blur(7px);
+
+    animation:
+        rcMoonHaloBreath
+        6.8s ease-in-out
+        infinite;
+}
+
+@keyframes rcMoonVoyage {
+
+    0%,
+    100% {
+        transform:
+            translate3d(
+                calc(
+                    var(--hero-parallax-x, 0px)
+                    - 4px
+                ),
+                calc(
+                    var(--hero-parallax-y, 0px)
+                    - 3px
+                ),
+                0
+            )
+            rotate(-1deg);
+    }
+
+    32% {
+        transform:
+            translate3d(
+                calc(
+                    var(--hero-parallax-x, 0px)
+                    + 12px
+                ),
+                calc(
+                    var(--hero-parallax-y, 0px)
+                    + 9px
+                ),
+                0
+            )
+            rotate(1.1deg);
+    }
+
+    67% {
+        transform:
+            translate3d(
+                calc(
+                    var(--hero-parallax-x, 0px)
+                    - 9px
+                ),
+                calc(
+                    var(--hero-parallax-y, 0px)
+                    + 14px
+                ),
+                0
+            )
+            rotate(-0.6deg);
+    }
+}
+
+@keyframes rcMoonHaloBreath {
+
+    0%,
+    100% {
+        opacity: 0.52;
+        transform: scale(0.93);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Original orbit lines actually rotate and breathe now.
+--------------------------------------------------------- */
+
+.orbit-alpha {
+    animation:
+        rcOrbitAlpha
+        26s linear
+        infinite;
+}
+
+.orbit-beta {
+    animation:
+        rcOrbitBeta
+        31s linear
+        infinite reverse;
+}
+
+.orbit-gamma {
+    animation:
+        rcOrbitGamma
+        39s linear
+        infinite;
+}
+
+@keyframes rcOrbitAlpha {
+    from {
+        transform:
+            rotate(-18deg)
+            scale(0.98);
+    }
+
+    50% {
+        transform:
+            rotate(162deg)
+            scale(1.03);
+    }
+
+    to {
+        transform:
+            rotate(342deg)
+            scale(0.98);
+    }
+}
+
+@keyframes rcOrbitBeta {
+    from {
+        transform:
+            rotate(26deg)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            rotate(206deg)
+            scale(0.96);
+    }
+
+    to {
+        transform:
+            rotate(386deg)
+            scale(1);
+    }
+}
+
+@keyframes rcOrbitGamma {
+    from {
+        transform:
+            rotate(9deg);
+    }
+
+    to {
+        transform:
+            rotate(369deg);
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Constellation quietly wanders across the night.
+--------------------------------------------------------- */
+
+.celestial-hero-constellation {
+    will-change:
+        transform,
+        opacity;
+
+    animation:
+        rcConstellationDrift
+        22s ease-in-out
+        infinite alternate;
+}
+
+@keyframes rcConstellationDrift {
+
+    0% {
+        opacity: 0.13;
+
+        transform:
+            translate3d(
+                -9px,
+                4px,
+                0
+            )
+            rotate(-1.2deg);
+    }
+
+    50% {
+        opacity: 0.22;
+
+        transform:
+            translate3d(
+                9px,
+                -7px,
+                0
+            )
+            rotate(0.8deg);
+    }
+
+    100% {
+        opacity: 0.16;
+
+        transform:
+            translate3d(
+                17px,
+                5px,
+                0
+            )
+            rotate(-0.3deg);
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Grain itself moves almost imperceptibly.
+--------------------------------------------------------- */
+
+.celestial-hero-grain {
+    inset: -8%;
+
+    animation:
+        rcCosmicGrain
+        8s steps(7)
+        infinite;
+}
+
+@keyframes rcCosmicGrain {
+
+    0% {
+        transform:
+            translate3d(
+                -2%,
+                -1%,
+                0
+            );
+    }
+
+    25% {
+        transform:
+            translate3d(
+                2%,
+                1%,
+                0
+            );
+    }
+
+    50% {
+        transform:
+            translate3d(
+                -1%,
+                2%,
+                0
+            );
+    }
+
+    75% {
+        transform:
+            translate3d(
+                1%,
+                -2%,
+                0
+            );
+    }
+
+    100% {
+        transform:
+            translate3d(
+                -2%,
+                -1%,
+                0
+            );
+    }
+}
+
+
+/* =========================================================
+   DYNAMIC NIGHT OBJECT LAYER
+========================================================= */
+
+.rc-living-night {
+    position: absolute;
+
+    inset: 0;
+    z-index: 1;
+
+    overflow: hidden;
+
+    pointer-events: none;
+
+    contain:
+        layout
+        paint;
+
+    --sky-pointer-x: 0px;
+    --sky-pointer-y: 0px;
+}
+
+
+/* =========================================================
+   LUNAR AURA
+========================================================= */
+
+.rc-lunar-aura {
+    position: absolute;
+
+    width:
+        clamp(
+            330px,
+            31vw,
+            530px
+        );
+
+    aspect-ratio: 1;
+
+    right:
+        clamp(
+            70px,
+            10vw,
+            190px
+        );
+
+    top: -205px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 238, 202, 0.15),
+            rgba(229, 183, 134, 0.065) 32%,
+            transparent 70%
+        );
+
+    filter: blur(4px);
+
+    mix-blend-mode: screen;
+
+    will-change: transform;
+
+    animation:
+        rcLunarAuraFloat
+        19s ease-in-out
+        infinite;
+}
+
+@keyframes rcLunarAuraFloat {
+
+    0%,
+    100% {
+        transform:
+            translate3d(
+                -8px,
+                -5px,
+                0
+            )
+            scale(0.94);
+    }
+
+    50% {
+        transform:
+            translate3d(
+                18px,
+                14px,
+                0
+            )
+            scale(1.08);
+    }
+}
+
+
+/* =========================================================
+   SATURN — restrained editorial planet
+========================================================= */
+
+.rc-saturn {
+    position: absolute;
+
+    width: 46px;
+    height: 46px;
+
+    right: 4.8%;
+    bottom: 15%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #f4d4a8 0%,
+            #bd8d74 42%,
+            #71545b 78%,
+            #382f42 100%
+        );
+
+    box-shadow:
+        inset
+        -8px
+        -8px
+        13px
+        rgba(36, 25, 36, 0.34),
+        0 0 19px
+        rgba(229, 188, 142, 0.16);
+
+    opacity: 0.72;
+
+    will-change:
+        transform,
+        opacity;
+
+    animation:
+        rcSaturnVoyage
+        21s ease-in-out
+        infinite;
+}
+
+.rc-saturn::before,
+.rc-saturn::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    border-radius: 50%;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        )
+        rotate(-18deg);
+}
+
+.rc-saturn::before {
+    width: 82px;
+    height: 22px;
+
+    border:
+        2px solid
+        rgba(224, 190, 155, 0.42);
+
+    box-shadow:
+        0 0 13px
+        rgba(224, 190, 155, 0.08);
+}
+
+.rc-saturn::after {
+    width: 70px;
+    height: 15px;
+
+    border:
+        1px solid
+        rgba(255, 230, 194, 0.16);
+}
+
+@keyframes rcSaturnVoyage {
+
+    0%,
+    100% {
+        opacity: 0.56;
+
+        transform:
+            translate3d(
+                calc(
+                    var(--sky-pointer-x)
+                    - 8px
+                ),
+                calc(
+                    var(--sky-pointer-y)
+                    + 5px
+                ),
+                0
+            )
+            rotate(-2deg);
+    }
+
+    35% {
+        opacity: 0.82;
+
+        transform:
+            translate3d(
+                calc(
+                    var(--sky-pointer-x)
+                    + 10px
+                ),
+                calc(
+                    var(--sky-pointer-y)
+                    - 15px
+                ),
+                0
+            )
+            rotate(2deg);
+    }
+
+    70% {
+        opacity: 0.66;
+
+        transform:
+            translate3d(
+                calc(
+                    var(--sky-pointer-x)
+                    + 20px
+                ),
+                calc(
+                    var(--sky-pointer-y)
+                    + 10px
+                ),
+                0
+            )
+            rotate(-1deg);
+    }
+}
+
+
+/* =========================================================
+   WANDERING PLANET
+========================================================= */
+
+.rc-wandering-planet {
+    position: absolute;
+
+    width: 21px;
+    height: 21px;
+
+    left: 58%;
+    bottom: 18%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 34% 28%,
+            #d2dfd3,
+            #829b8b 42%,
+            #40584f 74%,
+            #172721 100%
+        );
+
+    box-shadow:
+        inset
+        -5px
+        -4px
+        8px
+        rgba(4, 12, 9, 0.48),
+        0 0 17px
+        rgba(171, 202, 181, 0.13);
+
+    opacity: 0.58;
+
+    will-change:
+        transform,
+        opacity;
+
+    animation:
+        rcPlanetWander
+        28s ease-in-out
+        infinite;
+}
+
+.rc-wandering-planet::after {
+    content: "";
+
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+
+    left: 27%;
+    top: 22%;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.16);
+}
+
+@keyframes rcPlanetWander {
+
+    0%,
+    100% {
+        opacity: 0.38;
+
+        transform:
+            translate3d(
+                -25px,
+                15px,
+                0
+            );
+    }
+
+    28% {
+        opacity: 0.66;
+
+        transform:
+            translate3d(
+                18px,
+                -9px,
+                0
+            );
+    }
+
+    61% {
+        opacity: 0.50;
+
+        transform:
+            translate3d(
+                48px,
+                13px,
+                0
+            );
+    }
+
+    82% {
+        opacity: 0.70;
+
+        transform:
+            translate3d(
+                12px,
+                28px,
+                0
+            );
+    }
+}
+
+
+/* =========================================================
+   VENUS / BRIGHT NIGHT PLANET
+========================================================= */
+
+.rc-venus {
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    left: 49%;
+    top: 18%;
+
+    border-radius: 50%;
+
+    background:
+        #fff4d7;
+
+    box-shadow:
+        0 0 5px
+        rgba(255, 243, 216, 0.95),
+        0 0 16px
+        rgba(255, 224, 185, 0.54),
+        0 0 34px
+        rgba(238, 178, 159, 0.24);
+
+    will-change:
+        transform,
+        opacity;
+
+    animation:
+        rcVenusFloat
+        13s ease-in-out
+        infinite;
+}
+
+@keyframes rcVenusFloat {
+
+    0%,
+    100% {
+        opacity: 0.58;
+
+        transform:
+            translate3d(
+                -5px,
+                0,
+                0
+            )
+            scale(0.85);
+    }
+
+    48% {
+        opacity: 1;
+
+        transform:
+            translate3d(
+                11px,
+                10px,
+                0
+            )
+            scale(1.28);
+    }
+}
+
+
+/* =========================================================
+   TINY DISTANT MOON / CELESTIAL PEARL
+========================================================= */
+
+.rc-celestial-pearl {
+    position: absolute;
+
+    width: 12px;
+    height: 12px;
+
+    left: 7%;
+    top: 21%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 37% 33%,
+            #fff4df,
+            #cbbda9 51%,
+            #716f72 100%
+        );
+
+    box-shadow:
+        0 0 12px
+        rgba(247, 226, 197, 0.16);
+
+    opacity: 0.40;
+
+    will-change: transform;
+
+    animation:
+        rcCelestialPearl
+        23s ease-in-out
+        infinite alternate;
+}
+
+@keyframes rcCelestialPearl {
+
+    from {
+        transform:
+            translate3d(
+                0,
+                -8px,
+                0
+            );
+    }
+
+    to {
+        transform:
+            translate3d(
+                25px,
+                12px,
+                0
+            );
+    }
+}
+
+
+/* =========================================================
+   COSMIC DUST PARTICLES
+========================================================= */
+
+.rc-cosmic-dust {
+    position: absolute;
+    inset: 0;
+}
+
+.rc-dust-particle {
+    position: absolute;
+
+    width: var(--dust-size);
+    height: var(--dust-size);
+
+    left: var(--dust-left);
+    top: var(--dust-top);
+
+    border-radius: 50%;
+
+    background:
+        rgba(
+            255,
+            237,
+            212,
+            var(--dust-alpha)
+        );
+
+    box-shadow:
+        0 0 6px
+        rgba(
+            236,
+            198,
+            168,
+            calc(
+                var(--dust-alpha)
+                * 0.40
+            )
+        );
+
+    will-change:
+        transform,
+        opacity;
+
+    animation:
+        rcDustTravel
+        var(--dust-duration)
+        ease-in-out
+        infinite alternate;
+
+    animation-delay:
+        var(--dust-delay);
+}
+
+@keyframes rcDustTravel {
+
+    from {
+        opacity: 0.16;
+
+        transform:
+            translate3d(
+                -8px,
+                4px,
+                0
+            );
+    }
+
+    50% {
+        opacity: 0.78;
+    }
+
+    to {
+        opacity: 0.25;
+
+        transform:
+            translate3d(
+                22px,
+                -15px,
+                0
+            );
+    }
+}
+
+
+/* =========================================================
+   PREMIUM COMETS
+========================================================= */
+
+.rc-night-comet {
+    position: absolute;
+
+    width: var(--comet-length);
+    height: 1px;
+
+    left: var(--comet-left);
+    top: var(--comet-top);
+
+    opacity: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(230, 191, 178, 0.12) 43%,
+            rgba(255, 239, 213, 0.87) 100%
+        );
+
+    filter:
+        drop-shadow(
+            0
+            0
+            4px
+            rgba(250, 216, 184, 0.34)
+        );
+
+    transform:
+        rotate(var(--comet-angle));
+
+    transform-origin:
+        right center;
+
+    will-change:
+        transform,
+        opacity;
+
+    animation:
+        rcNightComet
+        var(--comet-duration)
+        linear
+        infinite;
+
+    animation-delay:
+        var(--comet-delay);
+}
+
+.rc-night-comet::after {
+    content: "";
+
+    position: absolute;
+
+    width: 3px;
+    height: 3px;
+
+    right: -1px;
+    top: -1px;
+
+    border-radius: 50%;
+
+    background:
+        #fff7e6;
+
+    box-shadow:
+        0 0 9px
+        rgba(255, 238, 208, 0.82);
+}
+
+@keyframes rcNightComet {
+
+    0%,
+    78% {
+        opacity: 0;
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            rotate(var(--comet-angle));
+    }
+
+    80% {
+        opacity: 0.10;
+    }
+
+    83% {
+        opacity: 0.88;
+    }
+
+    90% {
+        opacity: 0;
+
+        transform:
+            translate3d(
+                -190px,
+                105px,
+                0
+            )
+            rotate(var(--comet-angle));
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   STAR CLUSTERS
+========================================================= */
+
+.rc-star-cluster {
+    position: absolute;
+
+    width: 70px;
+    height: 70px;
+
+    opacity: 0.50;
+
+    will-change: transform;
+
+    animation:
+        rcClusterFloat
+        var(--cluster-duration)
+        ease-in-out
+        infinite alternate;
+}
+
+.rc-star-cluster span {
+    position: absolute;
+
+    width: var(--cluster-size);
+    height: var(--cluster-size);
+
+    left: var(--cluster-x);
+    top: var(--cluster-y);
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 240, 217, 0.76);
+
+    box-shadow:
+        0 0 7px
+        rgba(255, 224, 191, 0.27);
+
+    animation:
+        rcClusterTwinkle
+        var(--cluster-twinkle)
+        ease-in-out
+        infinite;
+
+    animation-delay:
+        var(--cluster-delay);
+}
+
+.rc-cluster-one {
+    left: 41%;
+    bottom: 7%;
+
+    --cluster-duration: 18s;
+}
+
+.rc-cluster-two {
+    right: 19%;
+    top: 17%;
+
+    --cluster-duration: 23s;
+
+    transform: scale(0.72);
+}
+
+@keyframes rcClusterFloat {
+
+    from {
+        transform:
+            translate3d(
+                -6px,
+                8px,
+                0
+            )
+            rotate(-2deg);
+    }
+
+    to {
+        transform:
+            translate3d(
+                16px,
+                -10px,
+                0
+            )
+            rotate(4deg);
+    }
+}
+
+@keyframes rcClusterTwinkle {
+
+    0%,
+    100% {
+        opacity: 0.26;
+        transform: scale(0.72);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.18);
+    }
+}
+
+
+/* =========================================================
+   MOBILE LIVING SKY
+========================================================= */
+
+@media screen and (max-width: 760px) {
+
+    .celestial-hero-moon {
+        opacity: 0.72;
+
+        box-shadow:
+            0 0 25px
+            rgba(255, 235, 195, 0.40),
+            0 0 74px
+            rgba(250, 212, 161, 0.22),
+            0 0 125px
+            rgba(226, 173, 120, 0.13);
+    }
+
+    .rc-lunar-aura {
+        width: 300px;
+
+        right: -100px;
+        top: -126px;
+
+        opacity: 0.72;
+    }
+
+    .rc-saturn {
+        width: 31px;
+        height: 31px;
+
+        right: 9%;
+        bottom: 34%;
+
+        opacity: 0.54;
+    }
+
+    .rc-saturn::before {
+        width: 56px;
+        height: 16px;
+
+        border-width: 1px;
+    }
+
+    .rc-saturn::after {
+        width: 48px;
+        height: 11px;
+    }
+
+    .rc-wandering-planet {
+        width: 15px;
+        height: 15px;
+
+        left: 79%;
+        bottom: 13%;
+
+        opacity: 0.46;
+    }
+
+    .rc-venus {
+        left: 61%;
+        top: 15%;
+    }
+
+    .rc-celestial-pearl {
+        left: 8%;
+        top: 36%;
+
+        width: 9px;
+        height: 9px;
+    }
+
+    .rc-cluster-one {
+        left: 40%;
+        bottom: 31%;
+
+        transform: scale(0.70);
+    }
+
+    .rc-cluster-two {
+        display: none;
+    }
+
+    .rc-night-comet:nth-of-type(even) {
+        display: none;
+    }
+
+    .orbit-alpha,
+    .orbit-beta {
+        opacity: 0.72;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE — keep it elegant, never crowded
+========================================================= */
+
+@media screen and (max-width: 390px) {
+
+    .rc-saturn {
+        right: 6%;
+        bottom: 30%;
+
+        opacity: 0.45;
+    }
+
+    .rc-wandering-planet {
+        display: none;
+    }
+
+    .rc-celestial-pearl {
+        top: 41%;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+    prefers-reduced-motion:
+    reduce
+) {
+
+    .celestial-hero-stars,
+    .celestial-hero-moon,
+    .celestial-hero-moon::before,
+    .celestial-hero-orbit,
+    .celestial-hero-constellation,
+    .celestial-hero-grain,
+    .rc-lunar-aura,
+    .rc-saturn,
+    .rc-wandering-planet,
+    .rc-venus,
+    .rc-celestial-pearl,
+    .rc-dust-particle,
+    .rc-night-comet,
+    .rc-star-cluster,
+    .rc-star-cluster span {
+        animation:
+            none !important;
+    }
+}

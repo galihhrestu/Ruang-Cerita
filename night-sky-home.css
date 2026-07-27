@@ -1,0 +1,622 @@
+/* =========================================================
+   RUANG CERITA — ASTROPHILE'S WINDOW V1
+   "The Night Above Us"
+
+   Homepage-only immersive night-sky landscape.
+   Designed to live after Writing World.
+========================================================= */
+
+:root {
+    --sky-window-night:
+        #07101f;
+
+    --sky-window-indigo:
+        #11152d;
+
+    --sky-window-violet:
+        #21172d;
+
+    --sky-window-ivory:
+        #fff7eb;
+
+    --sky-window-rose:
+        #e7b4c3;
+
+    --sky-window-gold:
+        #e2c18e;
+
+    --sky-window-sage:
+        #9bb6a9;
+}
+
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.editorial-zone-night-sky {
+    margin-top: 55px;
+
+    padding-bottom: 28px;
+}
+
+.editorial-zone-heading-night
+.editorial-zone-number {
+    color: #687e94;
+
+    border-color:
+        rgba(104, 126, 148, 0.18);
+}
+
+.editorial-zone-heading-night
+.editorial-zone-heading-copy p {
+    color: #687e94;
+}
+
+.editorial-zone-heading-night::after {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(86, 113, 142, 0.19),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   WINDOW
+========================================================= */
+
+.astrophile-window {
+    position: relative;
+    isolation: isolate;
+
+    min-height:
+        clamp(
+            470px,
+            48vw,
+            610px
+        );
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255, 247, 235, 0.11);
+
+    border-radius: 31px;
+
+    color:
+        var(--sky-window-ivory);
+
+    background:
+        linear-gradient(
+            180deg,
+            #081226 0%,
+            #10152c 42%,
+            #211728 100%
+        );
+
+    box-shadow:
+        0 38px 105px
+        rgba(22, 24, 45, 0.25);
+
+    cursor:
+        crosshair;
+
+    user-select: none;
+
+    -webkit-tap-highlight-color:
+        transparent;
+}
+
+.astrophile-window::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 42%,
+            rgba(1, 4, 13, 0.12) 72%,
+            rgba(1, 3, 10, 0.44) 100%
+        );
+}
+
+.astrophile-window::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+
+    pointer-events: none;
+
+    opacity: 0.21;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.21'/%3E%3C/svg%3E");
+
+    mix-blend-mode:
+        soft-light;
+}
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+.astrophile-sky-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+}
+
+
+/* =========================================================
+   INNER FRAME
+========================================================= */
+
+.astrophile-window-frame {
+    position: absolute;
+    inset: 14px;
+    z-index: 5;
+
+    border:
+        1px solid
+        rgba(255, 247, 235, 0.075);
+
+    border-radius: 20px;
+
+    pointer-events: none;
+}
+
+.astrophile-window-frame::before,
+.astrophile-window-frame::after {
+    content: "";
+
+    position: absolute;
+
+    width: 22px;
+    height: 22px;
+
+    border-color:
+        rgba(255, 235, 213, 0.23);
+
+    border-style: solid;
+}
+
+.astrophile-window-frame::before {
+    left: 16px;
+    top: 16px;
+
+    border-width:
+        1px
+        0
+        0
+        1px;
+}
+
+.astrophile-window-frame::after {
+    right: 16px;
+    bottom: 16px;
+
+    border-width:
+        0
+        1px
+        1px
+        0;
+}
+
+
+/* =========================================================
+   SMALL EDITORIAL COPY
+   The sky remains the main visual.
+========================================================= */
+
+.astrophile-window-copy {
+    position: absolute;
+
+    left:
+        clamp(
+            30px,
+            4vw,
+            55px
+        );
+
+    top:
+        clamp(
+            31px,
+            4vw,
+            50px
+        );
+
+    z-index: 8;
+
+    max-width: 500px;
+
+    pointer-events: none;
+}
+
+.astrophile-window-kicker {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.astrophile-window-kicker span {
+    color:
+        var(--sky-window-rose);
+
+    font-size: 8px;
+}
+
+.astrophile-window-kicker p {
+    margin: 0;
+
+    color:
+        rgba(255, 247, 235, 0.52);
+
+    font-size: 6px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.astrophile-window-title {
+    margin-top: 13px;
+}
+
+.astrophile-window-title h2 {
+    margin: 0;
+
+    color:
+        rgba(255, 248, 238, 0.91);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            47px,
+            6.4vw,
+            75px
+        );
+
+    font-weight: 600;
+
+    line-height: 0.91;
+
+    letter-spacing:
+        -3.4px;
+
+    text-shadow:
+        0 8px 38px
+        rgba(0, 0, 0, 0.25);
+}
+
+.astrophile-window-title h2 span {
+    display: block;
+
+    margin-left:
+        clamp(
+            27px,
+            4vw,
+            58px
+        );
+}
+
+.astrophile-window-title > p {
+    margin:
+        13px
+        0
+        0;
+
+    color:
+        var(--sky-window-gold);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            12px,
+            1.5vw,
+            16px
+        );
+
+    font-style: italic;
+}
+
+
+/* =========================================================
+   SKY STATUS
+========================================================= */
+
+.astrophile-window-status {
+    position: absolute;
+
+    right:
+        clamp(
+            27px,
+            4vw,
+            50px
+        );
+
+    top:
+        clamp(
+            29px,
+            4vw,
+            48px
+        );
+
+    z-index: 8;
+
+    display: grid;
+    grid-template-columns:
+        auto
+        48px
+        auto;
+
+    align-items: center;
+    gap: 8px;
+
+    color:
+        rgba(255, 247, 235, 0.30);
+
+    pointer-events: none;
+}
+
+.astrophile-window-status span {
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+
+    white-space: nowrap;
+}
+
+.astrophile-window-status
+.astrophile-sky-mood {
+    color:
+        rgba(227, 197, 221, 0.66);
+
+    transition:
+        color 1s ease;
+}
+
+.astrophile-window-status i {
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 247, 235, 0.03),
+            rgba(255, 247, 235, 0.18),
+            rgba(255, 247, 235, 0.03)
+        );
+}
+
+
+/* =========================================================
+   BOTTOM SIGNATURE
+========================================================= */
+
+.astrophile-window-signature {
+    position: absolute;
+
+    left: 50%;
+    bottom: 26px;
+
+    z-index: 8;
+
+    width:
+        min(
+            450px,
+            52%
+        );
+
+    display: grid;
+    grid-template-columns:
+        auto
+        1fr
+        auto;
+
+    align-items: center;
+    gap: 10px;
+
+    color:
+        rgba(255, 247, 235, 0.25);
+
+    transform:
+        translateX(-50%);
+
+    pointer-events: none;
+}
+
+.astrophile-window-signature span,
+.astrophile-window-signature small {
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.15em;
+
+    white-space: nowrap;
+}
+
+.astrophile-window-signature span {
+    color:
+        rgba(231, 180, 195, 0.42);
+}
+
+.astrophile-window-signature i {
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 247, 235, 0.14),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 700px) {
+
+    .editorial-zone-night-sky {
+        margin-top: 44px;
+
+        padding-bottom: 17px;
+    }
+
+    .astrophile-window {
+        min-height:
+            clamp(
+                510px,
+                139vw,
+                610px
+            );
+
+        border-radius: 24px;
+
+        cursor: default;
+    }
+
+    .astrophile-window-frame {
+        inset: 9px;
+
+        border-radius: 16px;
+    }
+
+    .astrophile-window-copy {
+        left: 22px;
+        top: 24px;
+
+        max-width:
+            calc(
+                100% - 44px
+            );
+    }
+
+    .astrophile-window-kicker p {
+        font-size: 5.5px;
+    }
+
+    .astrophile-window-title {
+        margin-top: 10px;
+    }
+
+    .astrophile-window-title h2 {
+        font-size:
+            clamp(
+                44px,
+                14vw,
+                59px
+            );
+
+        letter-spacing:
+            -2.5px;
+    }
+
+    .astrophile-window-title h2 span {
+        margin-left: 25px;
+    }
+
+    .astrophile-window-title > p {
+        margin-top: 10px;
+
+        font-size: 12px;
+    }
+
+    .astrophile-window-status {
+        top: auto;
+
+        left: 22px;
+        right: auto;
+        bottom: 48px;
+
+        grid-template-columns:
+            auto
+            25px
+            auto;
+    }
+
+    .astrophile-window-status span {
+        font-size: 4.7px;
+    }
+
+    .astrophile-window-signature {
+        width:
+            calc(
+                100% - 44px
+            );
+
+        bottom: 22px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media screen and (max-width: 390px) {
+
+    .astrophile-window {
+        min-height: 520px;
+    }
+
+    .astrophile-window-copy {
+        left: 19px;
+        top: 22px;
+    }
+
+    .astrophile-window-title h2 {
+        font-size: 43px;
+    }
+
+    .astrophile-window-status {
+        left: 19px;
+    }
+
+    .astrophile-window-signature {
+        width:
+            calc(
+                100% - 38px
+            );
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+    prefers-reduced-motion:
+    reduce
+) {
+
+    .astrophile-window {
+        cursor: default;
+    }
+}

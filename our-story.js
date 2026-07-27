@@ -2028,7 +2028,7 @@ function dailyCaption(scene) {
         return {
             main: "Not every day had to be easy.",
             sub:
-                "Yang penting kalian tetap datang dan saling melihat."
+                "Yang penting kita tetap datang dan saling melihat."
         };
     }
 
@@ -2059,7 +2059,7 @@ function dailyCaption(scene) {
             "Another little day, kept forever.",
 
         sub:
-            "Satu hari biasa yang sekarang menjadi bagian dari cerita kalian."
+            "Satu hari biasa yang sekarang menjadi bagian dari cerita kita."
     };
 }
 

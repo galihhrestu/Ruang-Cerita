@@ -1059,7 +1059,7 @@ function buildDayModel(
             "FOUND OUR WAY BACK";
 
         description =
-            "Hari ini sempat terlewat, lalu kalian kembali dan membentuk ritmenya bersama.";
+            "Hari ini sempat terlewat, lalu kita kembali dan membentuk ritmenya bersama.";
     }
 
 
@@ -1209,7 +1209,7 @@ function dailyNarrative(
             === data.wisye.need_today
     ) {
         text +=
-            `Kalian juga sama-sama memilih “${data.galih.need_today}” sebagai hal yang dibutuhkan. `;
+            `kita juga sama-sama memilih “${data.galih.need_today}” sebagai hal yang dibutuhkan. `;
     }
 
 
@@ -3959,7 +3959,7 @@ async function start() {
 
 
         els.introStatus.textContent =
-            "Ritme ditemukan. Selamat datang di ruang kalian.";
+            "Ritme ditemukan. Selamat datang di ruang kita.";
 
 
         setTimeout(

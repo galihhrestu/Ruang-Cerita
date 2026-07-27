@@ -1582,7 +1582,7 @@ function renderDailyDetail(node) {
         ? "❤️‍🩹 RESTORED DAY"
         : "🌙 DAILY CHECK-IN";
 
-    els.detailTitle.textContent = "Hari kalian";
+    els.detailTitle.textContent = "Hari kita";
     els.detailDate.textContent = formatDateID(node.date);
 
     els.detailContent.innerHTML = `
@@ -1594,7 +1594,7 @@ function renderDailyDetail(node) {
         <p class="detail-copy">
             ${
                 node.restored
-                    ? "Hari ini sempat terlewat, lalu kalian pulihkan bersama."
+                    ? "Hari ini sempat terlewat, lalu kita pulihkan bersama."
                     : "Satu hari ketika Galih dan Wisye sama-sama menyelesaikan Daily Check-in."
             }
         </p>
@@ -1681,7 +1681,7 @@ function renderPulseDetail(node) {
                         <div class="detail-divider"></div>
 
                         <p class="detail-copy">
-                            Hal yang paling sering kalian butuhkan:
+                            Hal yang paling sering kita butuhkan:
                             <strong>${escapeHTML(pulse.common_need)}</strong>.
                         </p>
                     `
@@ -2083,7 +2083,7 @@ async function start() {
 
     try {
         els.introStatus.textContent =
-            "Mengumpulkan cerita, hari, dan pulse kalian...";
+            "Mengumpulkan cerita, hari, dan pulse kita...";
 
         const [
             stories,
@@ -2117,7 +2117,7 @@ async function start() {
         render();
 
         els.introStatus.textContent =
-            `${allNodes.length} momen ditemukan. Selamat datang di semesta kalian.`;
+            `${allNodes.length} momen ditemukan. Selamat datang di semesta kita.`;
 
         setTimeout(
             hideIntro,

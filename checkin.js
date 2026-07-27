@@ -361,7 +361,7 @@ function renderTodayStatus(data) {
 
     if (data.today_complete) {
         els.todayStatusMessage.textContent =
-            "Hari ini lengkap ❤️ Kalian berdua sudah check-in.";
+            "Hari ini lengkap ❤️ kita berdua sudah check-in.";
     } else if (data.own_submitted) {
         els.todayStatusMessage.textContent =
             `Check-in kamu sudah tersimpan. Menunggu ${data.partner}...`;

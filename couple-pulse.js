@@ -550,22 +550,22 @@ function buildMonthStory(data) {
         );
 
     let title =
-        `${month} kalian`;
+        `${month} kita`;
 
     let text = "";
 
     if (complete === 0) {
         text =
             "Bulan ini belum memiliki hari check-in yang lengkap. "
-            + "Tidak apa-apa—Pulse akan mulai terbentuk begitu kalian berdua kembali mengisi.";
+            + "Tidak apa-apa—Pulse akan mulai terbentuk begitu kita berdua kembali mengisi.";
     } else if (percent >= 90) {
         text =
-            `Kalian benar-benar hadir untuk satu sama lain bulan ini. `
+            `kita benar-benar hadir untuk satu sama lain bulan ini. `
             + `${complete} hari check-in bersama selesai, `
             + `dengan longest streak ${longest} hari.`;
     } else if (percent >= 70) {
         text =
-            `${complete} hari berhasil kalian lengkapi bersama. `
+            `${complete} hari berhasil kita lengkapi bersama. `
             + `Ritmenya sudah terasa kuat, dan setiap check-in kecil ikut membentuk cerita bulan ini.`;
     } else {
         text =
@@ -585,7 +585,7 @@ function buildMonthStory(data) {
 
     if (need) {
         text +=
-            ` Hal yang paling sering kalian butuhkan adalah “${need}”.`;
+            ` Hal yang paling sering kita butuhkan adalah “${need}”.`;
     }
 
     return {

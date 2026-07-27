@@ -366,3 +366,213 @@
             );
     }
 }
+
+
+/* =========================================================
+   V3 — ASTROPHILE'S SPACE PORTAL
+========================================================= */
+
+body.astrophile-space-open {
+    overflow: hidden;
+}
+
+.astrophile-space-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    background: #07101f;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.34s ease,
+        visibility 0.34s ease;
+}
+
+.astrophile-space-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.astrophile-space-overlay-frame {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    border: 0;
+
+    background: #07101f;
+
+    opacity: 0;
+
+    transform: scale(1.012);
+
+    transition:
+        opacity 0.42s ease,
+        transform 0.58s cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        );
+}
+
+.astrophile-space-overlay.ready
+.astrophile-space-overlay-frame {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.astrophile-space-overlay-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    display: grid;
+    place-items: center;
+
+    overflow: hidden;
+
+    color:
+        rgba(255, 247, 235, 0.68);
+
+    background:
+        radial-gradient(
+            circle at 72% 25%,
+            rgba(240, 211, 170, 0.12),
+            transparent 24%
+        ),
+        radial-gradient(
+            circle at 42% 38%,
+            rgba(90, 132, 125, 0.11),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            #061023,
+            #10152d 55%,
+            #181522
+        );
+
+    transition:
+        opacity 0.45s ease,
+        visibility 0.45s ease;
+}
+
+.astrophile-space-overlay.ready
+.astrophile-space-overlay-loading {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.astrophile-space-overlay-loading::before {
+    content: "";
+
+    position: absolute;
+
+    width: min(54vw, 620px);
+    aspect-ratio: 1;
+
+    right: -12vw;
+    top: -24vw;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 239, 205, 0.15),
+            rgba(233, 194, 148, 0.05) 36%,
+            transparent 69%
+        );
+
+    animation:
+        astrophilePortalMoonBreath
+        4.8s ease-in-out
+        infinite;
+}
+
+.astrophile-space-overlay-loading-inner {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    justify-items: center;
+    gap: 9px;
+
+    text-align: center;
+}
+
+.astrophile-space-overlay-loading-inner > span {
+    color: #e8b7c5;
+    font-size: 10px;
+
+    animation:
+        astrophilePortalStar
+        2.4s ease-in-out
+        infinite;
+}
+
+.astrophile-space-overlay-loading-inner small {
+    font-size: 6px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+.astrophile-space-overlay-loading-inner strong {
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(23px, 4vw, 39px);
+
+    font-weight: 500;
+}
+
+@keyframes astrophilePortalMoonBreath {
+    0%,
+    100% {
+        opacity: 0.55;
+        transform:
+            translate3d(0, 0, 0)
+            scale(0.94);
+    }
+
+    50% {
+        opacity: 1;
+        transform:
+            translate3d(-8px, 8px, 0)
+            scale(1.05);
+    }
+}
+
+@keyframes astrophilePortalStar {
+    0%,
+    100% {
+        opacity: 0.40;
+        transform: scale(0.80);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.14);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .astrophile-space-overlay,
+    .astrophile-space-overlay-frame,
+    .astrophile-space-overlay-loading,
+    .astrophile-space-overlay-loading::before,
+    .astrophile-space-overlay-loading-inner > span {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+    }
+}

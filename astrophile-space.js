@@ -71,6 +71,46 @@
             <= 700;
 
 
+    const embeddedMode =
+        new URLSearchParams(
+            window.location.search
+        )
+            .get(
+                "embedded"
+            )
+            === "1";
+
+
+    const backButton =
+        document.querySelector(
+            ".astrophile-back"
+        );
+
+
+    if (
+        embeddedMode
+        && backButton
+    ) {
+        backButton.addEventListener(
+            "click",
+            (
+                event
+            ) => {
+                event.preventDefault();
+
+
+                window.parent.postMessage(
+                    {
+                        type:
+                            "ASTROPHILE_SPACE_CLOSE"
+                    },
+                    window.location.origin
+                );
+            }
+        );
+    }
+
+
     let width =
         1;
 
@@ -113,6 +153,12 @@
 
     let meteors =
         [];
+
+    let birdFlocks =
+        [];
+
+    let nextBirdAt =
+        16;
 
     let mountainPoints =
         [];
@@ -1081,13 +1127,13 @@
         }
 
 
-        // Deliberately slow: a full lunar visual cycle every 96 seconds.
+        // Calm-night pacing: one full artistic lunar cycle every 8 minutes.
         return (
             (
                 time
-                % 96
+                % 480
             )
-            / 96
+            / 480
         );
     }
 
@@ -1968,6 +2014,410 @@
 
 
     // ======================================================
+    // OCCASIONAL NIGHT BIRDS
+    // Rare silhouette flocks. Quiet, slow, and never crowded.
+    // ======================================================
+
+    function spawnBirdFlock() {
+        const direction =
+            random()
+            > 0.5
+                ? 1
+                : -1;
+
+
+        const count =
+            mobile()
+                ? Math.floor(
+                    randomRange(
+                        2,
+                        4
+                    )
+                )
+                : Math.floor(
+                    randomRange(
+                        3,
+                        6
+                    )
+                );
+
+
+        const speed =
+            mobile()
+                ? randomRange(
+                    18,
+                    29
+                )
+                : randomRange(
+                    26,
+                    42
+                );
+
+
+        const baseY =
+            randomRange(
+                height
+                * 0.36,
+                height
+                * 0.58
+            );
+
+
+        const startX =
+            direction > 0
+                ? -55
+                : width + 55;
+
+
+        const birds =
+            [];
+
+
+        for (
+            let index = 0;
+            index < count;
+            index++
+        ) {
+            const row =
+                Math.floor(
+                    index
+                    / 2
+                );
+
+
+            const side =
+                index % 2
+                    ? 1
+                    : -1;
+
+
+            birds.push({
+                offsetX:
+                    row
+                    * 23
+                    + 4,
+
+                offsetY:
+                    side
+                    * (
+                        7
+                        + row
+                        * 5
+                    )
+                    + randomRange(
+                        -3,
+                        3
+                    ),
+
+                size:
+                    randomRange(
+                        mobile()
+                            ? 4.4
+                            : 5.2,
+                        mobile()
+                            ? 6.6
+                            : 8.6
+                    ),
+
+                phase:
+                    randomRange(
+                        0,
+                        Math.PI
+                        * 2
+                    ),
+
+                flapSpeed:
+                    randomRange(
+                        1.6,
+                        2.5
+                    )
+            });
+        }
+
+
+        birdFlocks.push({
+            x:
+                startX,
+
+            y:
+                baseY,
+
+            direction,
+
+            speed,
+
+            birds,
+
+            life:
+                0,
+
+            maxLife:
+                (
+                    width
+                    + 180
+                )
+                / speed
+                + 4,
+
+            alpha:
+                randomRange(
+                    0.34,
+                    0.54
+                ),
+
+            verticalPhase:
+                randomRange(
+                    0,
+                    Math.PI
+                    * 2
+                )
+        });
+    }
+
+
+    function updateBirdFlocks(
+        delta,
+        time
+    ) {
+        for (
+            const flock
+            of birdFlocks
+        ) {
+            flock.life +=
+                delta;
+
+
+            flock.x +=
+                flock.direction
+                * flock.speed
+                * delta;
+
+
+            flock.y +=
+                Math.sin(
+                    time
+                    * 0.22
+                    + flock.verticalPhase
+                )
+                * delta
+                * 1.6;
+        }
+
+
+        birdFlocks =
+            birdFlocks.filter(
+                (
+                    flock
+                ) =>
+                    flock.life
+                    < flock.maxLife
+            );
+    }
+
+
+    function drawBird(
+        x,
+        y,
+        size,
+        wing,
+        direction,
+        alpha
+    ) {
+        context.save();
+
+
+        context.translate(
+            x,
+            y
+        );
+
+
+        if (
+            direction < 0
+        ) {
+            context.scale(
+                -1,
+                1
+            );
+        }
+
+
+        context.lineCap =
+            "round";
+
+        context.lineJoin =
+            "round";
+
+        context.lineWidth =
+            Math.max(
+                0.85,
+                size
+                * 0.16
+            );
+
+
+        context.strokeStyle =
+            rgba(
+                4,
+                7,
+                13,
+                alpha
+            );
+
+
+        const lift =
+            size
+            * (
+                0.26
+                + wing
+                * 0.17
+            );
+
+
+        context.beginPath();
+
+        context.moveTo(
+            0,
+            0
+        );
+
+        context.quadraticCurveTo(
+            -size
+            * 0.48,
+            -lift,
+            -size,
+            -size
+            * 0.12
+        );
+
+        context.stroke();
+
+
+        context.beginPath();
+
+        context.moveTo(
+            0,
+            0
+        );
+
+        context.quadraticCurveTo(
+            size
+            * 0.48,
+            -lift,
+            size,
+            -size
+            * 0.12
+        );
+
+        context.stroke();
+
+
+        context.beginPath();
+
+        context.moveTo(
+            -size
+            * 0.16,
+            0
+        );
+
+        context.lineTo(
+            size
+            * 0.22,
+            size
+            * 0.05
+        );
+
+        context.stroke();
+
+
+        context.restore();
+    }
+
+
+    function drawBirdFlocks(
+        time
+    ) {
+        for (
+            const flock
+            of birdFlocks
+        ) {
+            const progress =
+                Math.min(
+                    1,
+                    flock.life
+                    / Math.max(
+                        flock.maxLife,
+                        0.001
+                    )
+                );
+
+
+            const fade =
+                Math.min(
+                    1,
+                    progress
+                    / 0.10,
+                    (
+                        1
+                        - progress
+                    )
+                    / 0.10
+                );
+
+
+            const alpha =
+                Math.max(
+                    0,
+                    fade
+                )
+                * flock.alpha;
+
+
+            flock.birds.forEach(
+                (
+                    bird,
+                    index
+                ) => {
+                    const wing =
+                        Math.sin(
+                            time
+                            * bird.flapSpeed
+                            + bird.phase
+                        );
+
+
+                    const x =
+                        flock.x
+                        - flock.direction
+                        * bird.offsetX;
+
+
+                    const y =
+                        flock.y
+                        + bird.offsetY
+                        + Math.sin(
+                            time
+                            * 0.38
+                            + index
+                        )
+                        * 1.4;
+
+
+                    drawBird(
+                        x,
+                        y,
+                        bird.size,
+                        wing,
+                        flock.direction,
+                        alpha
+                    );
+                }
+            );
+        }
+    }
+
+
+    // ======================================================
     // EARTH HORIZON
     // ======================================================
 
@@ -2275,6 +2725,7 @@
         drawPlanets(time);
         drawMoon(time);
         drawClouds(time);
+        drawBirdFlocks(time);
         drawMeteors();
         drawEarth(time);
     }
@@ -2333,6 +2784,32 @@
 
                 updateMeteors(
                     delta
+                );
+
+
+                if (
+                    elapsed
+                    >= nextBirdAt
+                ) {
+                    spawnBirdFlock();
+
+
+                    nextBirdAt =
+                        elapsed
+                        + randomRange(
+                            mobile()
+                                ? 55
+                                : 42,
+                            mobile()
+                                ? 86
+                                : 74
+                        );
+                }
+
+
+                updateBirdFlocks(
+                    delta,
+                    elapsed
                 );
             }
 

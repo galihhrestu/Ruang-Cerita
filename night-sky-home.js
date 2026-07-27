@@ -607,3 +607,310 @@
         loop
     );
 })();
+
+
+// ==========================================================
+// V3 — ASTROPHILE'S SPACE FULLSCREEN PORTAL
+// The homepage stays alive underneath, including backgroundMusic.
+// ==========================================================
+
+(function () {
+    const entry =
+        document.getElementById(
+            "astrophileSpaceEntry"
+        );
+
+
+    if (!entry) {
+        return;
+    }
+
+
+    let overlay =
+        null;
+
+    let frame =
+        null;
+
+    let pushedHistory =
+        false;
+
+
+    function createPortal() {
+        if (overlay) {
+            return;
+        }
+
+
+        overlay =
+            document.createElement(
+                "div"
+            );
+
+
+        overlay.className =
+            "astrophile-space-overlay";
+
+        overlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        overlay.innerHTML =
+            `
+                <div class="astrophile-space-overlay-loading">
+
+                    <div class="astrophile-space-overlay-loading-inner">
+                        <span>✦</span>
+                        <small>A SKY FOR HER</small>
+                        <strong>Entering Astrophile’s Space...</strong>
+                    </div>
+
+                </div>
+
+                <iframe
+                    class="astrophile-space-overlay-frame"
+                    title="Astrophile’s Space"
+                    allow="fullscreen"
+                ></iframe>
+            `;
+
+
+        document.body.appendChild(
+            overlay
+        );
+
+
+        frame =
+            overlay.querySelector(
+                ".astrophile-space-overlay-frame"
+            );
+
+
+        frame.addEventListener(
+            "load",
+            () => {
+                window.setTimeout(
+                    () => {
+                        overlay
+                            ?.classList.add(
+                                "ready"
+                            );
+                    },
+                    120
+                );
+            }
+        );
+    }
+
+
+    function openPortal() {
+        createPortal();
+
+
+        document.body
+            .classList.add(
+                "astrophile-space-open"
+            );
+
+
+        overlay.classList.remove(
+            "ready"
+        );
+
+
+        overlay.classList.add(
+            "open"
+        );
+
+
+        overlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        frame.src =
+            "astrophile-space.html?embedded=1";
+
+
+        if (
+            window.location.hash
+            !== "#astrophile-space"
+        ) {
+            history.pushState(
+                {
+                    astrophileSpace:
+                        true
+                },
+                "",
+                "#astrophile-space"
+            );
+
+
+            pushedHistory =
+                true;
+        }
+    }
+
+
+    function closePortal({
+        fromHistory = false
+    } = {}) {
+        if (
+            !overlay
+            || !overlay.classList.contains(
+                "open"
+            )
+        ) {
+            return;
+        }
+
+
+        overlay.classList.remove(
+            "open",
+            "ready"
+        );
+
+
+        overlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        document.body.classList.remove(
+            "astrophile-space-open"
+        );
+
+
+        window.setTimeout(
+            () => {
+                if (
+                    overlay
+                    && !overlay.classList.contains(
+                        "open"
+                    )
+                ) {
+                    frame.src =
+                        "about:blank";
+                }
+            },
+            420
+        );
+
+
+        if (
+            !fromHistory
+            && pushedHistory
+            && window.location.hash
+                === "#astrophile-space"
+        ) {
+            pushedHistory =
+                false;
+
+            history.back();
+        }
+    }
+
+
+    entry.addEventListener(
+        "click",
+        (
+            event
+        ) => {
+            if (
+                event.ctrlKey
+                || event.metaKey
+                || event.shiftKey
+                || event.altKey
+            ) {
+                return;
+            }
+
+
+            event.preventDefault();
+
+            openPortal();
+        }
+    );
+
+
+    window.addEventListener(
+        "message",
+        (
+            event
+        ) => {
+            if (
+                event.origin
+                !== window.location.origin
+            ) {
+                return;
+            }
+
+
+            if (
+                event.data
+                ?.type
+                === "ASTROPHILE_SPACE_CLOSE"
+            ) {
+                closePortal();
+            }
+        }
+    );
+
+
+    window.addEventListener(
+        "popstate",
+        () => {
+            if (
+                overlay
+                ?.classList.contains(
+                    "open"
+                )
+                && window.location.hash
+                    !== "#astrophile-space"
+            ) {
+                pushedHistory =
+                    false;
+
+
+                closePortal({
+                    fromHistory:
+                        true
+                });
+            }
+        }
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        (
+            event
+        ) => {
+            if (
+                event.key
+                === "Escape"
+                && overlay
+                    ?.classList.contains(
+                        "open"
+                    )
+            ) {
+                closePortal();
+            }
+        }
+    );
+
+
+    if (
+        window.location.hash
+        === "#astrophile-space"
+    ) {
+        window.setTimeout(
+            openPortal,
+            150
+        );
+    }
+})();

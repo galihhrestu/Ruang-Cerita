@@ -3,6 +3,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     // =====================================================
     // RUANG CERITA — MUSIC SYSTEM V1 (SUPABASE STORAGE)
     // =====================================================
+    const parameterMusik = new URLSearchParams(window.location.search);
+
+    // Reading Room embedded memakai audio dari parent Archive/Writing Room.
+    // Ini mencegah dua lagu bermain bersamaan.
+    if (
+        parameterMusik.get("embedded") === "1"
+        && window.self !== window.top
+    ) {
+        return;
+    }
 
     const BUCKET_MUSIK = "musik";
 
@@ -135,7 +145,33 @@ document.addEventListener("DOMContentLoaded", async function () {
             Number.isFinite(nilai) &&
             nilai >= 0
         ) {
-            return nilai;
+            const timestamp =
+                Number(
+                    localStorage.getItem(
+                        "musikPosisiTimestamp"
+                    )
+                );
+
+            const sedangBerjalan =
+                localStorage.getItem(
+                    "musikBerjalan"
+                ) === "true";
+
+            const selisihMs =
+                Number.isFinite(timestamp)
+                    ? Date.now() - timestamp
+                    : 0;
+
+            // Koreksi hanya untuk perpindahan halaman yang baru saja terjadi.
+            // Tidak membuat lagu melompat saat situs dibuka lagi jauh setelahnya.
+            const koreksiNavigasi =
+                sedangBerjalan
+                && selisihMs >= 0
+                && selisihMs <= 20000
+                    ? selisihMs / 1000
+                    : 0;
+
+            return nilai + koreksiNavigasi;
         }
 
         return 0;
@@ -171,6 +207,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         localStorage.setItem(
             "posisiMusikPath",
             lagu.file_path
+        );
+
+        localStorage.setItem(
+            "musikPosisiTimestamp",
+            String(Date.now())
         );
     }
 
@@ -302,6 +343,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     window.addEventListener("beforeunload", function () {
         simpanPosisiSekarang();
+    });
+
+    window.addEventListener("pagehide", function () {
+        simpanPosisiSekarang();
+    });
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "hidden") {
+            simpanPosisiSekarang();
+        }
     });
 
     let volumeAwal =

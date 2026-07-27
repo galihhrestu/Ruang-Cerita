@@ -1159,3 +1159,532 @@
         scroll-behavior: auto;
     }
 }
+
+
+/* =========================================================
+   04 — OUR WORDS / WRITING WORLD
+========================================================= */
+
+.editorial-zone-writing {
+    margin-top: 52px;
+    padding-bottom: 10px;
+}
+
+.editorial-zone-heading-writing
+.editorial-zone-number {
+    color: #8c6582;
+    border-color: rgba(140, 101, 130, 0.20);
+}
+
+.editorial-zone-heading-writing
+.editorial-zone-heading-copy p {
+    color: #8c6582;
+}
+
+.editorial-zone-heading-writing::after {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(140, 101, 130, 0.18),
+            transparent
+        );
+}
+
+.writing-gateway {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    min-height: 330px;
+
+    padding: 40px 42px;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.25fr)
+        minmax(245px, 0.62fr);
+
+    align-items: center;
+    gap: 44px;
+
+    border:
+        1px solid
+        rgba(87, 69, 85, 0.13);
+
+    border-radius: 29px;
+
+    background:
+        radial-gradient(
+            circle at 83% 18%,
+            rgba(188, 150, 177, 0.20),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 18% 96%,
+            rgba(152, 171, 159, 0.13),
+            transparent 25%
+        ),
+        linear-gradient(
+            140deg,
+            #fffaf4 0%,
+            #f9f0ed 48%,
+            #eee8ec 100%
+        );
+
+    box-shadow:
+        0 32px 78px
+        rgba(68, 50, 62, 0.13);
+}
+
+.writing-gateway::before {
+    content: "";
+
+    position: absolute;
+    inset: 13px;
+    z-index: 0;
+
+    border:
+        1px solid
+        rgba(91, 68, 84, 0.055);
+
+    border-radius: 20px;
+
+    pointer-events: none;
+}
+
+.writing-gateway-sky {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.writing-gateway-moon {
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    top: -58px;
+    right: 17%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 37% 36%,
+            #fffaf0,
+            #efd9c5 51%,
+            #cfa9a6 100%
+        );
+
+    box-shadow:
+        0 0 45px
+        rgba(216, 176, 171, 0.20);
+
+    opacity: 0.45;
+}
+
+.writing-gateway-moon::after {
+    content: "";
+
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    top: -13%;
+    left: -25%;
+
+    border-radius: 50%;
+
+    background: #f5edf0;
+}
+
+.writing-gateway-star {
+    position: absolute;
+
+    color:
+        rgba(116, 80, 100, 0.44);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    animation:
+        writing-gateway-twinkle
+        3s ease-in-out
+        infinite;
+}
+
+.wg-star-1 {
+    top: 23%;
+    right: 8%;
+}
+
+.wg-star-2 {
+    top: 64%;
+    right: 27%;
+
+    font-size: 21px;
+    animation-delay: 0.8s;
+}
+
+.wg-star-3 {
+    bottom: 12%;
+    left: 46%;
+
+    animation-delay: 1.4s;
+}
+
+.writing-gateway-orbit {
+    position: absolute;
+
+    width: 240px;
+    height: 102px;
+
+    right: 5%;
+    top: 42%;
+
+    border:
+        1px solid
+        rgba(116, 80, 100, 0.11);
+
+    border-radius: 50%;
+}
+
+.wg-orbit-1 {
+    transform: rotate(-17deg);
+}
+
+.wg-orbit-2 {
+    transform: rotate(24deg) scale(0.82);
+}
+
+@keyframes writing-gateway-twinkle {
+    0%,
+    100% {
+        opacity: 0.30;
+        transform: scale(0.80);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.10);
+    }
+}
+
+.writing-gateway-copy {
+    position: relative;
+    z-index: 4;
+
+    max-width: 650px;
+}
+
+.writing-gateway-kicker {
+    margin: 0;
+
+    color: #a95873;
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.19em;
+}
+
+.writing-gateway h2 {
+    margin: 7px 0 0;
+
+    color: #37262e;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            48px,
+            6vw,
+            66px
+        );
+
+    font-weight: 600;
+
+    line-height: 0.96;
+    letter-spacing: -2.8px;
+}
+
+.writing-gateway-serif {
+    margin: 10px 0 0;
+
+    color: #9a5971;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 15px;
+    font-style: italic;
+}
+
+.writing-gateway-description {
+    max-width: 580px;
+
+    margin: 16px 0 0;
+
+    color: #756c69;
+
+    font-size: 11px;
+    line-height: 1.75;
+}
+
+.writing-gateway-actions {
+    margin-top: 23px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.writing-primary-action,
+.writing-secondary-action {
+    min-height: 44px;
+
+    padding: 0 15px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    border-radius: 13px;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.writing-primary-action {
+    color: #fffaf4;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3d2b35,
+            #6b4456
+        );
+
+    box-shadow:
+        0 13px 31px
+        rgba(75, 48, 61, 0.19);
+}
+
+.writing-secondary-action {
+    border:
+        1px solid
+        rgba(81, 63, 74, 0.11);
+
+    color: #624b57;
+
+    background:
+        rgba(255, 255, 255, 0.50);
+}
+
+.writing-primary-action:hover,
+.writing-secondary-action:hover {
+    transform: translateY(-2px);
+}
+
+.writing-archive-preview {
+    position: relative;
+    z-index: 4;
+
+    min-height: 220px;
+
+    padding: 26px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.11);
+
+    border-radius: 22px;
+
+    color: #fff8ef;
+
+    background:
+        radial-gradient(
+            circle at 78% 17%,
+            rgba(210, 131, 160, 0.19),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            #171620,
+            #241a25
+        );
+
+    box-shadow:
+        0 22px 52px
+        rgba(57, 40, 50, 0.20);
+
+    transition:
+        transform 0.20s ease,
+        box-shadow 0.20s ease;
+}
+
+.writing-archive-preview:hover {
+    transform:
+        translateY(-3px)
+        rotate(-0.3deg);
+
+    box-shadow:
+        0 28px 62px
+        rgba(57, 40, 50, 0.27);
+}
+
+.archive-preview-eyebrow {
+    color:
+        rgba(239, 194, 208, 0.76);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.archive-preview-count {
+    margin-top: 7px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 54px;
+    font-weight: 500;
+
+    line-height: 0.9;
+}
+
+.archive-preview-label {
+    margin-top: 6px;
+
+    color:
+        rgba(255, 248, 239, 0.50);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 10px;
+    font-style: italic;
+}
+
+.archive-preview-line {
+    height: 1px;
+
+    margin: 20px 0 12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(239, 194, 208, 0.34),
+            transparent
+        );
+}
+
+.archive-preview-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color:
+        rgba(255, 248, 239, 0.71);
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.archive-preview-cta b {
+    color: #efc2d0;
+
+    font-size: 14px;
+}
+
+@media screen and (max-width: 760px) {
+
+    .writing-gateway {
+        min-height: 500px;
+
+        padding:
+            29px
+            23px;
+
+        grid-template-columns: 1fr;
+
+        gap: 24px;
+
+        border-radius: 23px;
+    }
+
+    .writing-gateway-copy {
+        text-align: left;
+    }
+
+    .writing-gateway h2 {
+        font-size: 47px;
+    }
+
+    .writing-gateway-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .writing-primary-action,
+    .writing-secondary-action {
+        padding:
+            0
+            10px;
+
+        font-size: 8px;
+    }
+
+    .writing-archive-preview {
+        min-height: 190px;
+    }
+
+    .writing-gateway-moon {
+        right: -25px;
+    }
+}
+
+@media screen and (max-width: 430px) {
+
+    .writing-gateway {
+        padding:
+            25px
+            20px;
+    }
+
+    .writing-gateway h2 {
+        font-size: 42px;
+    }
+
+    .writing-gateway-actions {
+        grid-template-columns: 1fr;
+    }
+}

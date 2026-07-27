@@ -1,0 +1,232 @@
+/* =========================================================
+   RUANG CERITA — PERSISTENT READING ROOM OVERLAY
+
+   The parent page (Archive / Writing Room / Edit) stays alive.
+   Therefore its audio element keeps playing while detail.html is
+   loaded inside this full-screen celestial layer.
+========================================================= */
+
+.reading-room-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: grid;
+    grid-template-rows:
+        auto
+        minmax(0, 1fr);
+
+    background:
+        rgba(7, 8, 17, 0.97);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.28s ease,
+        visibility 0.28s ease;
+}
+
+.reading-room-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.reading-room-overlay-bar {
+    min-height: 58px;
+
+    padding:
+        8px
+        13px;
+
+    display: grid;
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+    align-items: center;
+    gap: 12px;
+
+    border-bottom:
+        1px solid
+        rgba(255, 248, 239, 0.08);
+
+    background:
+        rgba(11, 12, 25, 0.92);
+
+    backdrop-filter:
+        blur(18px);
+}
+
+.reading-room-overlay-title {
+    justify-self: center;
+
+    text-align: center;
+}
+
+.reading-room-overlay-title small,
+.reading-room-overlay-title strong {
+    display: block;
+}
+
+.reading-room-overlay-title small {
+    color:
+        rgba(239, 193, 206, 0.62);
+
+    font-size: 5px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+}
+
+.reading-room-overlay-title strong {
+    margin-top: 1px;
+
+    color: #fff8ef;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.reading-room-close,
+.reading-room-open-tab {
+    min-height: 36px;
+
+    border:
+        1px solid
+        rgba(255, 248, 239, 0.09);
+
+    border-radius: 11px;
+
+    color:
+        rgba(255, 248, 239, 0.70);
+
+    background:
+        rgba(255, 255, 255, 0.03);
+}
+
+.reading-room-close {
+    justify-self: start;
+
+    padding:
+        0
+        11px;
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.reading-room-open-tab {
+    justify-self: end;
+
+    width: 36px;
+    padding: 0;
+
+    font-size: 13px;
+}
+
+.reading-room-frame-wrap {
+    position: relative;
+
+    min-height: 0;
+
+    overflow: hidden;
+
+    background: #0d0f1b;
+}
+
+.reading-room-frame {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    border: 0;
+
+    background: #0d0f1b;
+}
+
+.reading-room-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    display: grid;
+    place-items: center;
+
+    color:
+        rgba(255, 248, 239, 0.54);
+
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            rgba(103, 71, 102, 0.28),
+            transparent 34%
+        ),
+        #0d0f1b;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 13px;
+    font-style: italic;
+
+    transition:
+        opacity 0.22s ease,
+        visibility 0.22s ease;
+}
+
+.reading-room-loading.loaded {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@media (max-width: 560px) {
+
+    .reading-room-overlay-bar {
+        min-height: 54px;
+
+        grid-template-columns:
+            38px
+            1fr
+            38px;
+
+        padding:
+            7px
+            8px;
+    }
+
+    .reading-room-close {
+        width: 38px;
+        min-height: 38px;
+
+        padding: 0;
+
+        font-size: 0;
+    }
+
+    .reading-room-close::before {
+        content: "×";
+
+        font-size: 18px;
+    }
+
+    .reading-room-open-tab {
+        width: 38px;
+        min-height: 38px;
+    }
+
+    .reading-room-overlay-title strong {
+        font-size: 13px;
+    }
+}

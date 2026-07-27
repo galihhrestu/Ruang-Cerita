@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#111322"
+    >
+
+    <title>The Writing Room — Ruang Cerita</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="writing-world.css">
+    <link rel="stylesheet" href="reading-overlay.css">
+    <link rel="stylesheet" href="writing-room.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+
+
+<body>
+
+
+    <div class="ww-background" aria-hidden="true">
+
+        <div
+            id="wwStarField"
+            class="ww-star-field"
+        ></div>
+
+        <div class="ww-moon"></div>
+
+        <svg
+            class="ww-constellation"
+            viewBox="0 0 300 210"
+        >
+            <path d="M24 146 L78 106 L131 126 L177 71 L242 91" />
+            <path d="M78 106 L101 49" />
+            <path d="M131 126 L165 171" />
+
+            <circle cx="24" cy="146" r="2.2" />
+            <circle cx="78" cy="106" r="2.8" />
+            <circle cx="131" cy="126" r="2.4" />
+            <circle cx="177" cy="71" r="2.8" />
+            <circle cx="242" cy="91" r="2.2" />
+            <circle cx="101" cy="49" r="2.1" />
+            <circle cx="165" cy="171" r="2.1" />
+        </svg>
+
+    </div>
+
+
+
+    <header class="ww-topbar">
+
+        <div class="ww-topbar-inner">
+
+            <div class="ww-topbar-left">
+
+                <a
+                    href="index.html"
+                    class="ww-glass-button"
+                >
+                    <span>←</span>
+                    <span>Ruang Cerita</span>
+                </a>
+
+            </div>
+
+
+            <a
+                href="index.html"
+                class="ww-brand"
+            >
+                <small>OUR WORDS</small>
+                <strong>The Writing Room</strong>
+                <span>Galih × Wisye</span>
+            </a>
+
+
+            <nav class="ww-topbar-right">
+
+                <a
+                    href="stories.html"
+                    class="ww-glass-button"
+                >
+                    Our Stories
+                </a>
+
+                <a
+                    href="universe.html"
+                    class="ww-glass-button ww-icon-button"
+                    aria-label="Our Universe"
+                    title="Our Universe"
+                >
+                    ✦
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <main class="ww-shell writing-room-shell">
+
+        <section class="ww-hero">
+
+            <p class="ww-kicker">
+                PRIVATE WRITING DESK
+            </p>
+
+            <h1>
+                The Writing <em>Room.</em>
+            </h1>
+
+            <p class="ww-hero-serif">
+                Some moments deserve to become words.
+            </p>
+
+            <p class="ww-hero-description">
+                Tidak perlu menulis dengan sempurna.
+                Cukup simpan apa yang hari ini terasa penting,
+                sebelum waktu mengubah detail-detail kecilnya.
+            </p>
+
+        </section>
+
+
+        <section class="writing-desk">
+
+            <div class="writing-desk-side">
+
+                <span class="desk-side-number">
+                    04
+                </span>
+
+                <p class="desk-side-kicker">
+                    A PAGE FROM OUR UNIVERSE
+                </p>
+
+                <blockquote>
+                    “Tulislah untuk kita yang akan membacanya lagi
+                    beberapa tahun dari sekarang.”
+                </blockquote>
+
+                <div class="desk-side-orbit" aria-hidden="true">
+                    <span></span>
+                    <b>✦</b>
+                    <span></span>
+                </div>
+
+                <div class="desk-side-note">
+                    <small>AUTOSAVE</small>
+                    <strong id="draftStatus">
+                        Draft lokal siap.
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <article class="ww-paper writing-paper">
+
+                <div class="writing-paper-heading">
+
+                    <div class="writing-paper-symbol">
+                        ☾
+                        <span>✦</span>
+                    </div>
+
+                    <div>
+                        <p>
+                            NEW STORY
+                        </p>
+
+                        <h2>
+                            Tulis sesuatu untuk kita.
+                        </h2>
+                    </div>
+
+                </div>
+
+
+                <form id="formTulisan">
+
+                    <div class="ww-form-grid">
+
+                        <div class="ww-field ww-field-full">
+
+                            <label for="judul">
+                                Judul cerita
+                            </label>
+
+                            <input
+                                id="judul"
+                                type="text"
+                                placeholder="Hari apa yang ingin kita simpan?"
+                                maxlength="180"
+                                autocomplete="off"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="ww-field">
+
+                            <label for="kategori">
+                                Kategori
+                            </label>
+
+                            <select
+                                id="kategori"
+                                required
+                            >
+                                <option value="">
+                                    Pilih kategori
+                                </option>
+
+                                <option value="Kenangan">
+                                    Kenangan
+                                </option>
+
+                                <option value="Perjalanan">
+                                    Perjalanan
+                                </option>
+
+                                <option value="Tentang Kita">
+                                    Tentang Kita
+                                </option>
+
+                                <option value="Keluarga">
+                                    Keluarga
+                                </option>
+
+                                <option value="Pekerjaan">
+                                    Pekerjaan
+                                </option>
+
+                                <option value="Harapan">
+                                    Harapan
+                                </option>
+
+                                <option value="Lainnya">
+                                    Lainnya
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="ww-field">
+
+                            <label for="mood">
+                                Mood saat menulis
+                            </label>
+
+                            <select
+                                id="mood"
+                                required
+                            >
+                                <option value="">
+                                    Pilih mood
+                                </option>
+
+                                <option value="Bahagia">
+                                    😊 Bahagia
+                                </option>
+
+                                <option value="Penuh Cinta">
+                                    ❤️ Penuh Cinta
+                                </option>
+
+                                <option value="Terharu">
+                                    🥺 Terharu
+                                </option>
+
+                                <option value="Sedih">
+                                    😔 Sedih
+                                </option>
+
+                                <option value="Bersyukur">
+                                    🌱 Bersyukur
+                                </option>
+
+                                <option value="Tenang">
+                                    😌 Tenang
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="ww-field ww-field-full">
+
+                            <label for="isi">
+                                Cerita kita
+                            </label>
+
+                            <textarea
+                                id="isi"
+                                placeholder="Mulai dari apa yang paling ingin kamu ingat..."
+                                required
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ww-form-footer">
+
+                        <div class="ww-form-meta">
+                            <span id="wordCount">0 kata</span>
+                            <span> · </span>
+                            <span id="readingTime">kurang dari 1 menit baca</span>
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="ww-primary-button"
+                        >
+                            Simpan ke Semesta Kita
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <div
+                    id="writingSuccess"
+                    class="writing-success"
+                    hidden
+                >
+
+                    <span class="writing-success-symbol">
+                        ✦
+                    </span>
+
+                    <small>
+                        STORY KEPT
+                    </small>
+
+                    <h3>
+                        Cerita ini sudah punya tempat.
+                    </h3>
+
+                    <p>
+                        Ia sudah tersimpan di Archive dan akan ikut hidup
+                        di pengalaman Ruang Cerita yang membaca data Cerita.
+                    </p>
+
+                    <div class="writing-success-actions">
+
+                        <button
+                            id="readSavedStory"
+                            type="button"
+                        >
+                            Baca Ceritanya
+                            <span>↗</span>
+                        </button>
+
+                        <a href="stories.html">
+                            Explore Our Stories
+                            <span>→</span>
+                        </a>
+
+                        <button
+                            id="writeAnotherStory"
+                            type="button"
+                            class="quiet"
+                        >
+                            Tulis Lagi
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
+
+
+    <aside class="ww-music">
+
+        <div class="ww-music-copy">
+
+            <span class="ww-music-bars" aria-hidden="true">
+                <i></i>
+                <i></i>
+                <i></i>
+            </span>
+
+            <div>
+                <small>WRITING SOUNDTRACK</small>
+
+                <strong id="musicTitle">
+                    Memuat lagu...
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="ww-music-controls">
+
+            <button
+                id="prevMusic"
+                type="button"
+                aria-label="Lagu sebelumnya"
+            >
+                ‹
+            </button>
+
+            <button
+                id="musicToggle"
+                type="button"
+                class="ww-music-play"
+                aria-label="Putar atau jeda musik"
+            >
+                <span id="musicIcon">▶</span>
+
+                <span
+                    id="musicText"
+                    class="ww-visually-hidden"
+                >
+                    Putar
+                </span>
+            </button>
+
+            <button
+                id="nextMusic"
+                type="button"
+                aria-label="Lagu berikutnya"
+            >
+                ›
+            </button>
+
+            <details class="ww-music-more">
+
+                <summary
+                    aria-label="Pengaturan musik"
+                    title="Pengaturan musik"
+                >
+                    ⋯
+                </summary>
+
+                <div class="ww-music-panel">
+
+                    <label>
+                        <span>Lagu</span>
+
+                        <select
+                            id="musicSelect"
+                            aria-label="Pilih lagu"
+                        ></select>
+                    </label>
+
+                    <label>
+                        <span>Volume</span>
+
+                        <input
+                            id="musicVolume"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value="0.35"
+                            aria-label="Volume musik"
+                        >
+                    </label>
+
+                </div>
+
+            </details>
+
+        </div>
+
+    </aside>
+
+
+    <audio
+        id="backgroundMusic"
+        preload="metadata"
+    ></audio>
+
+
+
+    <div
+        id="wwToast"
+        class="ww-toast"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+
+    <script src="writing-world.js"></script>
+    <script src="reading-overlay.js"></script>
+    <script src="writing-room.js"></script>
+    <script src="musik.js"></script>
+
+</body>
+
+</html>

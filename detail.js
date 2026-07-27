@@ -2,6 +2,26 @@
 // RUANG CERITA — CELESTIAL READING ROOM V1
 // ==========================================================
 
+const embeddedReadingMode =
+    new URLSearchParams(
+        window.location.search
+    )
+        .get(
+            "embedded"
+        )
+        === "1";
+
+
+if (
+    embeddedReadingMode
+) {
+    document.body
+        .classList.add(
+            "embedded-reading"
+        );
+}
+
+
 const detailTulisan =
     document.getElementById(
         "detailTulisan"

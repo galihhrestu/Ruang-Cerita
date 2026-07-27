@@ -2333,3 +2333,73 @@ button {
             !important;
     }
 }
+
+
+/* =========================================================
+   EMBEDDED READING ROOM
+   Parent Archive / Writing Room tetap hidup bersama audionya.
+========================================================= */
+
+body.embedded-reading
+.reading-topbar {
+    display: none;
+}
+
+body.embedded-reading
+.reading-toolbar {
+    display: none;
+}
+
+body.embedded-reading
+.reading-shell {
+    width:
+        min(
+            1150px,
+            calc(100% - 18px)
+        );
+
+    padding:
+        18px
+        0
+        45px;
+}
+
+body.embedded-reading
+.reading-progress {
+    display: none;
+}
+
+body.embedded-reading
+.celestial-reading-frame {
+    box-shadow:
+        0 22px 75px
+        rgba(4, 5, 15, 0.32);
+}
+
+body.embedded-reading
+.reading-epilogue {
+    margin-top: 16px;
+}
+
+@media (max-width: 760px) {
+
+    body.embedded-reading
+    .reading-shell {
+        width:
+            calc(
+                100% - 8px
+            );
+
+        padding:
+            5px
+            0
+            28px;
+    }
+
+    body.embedded-reading
+    .celestial-reading-frame {
+        padding: 4px;
+
+        border-radius: 18px;
+    }
+}

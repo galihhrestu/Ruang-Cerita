@@ -576,3 +576,45 @@ body.astrophile-space-open {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* =========================================================
+   CELESTIAL COLLECTION
+========================================================= */
+.astrophile-collection-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.astrophile-collection-card{min-width:0}
+.astrophile-collection-grid .astrophile-space-entry,.astrophile-observatory-entry{min-height:490px;padding:33px 31px;display:grid;grid-template-columns:1fr;align-content:end;gap:27px}
+.astrophile-collection-grid .astrophile-space-entry .astrophile-preview-side{width:100%;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;text-align:left}
+.astrophile-collection-grid .astrophile-space-entry .astrophile-preview-side i{background:linear-gradient(90deg,rgba(255,247,235,.04),rgba(255,247,235,.16),rgba(255,247,235,.04))}
+
+.astrophile-observatory-entry{position:relative;isolation:isolate;overflow:hidden;border:1px solid rgba(255,247,235,.11);border-radius:30px;color:#fff7eb;background:linear-gradient(180deg,#07101d,#10182a 54%,#161a28);box-shadow:0 38px 105px rgba(22,24,45,.24);transition:transform .26s ease,box-shadow .26s ease,border-color .26s ease}
+.astrophile-observatory-entry:hover{transform:translateY(-4px);border-color:rgba(255,247,235,.18);box-shadow:0 46px 120px rgba(22,24,45,.31)}
+.astrophile-observatory-entry:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at 73% 23%,rgba(160,190,205,.12),transparent 25%),radial-gradient(circle at 22% 72%,rgba(224,183,196,.07),transparent 28%),linear-gradient(90deg,rgba(3,7,17,.30),transparent 64%)}
+.astrophile-observatory-entry:after{content:"";position:absolute;inset:0;z-index:3;opacity:.16;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.23'/%3E%3C/svg%3E");mix-blend-mode:soft-light}
+.observatory-preview-canvas{position:absolute;inset:0;z-index:1;width:100%;height:100%}
+.observatory-preview-frame{position:absolute;inset:13px;z-index:5;border:1px solid rgba(255,247,235,.07);border-radius:20px;pointer-events:none}
+.observatory-preview-orbit{position:absolute;width:230px;height:96px;right:-26px;top:77px;z-index:4;border:1px solid rgba(216,229,234,.11);border-radius:50%;transform:rotate(-17deg);pointer-events:none;animation:observatoryPreviewOrbit 18s linear infinite}
+.observatory-preview-orbit:before{content:"";position:absolute;width:7px;height:7px;right:26px;top:18px;border-radius:50%;background:#e5d9c4;box-shadow:0 0 16px rgba(229,217,196,.40)}
+@keyframes observatoryPreviewOrbit{from{transform:rotate(-17deg)}to{transform:rotate(343deg)}}
+.observatory-preview-copy{position:relative;z-index:7;max-width:100%}
+.observatory-preview-kicker{margin:0;color:#a8c3ca;font-size:7px;font-weight:800;letter-spacing:.18em}
+.observatory-preview-copy h2{margin:8px 0 0;font-family:"Playfair Display",Georgia,serif;font-size:clamp(50px,5vw,70px);font-weight:600;line-height:.88;letter-spacing:-3.4px}
+.observatory-preview-copy h2 span{display:block;margin-left:28px}
+.observatory-preview-serif{margin:14px 0 0;color:#d6c2a2;font-family:"Playfair Display",Georgia,serif;font-size:clamp(13px,1.3vw,16px);font-style:italic}
+.observatory-preview-description{max-width:540px;margin:13px 0 0;color:rgba(255,247,235,.52);font-size:10px;line-height:1.72}
+.observatory-preview-cta{min-height:42px;margin-top:21px;padding:0 14px;display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,247,235,.10);border-radius:12px;color:rgba(255,247,235,.83);background:rgba(255,255,255,.035);font-size:8px;font-weight:800}
+.observatory-preview-cta b{color:#a8c3ca}
+.observatory-preview-telescope{position:absolute;right:38px;top:115px;z-index:5;width:150px;height:150px;opacity:.62;pointer-events:none;transform:rotate(-13deg);transform-origin:62% 65%;animation:observatoryPreviewScope 8s ease-in-out infinite}
+.preview-scope-lens,.preview-scope-body,.preview-scope-mount,.preview-scope-leg{position:absolute;display:block}
+.preview-scope-body{width:96px;height:21px;left:20px;top:42px;border:1px solid rgba(225,232,232,.24);border-radius:13px 7px 7px 13px;background:linear-gradient(180deg,rgba(204,217,219,.22),rgba(54,69,79,.40))}
+.preview-scope-lens{width:29px;height:29px;left:9px;top:38px;border:2px solid rgba(222,232,231,.30);border-radius:50%;background:radial-gradient(circle at 38% 34%,rgba(179,222,231,.42),rgba(57,78,101,.62) 45%,rgba(4,9,19,.90) 78%);box-shadow:0 0 20px rgba(166,210,222,.16)}
+.preview-scope-mount{width:14px;height:45px;left:76px;top:59px;border-radius:9px;background:linear-gradient(180deg,rgba(200,208,207,.28),rgba(45,55,64,.52))}
+.preview-scope-leg{width:2px;height:65px;top:91px;background:linear-gradient(180deg,rgba(197,204,203,.31),rgba(31,37,44,.48))}
+.preview-scope-leg.leg-left{left:78px;transform:rotate(17deg);transform-origin:top center}
+.preview-scope-leg.leg-right{left:87px;transform:rotate(-16deg);transform-origin:top center}
+@keyframes observatoryPreviewScope{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(-8deg)}}
+.observatory-preview-side{position:relative;z-index:7;width:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;color:rgba(255,247,235,.29)}
+.observatory-preview-side span,.observatory-preview-side small{font-size:5px;font-weight:800;letter-spacing:.15em}.observatory-preview-side span{color:rgba(168,195,202,.65)}
+.observatory-preview-side i{height:1px;background:linear-gradient(90deg,rgba(255,247,235,.04),rgba(255,247,235,.16),rgba(255,247,235,.04))}
+@media(max-width:900px){.astrophile-collection-grid{grid-template-columns:1fr}.astrophile-collection-grid .astrophile-space-entry,.astrophile-observatory-entry{min-height:470px}}
+@media(max-width:700px){.astrophile-collection-grid{gap:14px}.astrophile-collection-grid .astrophile-space-entry,.astrophile-observatory-entry{min-height:480px;padding:28px 23px;border-radius:24px}.observatory-preview-frame{inset:9px;border-radius:16px}.observatory-preview-copy h2{font-size:clamp(46px,14vw,60px);letter-spacing:-3px}.observatory-preview-copy h2 span{margin-left:27px}.observatory-preview-description{max-width:92%}.observatory-preview-telescope{right:19px;top:105px;transform:scale(.82) rotate(-13deg);transform-origin:center}}
+@media(prefers-reduced-motion:reduce){.observatory-preview-orbit,.observatory-preview-telescope{animation:none!important}}

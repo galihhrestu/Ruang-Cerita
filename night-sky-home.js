@@ -1,916 +1,178 @@
 // ==========================================================
-// RUANG CERITA — ASTROPHILE'S SPACE HOMEPAGE PREVIEW V2
-// Lightweight animated preview only.
+// CELESTIAL COLLECTION HOMEPAGE
+// Keeps homepage audio alive while experiences open fullscreen.
 // ==========================================================
 
 (function () {
-    const canvas =
-        document.getElementById(
-            "astrophilePreviewCanvas"
-        );
+    const configs = [
+        {canvas:"astrophilePreviewCanvas",entry:"astrophileSpaceEntry",mode:"space"},
+        {canvas:"observatoryPreviewCanvas",entry:"astrophileObservatoryEntry",mode:"observatory"}
+    ];
 
-    const entry =
-        document.getElementById(
-            "astrophileSpaceEntry"
-        );
+    configs.forEach((config) => {
+        const canvas = document.getElementById(config.canvas);
+        const entry = document.getElementById(config.entry);
+        if (!canvas || !entry) return;
 
+        const ctx = canvas.getContext("2d",{alpha:false});
+        if (!ctx) return;
 
-    if (
-        !canvas
-        || !entry
-    ) {
-        return;
-    }
+        let w=1,h=1,dpr=1,t=0,last=performance.now(),visible=true,stars=[];
+        let seed = config.mode === "observatory" ? 31072026 : 24072026;
+        const rand = () => {
+            seed = (seed * 1664525 + 1013904223) >>> 0;
+            return seed / 4294967296;
+        };
 
-
-    const context =
-        canvas.getContext(
-            "2d",
-            {
-                alpha: false
-            }
-        );
-
-
-    if (!context) {
-        return;
-    }
-
-
-    let width =
-        1;
-
-    let height =
-        1;
-
-    let dpr =
-        1;
-
-    let visible =
-        true;
-
-    let lastTime =
-        performance.now();
-
-    let elapsed =
-        0;
-
-
-    let seed =
-        24072026;
-
-
-    function random() {
-        seed =
-            (
-                seed
-                * 1664525
-                + 1013904223
-            )
-            >>> 0;
-
-        return (
-            seed
-            / 4294967296
-        );
-    }
-
-
-    let stars =
-        [];
-
-
-    function buildStars() {
-        seed =
-            24072026;
-
-        const count =
-            window.innerWidth
-            <= 700
-                ? 75
-                : 125;
-
-
-        stars =
-            Array.from(
-                {
-                    length:
-                        count
-                },
-                () => ({
-                    x:
-                        random(),
-
-                    y:
-                        random()
-                        * 0.78,
-
-                    size:
-                        0.4
-                        + random()
-                        * 1.6,
-
-                    alpha:
-                        0.18
-                        + random()
-                        * 0.68,
-
-                    phase:
-                        random()
-                        * Math.PI
-                        * 2,
-
-                    twinkle:
-                        1.2
-                        + random()
-                        * 4
-                })
-            );
-    }
-
-
-    function resize() {
-        const rect =
-            canvas.getBoundingClientRect();
-
-
-        width =
-            Math.max(
-                1,
-                rect.width
-            );
-
-        height =
-            Math.max(
-                1,
-                rect.height
-            );
-
-
-        dpr =
-            Math.min(
-                window.devicePixelRatio
-                || 1,
-                2
-            );
-
-
-        canvas.width =
-            Math.round(
-                width
-                * dpr
-            );
-
-        canvas.height =
-            Math.round(
-                height
-                * dpr
-            );
-
-
-        context.setTransform(
-            dpr,
-            0,
-            0,
-            dpr,
-            0,
-            0
-        );
-
-
-        buildStars();
-    }
-
-
-    function draw(
-        time
-    ) {
-        const sky =
-            context
-                .createLinearGradient(
-                    0,
-                    0,
-                    0,
-                    height
-                );
-
-
-        sky.addColorStop(
-            0,
-            "#07101f"
-        );
-
-        sky.addColorStop(
-            0.56,
-            "#10152d"
-        );
-
-        sky.addColorStop(
-            1,
-            "#201829"
-        );
-
-
-        context.fillStyle =
-            sky;
-
-        context.fillRect(
-            0,
-            0,
-            width,
-            height
-        );
-
-
-        for (
-            const star
-            of stars
-        ) {
-            const alpha =
-                star.alpha
-                * (
-                    0.64
-                    + Math.sin(
-                        time
-                        * star.twinkle
-                        + star.phase
-                    )
-                    * 0.36
-                );
-
-
-            context.beginPath();
-
-            context.arc(
-                star.x
-                * width,
-                star.y
-                * height,
-                star.size,
-                0,
-                Math.PI
-                * 2
-            );
-
-
-            context.fillStyle =
-                `rgba(235,239,250,${
-                    Math.max(
-                        0.05,
-                        alpha
-                    )
-                })`;
-
-            context.fill();
+        function buildStars(){
+            seed = config.mode === "observatory" ? 31072026 : 24072026;
+            const count = innerWidth <= 700 ? 78 : 128;
+            stars = Array.from({length:count},()=>({
+                x:rand(),y:rand()*.8,size:.4+rand()*1.7,
+                alpha:.18+rand()*.7,phase:rand()*Math.PI*2,twinkle:1.2+rand()*4
+            }));
         }
 
+        function resize(){
+            const r=canvas.getBoundingClientRect();
+            w=Math.max(1,r.width);h=Math.max(1,r.height);dpr=Math.min(devicePixelRatio||1,2);
+            canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+            ctx.setTransform(dpr,0,0,dpr,0,0);buildStars();
+        }
 
-        // Aurora preview.
-        context.save();
+        function drawStars(){
+            stars.forEach(s=>{
+                const a=s.alpha*(.64+Math.sin(t*s.twinkle+s.phase)*.36);
+                ctx.beginPath();ctx.arc(s.x*w,s.y*h,s.size,0,Math.PI*2);
+                ctx.fillStyle=`rgba(228,238,244,${Math.max(.05,a)})`;ctx.fill();
+            });
+        }
 
-        context.globalCompositeOperation =
-            "screen";
+        function horizon(){
+            ctx.beginPath();ctx.moveTo(0,h);ctx.lineTo(0,h*.86);
+            ctx.bezierCurveTo(w*.17,h*.78,w*.34,h*.91,w*.52,h*.82);
+            ctx.bezierCurveTo(w*.72,h*.73,w*.83,h*.91,w,h*.81);
+            ctx.lineTo(w,h);ctx.closePath();ctx.fillStyle="#06080e";ctx.fill();
+        }
 
-        for (
-            let band = 0;
-            band < 3;
-            band++
-        ) {
-            context.beginPath();
+        function drawSpace(){
+            const g=ctx.createLinearGradient(0,0,0,h);
+            g.addColorStop(0,"#07101f");g.addColorStop(.56,"#10152d");g.addColorStop(1,"#201829");
+            ctx.fillStyle=g;ctx.fillRect(0,0,w,h);drawStars();
 
-
-            for (
-                let x = -20;
-                x <= width + 20;
-                x += 8
-            ) {
-                const y =
-                    height
-                    * (
-                        0.24
-                        + band
-                        * 0.07
-                    )
-                    + Math.sin(
-                        x
-                        / Math.max(
-                            width,
-                            1
-                        )
-                        * Math.PI
-                        * 2.3
-                        + time
-                        * 0.18
-                        + band
-                    )
-                    * height
-                    * 0.035;
-
-
-                if (
-                    x === -20
-                ) {
-                    context.moveTo(
-                        x,
-                        y
-                    );
-                } else {
-                    context.lineTo(
-                        x,
-                        y
-                    );
+            ctx.save();ctx.globalCompositeOperation="screen";
+            for(let b=0;b<3;b++){
+                ctx.beginPath();
+                for(let x=-20;x<=w+20;x+=8){
+                    const y=h*(.24+b*.07)+Math.sin(x/Math.max(w,1)*Math.PI*2.3+t*.18+b)*h*.035;
+                    x===-20?ctx.moveTo(x,y):ctx.lineTo(x,y);
                 }
+                ctx.strokeStyle=b%2?"rgba(128,219,183,.055)":"rgba(142,187,223,.05)";
+                ctx.lineWidth=30;ctx.lineCap="round";ctx.filter="blur(18px)";ctx.stroke();
             }
+            ctx.restore();
 
-
-            context.strokeStyle =
-                band % 2
-                    ? "rgba(128,219,183,0.055)"
-                    : "rgba(142,187,223,0.050)";
-
-
-            context.lineWidth =
-                30;
-
-            context.lineCap =
-                "round";
-
-            context.filter =
-                "blur(18px)";
-
-            context.stroke();
+            const x=w*.78+Math.sin(t*.08)*8,y=h*.27+Math.cos(t*.07)*6,r=Math.min(w,h)*.115;
+            const halo=ctx.createRadialGradient(x,y,r*.15,x,y,r*3.1);
+            halo.addColorStop(0,"rgba(255,238,204,.22)");halo.addColorStop(1,"rgba(255,238,204,0)");
+            ctx.fillStyle=halo;ctx.beginPath();ctx.arc(x,y,r*3.1,0,Math.PI*2);ctx.fill();
+            const moon=ctx.createRadialGradient(x-r*.3,y-r*.3,1,x,y,r);
+            moon.addColorStop(0,"#fff7df");moon.addColorStop(.5,"#e4cfaf");moon.addColorStop(1,"#88777a");
+            ctx.fillStyle=moon;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();horizon();
         }
 
-        context.restore();
+        function drawObservatory(){
+            const g=ctx.createLinearGradient(0,0,0,h);
+            g.addColorStop(0,"#06101d");g.addColorStop(.54,"#101929");g.addColorStop(1,"#171a25");
+            ctx.fillStyle=g;ctx.fillRect(0,0,w,h);drawStars();
 
+            const x=w*.74+Math.sin(t*.055)*9,y=h*.24+Math.cos(t*.044)*6,r=Math.min(w,h)*.065;
+            const p=ctx.createRadialGradient(x-r*.35,y-r*.33,2,x,y,r);
+            p.addColorStop(0,"#f5ddae");p.addColorStop(.48,"#cda778");p.addColorStop(1,"#685464");
+            ctx.fillStyle=p;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+            ctx.save();ctx.translate(x,y);ctx.rotate(-.28);ctx.beginPath();ctx.ellipse(0,0,r*1.85,r*.38,0,0,Math.PI*2);
+            ctx.strokeStyle="rgba(232,211,169,.42)";ctx.lineWidth=Math.max(1,r*.08);ctx.stroke();ctx.restore();
 
-        // Preview moon.
-        const moonX =
-            width
-            * 0.78
-            + Math.sin(
-                time
-                * 0.08
-            )
-            * 8;
-
-
-        const moonY =
-            height
-            * 0.27
-            + Math.cos(
-                time
-                * 0.07
-            )
-            * 6;
-
-
-        const radius =
-            Math.min(
-                width,
-                height
-            )
-            * 0.115;
-
-
-        const halo =
-            context
-                .createRadialGradient(
-                    moonX,
-                    moonY,
-                    radius
-                    * 0.15,
-                    moonX,
-                    moonY,
-                    radius
-                    * 3.1
-                );
-
-
-        halo.addColorStop(
-            0,
-            "rgba(255,238,204,0.22)"
-        );
-
-        halo.addColorStop(
-            1,
-            "rgba(255,238,204,0)"
-        );
-
-
-        context.fillStyle =
-            halo;
-
-        context.beginPath();
-
-        context.arc(
-            moonX,
-            moonY,
-            radius
-            * 3.1,
-            0,
-            Math.PI
-            * 2
-        );
-
-        context.fill();
-
-
-        const moon =
-            context
-                .createRadialGradient(
-                    moonX
-                    - radius
-                    * 0.3,
-                    moonY
-                    - radius
-                    * 0.3,
-                    1,
-                    moonX,
-                    moonY,
-                    radius
-                );
-
-
-        moon.addColorStop(
-            0,
-            "#fff7df"
-        );
-
-        moon.addColorStop(
-            0.5,
-            "#e4cfaf"
-        );
-
-        moon.addColorStop(
-            1,
-            "#88777a"
-        );
-
-
-        context.fillStyle =
-            moon;
-
-        context.beginPath();
-
-        context.arc(
-            moonX,
-            moonY,
-            radius,
-            0,
-            Math.PI
-            * 2
-        );
-
-        context.fill();
-
-
-        // Earth horizon silhouette.
-        context.beginPath();
-
-        context.moveTo(
-            0,
-            height
-        );
-
-        context.lineTo(
-            0,
-            height
-            * 0.82
-        );
-
-        context.bezierCurveTo(
-            width
-            * 0.18,
-            height
-            * 0.74,
-            width
-            * 0.35,
-            height
-            * 0.86,
-            width
-            * 0.52,
-            height
-            * 0.78
-        );
-
-        context.bezierCurveTo(
-            width
-            * 0.70,
-            height
-            * 0.70,
-            width
-            * 0.83,
-            height
-            * 0.89,
-            width,
-            height
-            * 0.80
-        );
-
-        context.lineTo(
-            width,
-            height
-        );
-
-        context.closePath();
-
-        context.fillStyle =
-            "#07090f";
-
-        context.fill();
-    }
-
-
-    function loop(
-        now
-    ) {
-        const delta =
-            Math.min(
-                0.05,
-                (
-                    now
-                    - lastTime
-                )
-                / 1000
-            );
-
-
-        lastTime =
-            now;
-
-
-        if (
-            visible
-        ) {
-            elapsed +=
-                delta;
-
-            draw(
-                elapsed
-            );
+            horizon();
+            const dx=w*.76,dy=h*.84,dr=Math.min(w,h)*.2;
+            ctx.beginPath();ctx.arc(dx,dy,dr,Math.PI,Math.PI*2);ctx.lineTo(dx+dr,h);ctx.lineTo(dx-dr,h);ctx.closePath();
+            ctx.fillStyle="#070a10";ctx.fill();
         }
 
-
-        requestAnimationFrame(
-            loop
-        );
-    }
-
-
-    const observer =
-        new IntersectionObserver(
-            (
-                entries
-            ) => {
-                visible =
-                    entries[0]
-                        ?.isIntersecting
-                    ?? true;
-            },
-            {
-                threshold:
-                    0.03
-            }
-        );
-
-
-    observer.observe(
-        entry
-    );
-
-
-    let resizeTimer =
-        null;
-
-
-    window.addEventListener(
-        "resize",
-        () => {
-            window.clearTimeout(
-                resizeTimer
-            );
-
-
-            resizeTimer =
-                window.setTimeout(
-                    resize,
-                    120
-                );
+        function loop(now){
+            const dt=Math.min(.05,(now-last)/1000);last=now;
+            if(visible){t+=dt;config.mode==="observatory"?drawObservatory():drawSpace();}
+            requestAnimationFrame(loop);
         }
-    );
 
-
-    resize();
-
-    requestAnimationFrame(
-        loop
-    );
+        new IntersectionObserver(e=>visible=e[0]?.isIntersecting??true,{threshold:.03}).observe(entry);
+        let timer;addEventListener("resize",()=>{clearTimeout(timer);timer=setTimeout(resize,120)});
+        resize();requestAnimationFrame(loop);
+    });
 })();
 
-
-// ==========================================================
-// V3 — ASTROPHILE'S SPACE FULLSCREEN PORTAL
-// The homepage stays alive underneath, including backgroundMusic.
-// ==========================================================
-
 (function () {
-    const entry =
-        document.getElementById(
-            "astrophileSpaceEntry"
-        );
+    const entries=[...document.querySelectorAll("[data-celestial-page]")];
+    if(!entries.length)return;
 
+    let overlay=null,frame=null,active=null,pushed=false;
 
-    if (!entry) {
-        return;
-    }
-
-
-    let overlay =
-        null;
-
-    let frame =
-        null;
-
-    let pushedHistory =
-        false;
-
-
-    function createPortal() {
-        if (overlay) {
-            return;
-        }
-
-
-        overlay =
-            document.createElement(
-                "div"
-            );
-
-
-        overlay.className =
-            "astrophile-space-overlay";
-
-        overlay.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-
-        overlay.innerHTML =
-            `
-                <div class="astrophile-space-overlay-loading">
-
-                    <div class="astrophile-space-overlay-loading-inner">
-                        <span>✦</span>
-                        <small>A SKY FOR HER</small>
-                        <strong>Entering Astrophile’s Space...</strong>
-                    </div>
-
+    function create(){
+        if(overlay)return;
+        overlay=document.createElement("div");
+        overlay.className="astrophile-space-overlay celestial-collection-overlay";
+        overlay.setAttribute("aria-hidden","true");
+        overlay.innerHTML=`
+            <div class="astrophile-space-overlay-loading">
+                <div class="astrophile-space-overlay-loading-inner">
+                    <span>✦</span><small>THE CELESTIAL COLLECTION</small>
+                    <strong id="celestialPortalLoadingTitle">Entering the night...</strong>
                 </div>
-
-                <iframe
-                    class="astrophile-space-overlay-frame"
-                    title="Astrophile’s Space"
-                    allow="fullscreen"
-                ></iframe>
-            `;
-
-
-        document.body.appendChild(
-            overlay
-        );
-
-
-        frame =
-            overlay.querySelector(
-                ".astrophile-space-overlay-frame"
-            );
-
-
-        frame.addEventListener(
-            "load",
-            () => {
-                window.setTimeout(
-                    () => {
-                        overlay
-                            ?.classList.add(
-                                "ready"
-                            );
-                    },
-                    120
-                );
-            }
-        );
+            </div>
+            <iframe class="astrophile-space-overlay-frame" title="Celestial experience" allow="fullscreen"></iframe>`;
+        document.body.appendChild(overlay);
+        frame=overlay.querySelector("iframe");
+        frame.addEventListener("load",()=>setTimeout(()=>overlay?.classList.add("ready"),120));
     }
 
-
-    function openPortal() {
-        createPortal();
-
-
-        document.body
-            .classList.add(
-                "astrophile-space-open"
-            );
-
-
-        overlay.classList.remove(
-            "ready"
-        );
-
-
-        overlay.classList.add(
-            "open"
-        );
-
-
-        overlay.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-
-        frame.src =
-            "astrophile-space.html?embedded=1";
-
-
-        if (
-            window.location.hash
-            !== "#astrophile-space"
-        ) {
-            history.pushState(
-                {
-                    astrophileSpace:
-                        true
-                },
-                "",
-                "#astrophile-space"
-            );
-
-
-            pushedHistory =
-                true;
-        }
+    function open(entry){
+        create();active=entry;
+        const title=entry.dataset.celestialTitle||"Celestial experience";
+        overlay.querySelector("#celestialPortalLoadingTitle").textContent=`Entering ${title}...`;
+        document.body.classList.add("astrophile-space-open");
+        overlay.classList.remove("ready");overlay.classList.add("open");overlay.setAttribute("aria-hidden","false");
+        frame.title=title;frame.src=`${entry.dataset.celestialPage}?embedded=1`;
+        const hash=`#${entry.dataset.celestialHash}`;
+        if(location.hash!==hash){history.pushState({celestialExperience:entry.dataset.celestialHash},"",hash);pushed=true}
     }
 
-
-    function closePortal({
-        fromHistory = false
-    } = {}) {
-        if (
-            !overlay
-            || !overlay.classList.contains(
-                "open"
-            )
-        ) {
-            return;
-        }
-
-
-        overlay.classList.remove(
-            "open",
-            "ready"
-        );
-
-
-        overlay.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-
-        document.body.classList.remove(
-            "astrophile-space-open"
-        );
-
-
-        window.setTimeout(
-            () => {
-                if (
-                    overlay
-                    && !overlay.classList.contains(
-                        "open"
-                    )
-                ) {
-                    frame.src =
-                        "about:blank";
-                }
-            },
-            420
-        );
-
-
-        if (
-            !fromHistory
-            && pushedHistory
-            && window.location.hash
-                === "#astrophile-space"
-        ) {
-            pushedHistory =
-                false;
-
-            history.back();
-        }
+    function close({fromHistory=false}={}){
+        if(!overlay?.classList.contains("open"))return;
+        overlay.classList.remove("open","ready");overlay.setAttribute("aria-hidden","true");
+        document.body.classList.remove("astrophile-space-open");
+        setTimeout(()=>{if(!overlay.classList.contains("open"))frame.src="about:blank"},420);
+        if(!fromHistory&&pushed){pushed=false;history.back()}
+        active=null;
     }
 
+    entries.forEach(entry=>entry.addEventListener("click",e=>{
+        if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+        e.preventDefault();open(entry);
+    }));
 
-    entry.addEventListener(
-        "click",
-        (
-            event
-        ) => {
-            if (
-                event.ctrlKey
-                || event.metaKey
-                || event.shiftKey
-                || event.altKey
-            ) {
-                return;
-            }
+    addEventListener("message",e=>{
+        if(e.origin!==location.origin)return;
+        if(["CELESTIAL_EXPERIENCE_CLOSE","ASTROPHILE_SPACE_CLOSE"].includes(e.data?.type))close();
+    });
 
-
-            event.preventDefault();
-
-            openPortal();
+    addEventListener("popstate",()=>{
+        if(overlay?.classList.contains("open")&&location.hash!==`#${active?.dataset?.celestialHash}`){
+            pushed=false;close({fromHistory:true});
         }
-    );
+    });
 
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&overlay?.classList.contains("open"))close()});
 
-    window.addEventListener(
-        "message",
-        (
-            event
-        ) => {
-            if (
-                event.origin
-                !== window.location.origin
-            ) {
-                return;
-            }
-
-
-            if (
-                event.data
-                ?.type
-                === "ASTROPHILE_SPACE_CLOSE"
-            ) {
-                closePortal();
-            }
-        }
-    );
-
-
-    window.addEventListener(
-        "popstate",
-        () => {
-            if (
-                overlay
-                ?.classList.contains(
-                    "open"
-                )
-                && window.location.hash
-                    !== "#astrophile-space"
-            ) {
-                pushedHistory =
-                    false;
-
-
-                closePortal({
-                    fromHistory:
-                        true
-                });
-            }
-        }
-    );
-
-
-    document.addEventListener(
-        "keydown",
-        (
-            event
-        ) => {
-            if (
-                event.key
-                === "Escape"
-                && overlay
-                    ?.classList.contains(
-                        "open"
-                    )
-            ) {
-                closePortal();
-            }
-        }
-    );
-
-
-    if (
-        window.location.hash
-        === "#astrophile-space"
-    ) {
-        window.setTimeout(
-            openPortal,
-            150
-        );
-    }
+    const direct=entries.find(entry=>entry.dataset.celestialHash===location.hash.replace("#",""));
+    if(direct)setTimeout(()=>open(direct),150);
 })();

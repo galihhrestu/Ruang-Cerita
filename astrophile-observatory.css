@@ -1,25 +1,28 @@
 /* =========================================================
-   ASTROPHILE'S OBSERVATORY V5
-   Concept restored: draggable sky -> eyepiece -> 3D corridor
-   -> NASA imagery / data-based moving observation.
+   ASTROPHILE'S OBSERVATORY V6 — LIVING SILHOUETTE
+   Clean initial scene:
+   wide animated sky + seated woman silhouette + real telescope.
 ========================================================= */
 
 :root {
-  --ivory: #f7f0e7;
-  --ivory-soft: rgba(247, 240, 231, 0.72);
-  --ivory-muted: rgba(247, 240, 231, 0.45);
-  --gold: #d9b985;
-  --gold-soft: rgba(217, 185, 133, 0.36);
-  --night: #020714;
-  --night-soft: #081326;
-  --glass: rgba(7, 15, 33, 0.56);
-  --glass-strong: rgba(7, 14, 31, 0.82);
+  --ivory: #f6efe6;
+  --ivory-soft: rgba(246, 239, 230, 0.72);
+  --ivory-muted: rgba(246, 239, 230, 0.42);
+  --gold: #d7b583;
+  --gold-soft: rgba(215, 181, 131, 0.34);
+  --cyan: #bfe6ee;
+  --night: #020713;
+  --night-soft: #071426;
+  --glass: rgba(5, 12, 27, 0.54);
+  --glass-strong: rgba(5, 12, 27, 0.82);
   --border: rgba(255, 255, 255, 0.11);
   --pan-x: 0px;
   --pan-y: 0px;
-  --scene-pan-x: 0px;
-  --scene-pan-y: 0px;
-  --scope-tilt: 0deg;
+  --sky-pan-x: 0px;
+  --sky-pan-y: 0px;
+  --scope-tilt: -8deg;
+  --silhouette-pan-x: 0px;
+  --silhouette-pan-y: 0px;
 }
 
 * {
@@ -58,8 +61,8 @@ button {
   min-height: 560px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 54% 33%, rgba(60, 100, 168, 0.23), transparent 30%),
-    linear-gradient(180deg, #020714 0%, #071122 58%, #070a12 100%);
+    radial-gradient(circle at 52% 31%, rgba(53, 88, 146, 0.2), transparent 33%),
+    linear-gradient(180deg, #020713 0%, #061124 55%, #080a13 100%);
 }
 
 .observatory-sky {
@@ -68,11 +71,11 @@ button {
   z-index: 1;
   width: 116%;
   height: 116%;
-  transform: translate3d(var(--pan-x), var(--pan-y), 0);
+  transform: translate3d(var(--sky-pan-x), var(--sky-pan-y), 0);
   will-change: transform;
 }
 
-.observatory-celestial-haze,
+.observatory-depth-haze,
 .observatory-vignette,
 .observatory-grain,
 .observatory-drag-surface {
@@ -80,36 +83,36 @@ button {
   inset: 0;
 }
 
-.observatory-celestial-haze {
+.observatory-depth-haze {
   z-index: 2;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 54% 44%, rgba(125, 166, 222, 0.08), transparent 34%),
-    radial-gradient(ellipse at 37% 18%, rgba(187, 173, 224, 0.045), transparent 28%);
+    radial-gradient(ellipse at 50% 30%, rgba(124, 164, 215, 0.07), transparent 34%),
+    radial-gradient(ellipse at 18% 14%, rgba(168, 136, 205, 0.035), transparent 29%);
 }
 
 .observatory-vignette {
-  z-index: 8;
+  z-index: 10;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(1, 4, 12, 0.45), transparent 42%, transparent 69%, rgba(1, 4, 12, 0.28)),
-    linear-gradient(180deg, rgba(1, 4, 12, 0.16), transparent 54%, rgba(1, 4, 10, 0.36)),
-    radial-gradient(ellipse at center, transparent 45%, rgba(1, 3, 9, 0.48) 100%);
+    linear-gradient(90deg, rgba(1, 4, 11, 0.38), transparent 34%, transparent 72%, rgba(1, 4, 11, 0.23)),
+    linear-gradient(180deg, rgba(1, 3, 10, 0.08), transparent 56%, rgba(1, 3, 9, 0.52)),
+    radial-gradient(ellipse at center, transparent 48%, rgba(1, 3, 9, 0.48) 100%);
 }
 
 .observatory-grain {
-  z-index: 9;
+  z-index: 11;
   pointer-events: none;
-  opacity: 0.09;
+  opacity: 0.075;
   mix-blend-mode: soft-light;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
   background-size: 4px 4px;
 }
 
 .observatory-drag-surface {
-  z-index: 11;
+  z-index: 13;
   cursor: grab;
   touch-action: none;
 }
@@ -119,15 +122,14 @@ button {
 }
 
 .observatory-topbar,
-.observatory-copy,
-.observatory-preview,
-.observatory-targets-panel,
-.observatory-more-panel,
-.observatory-drag-hint,
+.observatory-editorial-title,
+.observatory-aim-reticle,
 .observatory-sky-targets,
-.observatory-aim-reticle {
+.observatory-observe-button,
+.observatory-target-dock,
+.observatory-drag-hint {
   position: absolute;
-  z-index: 20;
+  z-index: 30;
 }
 
 .observatory-topbar {
@@ -135,11 +137,11 @@ button {
   top: 0;
   width: 100%;
   min-height: 76px;
-  padding: max(18px, env(safe-area-inset-top)) clamp(22px, 3.2vw, 48px) 12px;
+  padding: max(17px, env(safe-area-inset-top)) clamp(20px, 3vw, 46px) 10px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
   pointer-events: none;
 }
 
@@ -150,19 +152,19 @@ button {
 
 .observatory-back {
   justify-self: start;
-  min-height: 44px;
-  padding: 0 15px;
+  min-height: 42px;
+  padding: 0 14px;
   display: inline-flex;
   align-items: center;
   gap: 9px;
   border: 1px solid var(--border);
   border-radius: 15px;
-  color: rgba(247, 240, 231, 0.75);
-  background: rgba(5, 12, 27, 0.36);
+  color: rgba(246, 239, 230, 0.7);
+  background: rgba(4, 10, 23, 0.3);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   text-decoration: none;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -170,18 +172,45 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
-  text-align: left;
 }
 
-.observatory-brand-symbol {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(217, 185, 133, 0.28);
+.observatory-brand-orbit {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: block;
+  border: 1px solid rgba(215, 181, 131, 0.28);
   border-radius: 50%;
-  color: var(--gold);
-  background: rgba(9, 17, 35, 0.34);
+}
+
+.observatory-brand-orbit i {
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(215, 181, 131, 0.2);
+  border-radius: 50%;
+}
+
+.observatory-brand-orbit b {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 16px rgba(215, 181, 131, 0.44);
+  transform: translate(-50%, -50%);
+}
+
+.observatory-brand-orbit::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 18px;
+  width: 31px;
+  height: 1px;
+  background: rgba(215, 181, 131, 0.22);
+  transform: rotate(-22deg);
 }
 
 .observatory-brand small,
@@ -190,16 +219,16 @@ button {
 }
 
 .observatory-brand small {
-  color: rgba(217, 185, 133, 0.7);
-  font-size: 7px;
+  color: rgba(215, 181, 131, 0.66);
+  font-size: 6px;
   font-weight: 800;
-  letter-spacing: 0.19em;
+  letter-spacing: 0.18em;
 }
 
 .observatory-brand strong {
   margin-top: 3px;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 500;
 }
 
@@ -208,8 +237,8 @@ button {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--ivory-muted);
-  font-size: 8px;
+  color: rgba(246, 239, 230, 0.36);
+  font-size: 7px;
   font-weight: 800;
   letter-spacing: 0.15em;
 }
@@ -219,298 +248,143 @@ button {
 }
 
 .observatory-night-status i {
-  width: 38px;
+  width: 34px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(247, 240, 231, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(246, 239, 230, 0.17), transparent);
 }
 
 .observatory-night-status b {
-  width: 35px;
-  height: 35px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
   border: 1px solid var(--border);
   border-radius: 50%;
-  background: rgba(8, 16, 35, 0.46);
-  font-size: 13px;
+  background: rgba(6, 13, 29, 0.37);
+  font-size: 12px;
 }
 
-.observatory-copy {
-  left: clamp(44px, 6.2vw, 106px);
-  top: clamp(126px, 16.5vh, 174px);
-  width: min(560px, 40vw);
+.observatory-editorial-title {
+  left: clamp(36px, 5vw, 82px);
+  top: clamp(113px, 15vh, 156px);
+  width: min(510px, 38vw);
   pointer-events: none;
 }
 
-.observatory-kicker {
+.observatory-editorial-title p {
   margin: 0;
-  color: rgba(217, 185, 133, 0.85);
-  font-size: 9px;
+  color: rgba(215, 181, 131, 0.82);
+  font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.22em;
 }
 
-.observatory-copy h1 {
-  margin: 13px 0 0;
+.observatory-editorial-title h1 {
+  margin: 12px 0 0;
   color: var(--ivory);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(68px, 6.8vw, 110px);
+  font-size: clamp(54px, 5.5vw, 88px);
   font-weight: 600;
-  line-height: 0.86;
+  line-height: 0.88;
   letter-spacing: -0.055em;
-  text-shadow: 0 20px 65px rgba(0, 0, 0, 0.32);
+  text-shadow: 0 18px 55px rgba(0, 0, 0, 0.33);
 }
 
-.observatory-poetry {
-  margin: 20px 0 0;
-  color: rgba(224, 201, 170, 0.9);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(19px, 1.75vw, 29px);
-  font-style: italic;
-  line-height: 1.25;
+.observatory-editorial-title h1 span {
+  margin-left: clamp(20px, 3.4vw, 54px);
 }
 
-.observatory-copy-line {
-  width: 210px;
-  margin: 20px 0 16px;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 11px;
-  color: var(--gold);
-}
-
-.observatory-copy-line i {
-  height: 1px;
-  background: linear-gradient(90deg, rgba(217, 185, 133, 0.8), transparent);
-}
-
-.observatory-description {
-  max-width: 455px;
-  margin: 0;
-  color: rgba(247, 240, 231, 0.66);
-  font-size: 13px;
-  line-height: 1.68;
-}
-
-.observatory-observe {
-  min-height: 52px;
-  margin-top: 25px;
-  padding: 0 25px;
-  display: inline-flex;
-  align-items: center;
-  gap: 13px;
-  border: 1px solid rgba(255, 239, 217, 0.36);
-  border-radius: 999px;
-  color: #241b12;
-  background:
-    linear-gradient(180deg, rgba(243, 218, 184, 0.98), rgba(201, 161, 107, 0.95));
-  box-shadow:
-    0 18px 45px rgba(202, 164, 111, 0.19),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  cursor: pointer;
-  pointer-events: auto;
-  transition: transform 0.24s ease, filter 0.24s ease, box-shadow 0.24s ease;
-}
-
-.observatory-observe:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.04);
-  box-shadow:
-    0 24px 52px rgba(202, 164, 111, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.observatory-lock-status {
-  margin: 12px 0 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(247, 240, 231, 0.44);
-  font-size: 9px;
-  font-weight: 700;
-}
-
-.observatory-lock-status span {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #9ed7dc;
-  box-shadow: 0 0 14px rgba(158, 215, 220, 0.5);
-}
-
-.observatory-preview {
-  right: clamp(28px, 3vw, 48px);
-  top: clamp(122px, 15.5vh, 164px);
-  width: min(370px, 28vw);
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 25px;
-  background:
-    linear-gradient(180deg, rgba(10, 18, 38, 0.58), rgba(7, 14, 31, 0.72));
-  box-shadow: 0 30px 85px rgba(0, 0, 0, 0.32);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  pointer-events: none;
-}
-
-.observatory-preview > p {
-  margin: 0 0 12px;
-  color: rgba(217, 185, 133, 0.86);
-  text-align: center;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-}
-
-.observatory-preview-window {
-  position: relative;
-  isolation: isolate;
-  aspect-ratio: 1.56 / 1;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 17px;
-  background: #020611;
-}
-
-.observatory-preview-window canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.observatory-preview-reticle {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 2;
-  width: 80px;
-  height: 80px;
-  border: 1px solid rgba(203, 226, 242, 0.22);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.observatory-preview-reticle::before,
-.observatory-preview-reticle::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  background: rgba(203, 226, 242, 0.16);
-  transform: translate(-50%, -50%);
-}
-
-.observatory-preview-reticle::before {
-  width: 124px;
-  height: 1px;
-}
-
-.observatory-preview-reticle::after {
-  width: 1px;
-  height: 124px;
-}
-
-.observatory-preview-reticle span {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.observatory-preview-target {
-  position: absolute;
-  left: 12px;
-  bottom: 11px;
-  z-index: 3;
-  min-height: 26px;
-  padding: 0 9px;
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 999px;
-  color: rgba(247, 240, 231, 0.82);
-  background: rgba(2, 7, 17, 0.54);
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-}
-
-.observatory-preview > strong {
+.observatory-editorial-title em {
   display: block;
-  margin-top: 13px;
-  color: rgba(247, 240, 231, 0.72);
-  text-align: center;
-  font-size: 10px;
-  font-weight: 500;
+  max-width: 29ch;
+  margin-top: 18px;
+  color: rgba(224, 201, 170, 0.88);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(16px, 1.45vw, 22px);
+  line-height: 1.4;
 }
 
-.observatory-preview-progress {
-  margin-top: 12px;
-  display: flex;
-  justify-content: center;
-  gap: 7px;
-}
-
-.observatory-preview-progress i {
-  width: 23px;
-  height: 2px;
-  border-radius: 999px;
-  background: rgba(247, 240, 231, 0.15);
-}
-
-.observatory-preview-progress i.active {
-  background: rgba(247, 240, 231, 0.86);
-}
-
-.observatory-scene-stage {
+.observatory-silhouette-stage {
   position: absolute;
-  right: -1.5vw;
-  bottom: -2px;
-  z-index: 5;
-  width: min(66vw, 1040px);
-  transform:
-    translate3d(var(--scene-pan-x), var(--scene-pan-y), 0)
-    rotate(var(--scope-tilt));
-  transform-origin: 64% 72%;
+  right: -1.4vw;
+  bottom: -1.5vh;
+  z-index: 9;
+  width: min(72vw, 1110px);
+  height: auto;
+  margin: 0;
+  transform: translate3d(var(--silhouette-pan-x), var(--silhouette-pan-y), 0);
+  transform-origin: 62% 72%;
   will-change: transform;
   pointer-events: none;
-  mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.72) 16%, #000 32%);
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.72) 16%, #000 32%);
 }
 
-.observatory-scene-image {
+.observatory-silhouette-svg {
   display: block;
   width: 100%;
   height: auto;
-  filter: saturate(1.02) brightness(0.94) contrast(1.03);
+  overflow: visible;
 }
 
-.observatory-scene-glow {
-  position: absolute;
-  left: 41%;
-  top: 28%;
-  width: 22%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(170, 213, 230, 0.1), transparent 70%);
-  filter: blur(22px);
+.silhouette-person {
+  transform-origin: 680px 580px;
+  animation: silhouetteBreath 6.5s ease-in-out infinite;
+}
+
+.silhouette-hair {
+  transform-origin: 690px 240px;
+  animation: silhouetteHair 8s ease-in-out infinite;
+}
+
+.silhouette-front-arm {
+  transform-origin: 679px 334px;
+  animation: silhouetteHand 7.4s ease-in-out infinite;
+}
+
+.silhouette-telescope {
+  transform-box: fill-box;
+  transform-origin: 70% 56%;
+  transform: rotate(var(--scope-tilt));
+  transition: transform 0.16s ease;
+}
+
+.silhouette-ambient-particles circle {
+  animation: silhouetteParticle 5s ease-in-out infinite;
+}
+
+.silhouette-ambient-particles circle:nth-child(2n) {
+  animation-delay: 1.2s;
+}
+
+.silhouette-ambient-particles circle:nth-child(3n) {
+  animation-delay: 2.4s;
+}
+
+@keyframes silhouetteBreath {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes silhouetteHair {
+  0%, 100% { transform: skewX(0deg) translateX(0); }
+  50% { transform: skewX(-1.5deg) translateX(-3px); }
+}
+
+@keyframes silhouetteHand {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-1.6deg); }
+}
+
+@keyframes silhouetteParticle {
+  0%, 100% { opacity: 0.25; transform: translateY(0); }
+  50% { opacity: 0.75; transform: translateY(-7px); }
 }
 
 .observatory-aim-reticle {
-  left: 65.1%;
-  top: 55.2%;
-  width: 53px;
-  height: 53px;
-  border: 1px solid rgba(173, 218, 230, 0.3);
+  left: 54.8%;
+  top: 44.2%;
+  width: 51px;
+  height: 51px;
+  border: 1px solid rgba(191, 230, 238, 0.27);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -522,24 +396,24 @@ button {
   position: absolute;
   left: 50%;
   top: 50%;
-  background: rgba(173, 218, 230, 0.22);
+  background: rgba(191, 230, 238, 0.2);
   transform: translate(-50%, -50%);
 }
 
 .observatory-aim-reticle::before {
-  width: 80px;
+  width: 78px;
   height: 1px;
 }
 
 .observatory-aim-reticle::after {
   width: 1px;
-  height: 80px;
+  height: 78px;
 }
 
 .observatory-aim-reticle span {
   position: absolute;
-  inset: 11px;
-  border: 1px solid rgba(173, 218, 230, 0.16);
+  inset: 10px;
+  border: 1px solid rgba(191, 230, 238, 0.13);
   border-radius: 50%;
 }
 
@@ -550,14 +424,14 @@ button {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #c6e8ed;
-  box-shadow: 0 0 18px rgba(198, 232, 237, 0.62);
+  background: var(--cyan);
+  box-shadow: 0 0 17px rgba(191, 230, 238, 0.62);
   transform: translate(-50%, -50%);
 }
 
 .observatory-sky-targets {
   inset: 0;
-  z-index: 14;
+  z-index: 22;
   pointer-events: none;
   transform: translate3d(var(--pan-x), var(--pan-y), 0);
   will-change: transform;
@@ -565,8 +439,8 @@ button {
 
 .observatory-sky-marker {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   display: grid;
   place-items: center;
@@ -581,28 +455,39 @@ button {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--marker-color, #f5e8d7);
+  background: var(--marker-color, #f4e5d0);
   box-shadow:
     0 0 0 8px rgba(255, 255, 255, 0.025),
-    0 0 18px color-mix(in srgb, var(--marker-color, #f5e8d7) 50%, transparent);
+    0 0 20px var(--marker-glow, rgba(244, 229, 208, 0.42));
+}
+
+.observatory-sky-marker::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.045);
+  border-radius: 50%;
+  animation: markerPulse 4s ease-in-out infinite;
 }
 
 .observatory-sky-marker span {
   position: absolute;
   left: 50%;
-  top: calc(100% + 3px);
+  top: calc(100% + 2px);
   min-width: max-content;
   padding: 5px 8px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  color: rgba(247, 240, 231, 0.6);
-  background: rgba(4, 10, 23, 0.44);
+  color: rgba(246, 239, 230, 0.6);
+  background: rgba(3, 9, 21, 0.44);
   opacity: 0;
   transform: translate(-50%, -4px);
   transition: opacity 0.2s ease, transform 0.2s ease;
   font-size: 7px;
   font-weight: 800;
-  letter-spacing: 0.11em;
+  letter-spacing: 0.1em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .observatory-sky-marker:hover span,
@@ -615,109 +500,132 @@ button {
   width: 10px;
   height: 10px;
   box-shadow:
-    0 0 0 11px rgba(173, 218, 230, 0.05),
-    0 0 28px rgba(173, 218, 230, 0.72);
+    0 0 0 11px rgba(191, 230, 238, 0.05),
+    0 0 30px rgba(191, 230, 238, 0.7);
 }
 
-.observatory-targets-panel {
-  left: clamp(44px, 6.2vw, 106px);
-  bottom: max(30px, env(safe-area-inset-bottom));
-  width: min(820px, 72vw);
+@keyframes markerPulse {
+  0%, 100% { transform: scale(0.88); opacity: 0.3; }
+  50% { transform: scale(1.16); opacity: 0.75; }
 }
 
-.observatory-targets-panel > p {
-  margin: 0 0 10px;
-  color: rgba(217, 185, 133, 0.86);
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.19em;
-}
-
-.observatory-target-chips {
-  display: flex;
+.observatory-observe-button {
+  left: 54.8%;
+  top: calc(44.2% + 55px);
+  min-height: 49px;
+  padding: 0 18px;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
   align-items: center;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 2px 2px 5px;
-  scrollbar-width: none;
-}
-
-.observatory-target-chips::-webkit-scrollbar {
-  display: none;
-}
-
-.observatory-target-chip,
-.observatory-more-targets,
-.observatory-more-chip {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(247, 240, 231, 0.72);
-  background: rgba(5, 12, 27, 0.48);
-  backdrop-filter: blur(13px);
-  -webkit-backdrop-filter: blur(13px);
+  column-gap: 10px;
+  border: 1px solid rgba(255, 239, 217, 0.35);
+  border-radius: 15px;
+  color: #261d14;
+  background: linear-gradient(180deg, #efd8bb, #c99f6b);
+  box-shadow:
+    0 18px 45px rgba(205, 165, 111, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.48);
   cursor: pointer;
+  transform: translateX(-50%);
+  transition: transform 0.23s ease, filter 0.23s ease, opacity 0.23s ease;
 }
 
-.observatory-target-chip {
-  flex: 0 0 auto;
-  min-height: 43px;
-  padding: 0 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  border-radius: 14px;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.11em;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+.observatory-observe-button[hidden] {
+  display: none !important;
 }
 
-.observatory-target-chip span {
-  color: var(--gold);
-  font-family: "Playfair Display", Georgia, serif;
+.observatory-observe-button:hover {
+  transform: translateX(-50%) translateY(-2px);
+  filter: brightness(1.04);
+}
+
+.observatory-observe-button > span {
+  grid-row: 1 / 3;
   font-size: 14px;
 }
 
-.observatory-target-chip:hover,
-.observatory-target-chip.is-active {
-  transform: translateY(-2px);
-  border-color: rgba(217, 185, 133, 0.35);
-  color: var(--ivory);
-  background: rgba(17, 26, 49, 0.75);
-}
-
-.observatory-more-targets {
-  position: absolute;
-  left: calc(100% + 10px);
-  bottom: 5px;
-  min-height: 43px;
-  padding: 0 13px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: 14px;
-  font-size: 7px;
+.observatory-observe-button strong {
+  font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.11em;
-  white-space: nowrap;
 }
 
-.observatory-more-panel {
-  left: clamp(44px, 6.2vw, 106px);
-  bottom: 92px;
-  width: min(620px, 58vw);
-  padding: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.observatory-observe-button small {
+  color: rgba(38, 29, 20, 0.58);
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.observatory-target-dock {
+  left: 50%;
+  bottom: max(23px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.observatory-target-dock-toggle {
+  min-width: 235px;
+  min-height: 51px;
+  padding: 0 14px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: rgba(246, 239, 230, 0.78);
+  background: rgba(5, 12, 27, 0.48);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  cursor: pointer;
+}
+
+.observatory-target-dock-toggle > span {
+  grid-row: 1 / 3;
+  color: var(--gold);
+}
+
+.observatory-target-dock-toggle strong {
+  text-align: left;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.observatory-target-dock-toggle small {
+  color: rgba(246, 239, 230, 0.34);
+  text-align: left;
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.observatory-target-dock-toggle b {
+  grid-row: 1 / 3;
+  color: rgba(246, 239, 230, 0.45);
+  font-size: 14px;
+}
+
+.observatory-target-dock-panel {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  width: min(720px, 86vw);
+  padding: 10px;
   border: 1px solid var(--border);
   border-radius: 18px;
-  background: rgba(5, 12, 27, 0.78);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
-  backdrop-filter: blur(17px);
-  -webkit-backdrop-filter: blur(17px);
+  background: rgba(4, 10, 23, 0.82);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transform: translateX(-50%);
 }
 
-.observatory-more-panel[hidden],
+.observatory-target-dock-panel[hidden],
 .observatory-eyepiece-overlay[hidden],
 .observatory-travel-overlay[hidden],
 .observatory-observation[hidden],
@@ -725,24 +633,56 @@ button {
   display: none !important;
 }
 
-.observatory-more-chip {
-  min-height: 36px;
-  padding: 0 11px;
+.observatory-target-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.observatory-target-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.observatory-target-chip {
+  flex: 0 0 auto;
+  min-height: 39px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 12px;
-  font-size: 8px;
+  color: rgba(246, 239, 230, 0.64);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  font-size: 7px;
   font-weight: 800;
   letter-spacing: 0.09em;
 }
 
+.observatory-target-chip span {
+  color: var(--gold);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 13px;
+}
+
+.observatory-target-chip:hover,
+.observatory-target-chip.is-active {
+  border-color: rgba(215, 181, 131, 0.31);
+  color: var(--ivory);
+  background: rgba(18, 27, 50, 0.72);
+}
+
 .observatory-drag-hint {
-  left: clamp(44px, 3vw, 50px);
-  bottom: max(14px, env(safe-area-inset-bottom));
-  width: min(310px, 27vw);
-  display: none;
+  left: clamp(20px, 3vw, 48px);
+  bottom: max(18px, env(safe-area-inset-bottom));
+  width: min(300px, 27vw);
+  display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 8px;
-  color: rgba(247, 240, 231, 0.26);
+  color: rgba(246, 239, 230, 0.25);
   pointer-events: none;
 }
 
@@ -756,40 +696,40 @@ button {
 
 .observatory-drag-hint i {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(247, 240, 231, 0.15), transparent);
+  background: linear-gradient(90deg, transparent, rgba(246, 239, 230, 0.14), transparent);
 }
 
-/* Entering the eyepiece */
+/* Eyepiece transition */
 .observatory-eyepiece-overlay,
 .observatory-travel-overlay,
 .observatory-observation {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 100;
 }
 
 .observatory-eyepiece-overlay {
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .eyepiece-blackout {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 65.2% 55%, transparent 0 4%, rgba(0, 0, 0, 0.18) 12%, rgba(0, 0, 0, 0.92) 44%, #000 70%);
-  animation: eyepieceBlackout 0.76s cubic-bezier(0.5, 0, 0.3, 1) forwards;
+    radial-gradient(circle at 54.8% 44.2%, transparent 0 3%, rgba(0, 0, 0, 0.2) 11%, rgba(0, 0, 0, 0.94) 43%, #000 70%);
+  animation: eyepieceBlackout 0.78s cubic-bezier(0.5, 0, 0.25, 1) forwards;
 }
 
 .eyepiece-ring {
   position: absolute;
-  left: 65.2%;
-  top: 55%;
+  left: 54.8%;
+  top: 44.2%;
   aspect-ratio: 1;
-  border: 2px solid rgba(190, 220, 232, 0.18);
+  border: 2px solid rgba(191, 230, 238, 0.18);
   border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0.12);
-  animation: eyepieceRing 0.76s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+  transform: translate(-50%, -50%) scale(0.1);
+  animation: eyepieceRing 0.78s cubic-bezier(0.45, 0, 0.2, 1) forwards;
 }
 
 .eyepiece-ring.ring-one {
@@ -797,12 +737,12 @@ button {
 }
 
 .eyepiece-ring.ring-two {
-  width: 380px;
+  width: 390px;
   animation-delay: 0.04s;
 }
 
 .eyepiece-ring.ring-three {
-  width: 580px;
+  width: 590px;
   animation-delay: 0.08s;
 }
 
@@ -811,47 +751,26 @@ button {
   left: 50%;
   bottom: 8%;
   margin: 0;
-  color: rgba(247, 240, 231, 0.62);
+  color: rgba(246, 239, 230, 0.62);
   font-size: 8px;
   font-weight: 800;
-  letter-spacing: 0.21em;
+  letter-spacing: 0.2em;
   transform: translateX(-50%);
-  animation: eyepieceText 0.7s ease forwards;
 }
 
 @keyframes eyepieceBlackout {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1.25);
-  }
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1.24); }
 }
 
 @keyframes eyepieceRing {
-  to {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(4.4);
-  }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(4.5); }
 }
 
-@keyframes eyepieceText {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 8px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
-/* 3D cosmic corridor */
+/* 3D deep-space tunnel */
 .observatory-travel-overlay {
-  background: #000207;
   overflow: hidden;
+  background: #000207;
 }
 
 .observatory-travel-overlay canvas {
@@ -865,44 +784,44 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, transparent 0 30%, rgba(0, 0, 0, 0.08) 54%, rgba(0, 0, 0, 0.82) 100%),
-    linear-gradient(180deg, rgba(6, 14, 31, 0.1), rgba(0, 0, 0, 0.22));
+    radial-gradient(circle at center, transparent 0 29%, rgba(0, 0, 0, 0.08) 55%, rgba(0, 0, 0, 0.85) 100%),
+    linear-gradient(180deg, rgba(7, 16, 34, 0.08), rgba(0, 0, 0, 0.26));
   pointer-events: none;
 }
 
 .observatory-travel-copy {
   position: absolute;
   left: 50%;
-  bottom: 8%;
+  bottom: 7%;
   z-index: 2;
-  width: min(720px, calc(100% - 36px));
+  width: min(720px, calc(100% - 34px));
   text-align: center;
   transform: translateX(-50%);
-  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.85);
 }
 
 .observatory-travel-copy small {
-  color: rgba(166, 209, 228, 0.75);
+  color: rgba(168, 213, 231, 0.74);
   font-size: 8px;
   font-weight: 800;
-  letter-spacing: 0.19em;
+  letter-spacing: 0.18em;
 }
 
 .observatory-travel-copy h2 {
-  margin: 9px 0 0;
+  margin: 8px 0 0;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(42px, 5vw, 76px);
+  font-size: clamp(40px, 5vw, 74px);
   font-weight: 600;
   letter-spacing: -0.045em;
 }
 
 .observatory-travel-copy p {
-  margin: 10px auto 0;
-  color: rgba(247, 240, 231, 0.55);
-  font-size: 11px;
+  margin: 9px auto 0;
+  color: rgba(246, 239, 230, 0.53);
+  font-size: 10px;
 }
 
-/* Real NASA imagery/data-based observation */
+/* NASA observation */
 .observatory-observation {
   overflow: hidden;
   background: #000;
@@ -936,7 +855,7 @@ button {
   align-content: center;
   gap: 18px;
   background: radial-gradient(circle at center, #0d1b34, #01040a 70%);
-  color: rgba(247, 240, 231, 0.65);
+  color: rgba(246, 239, 230, 0.65);
   text-align: center;
 }
 
@@ -951,16 +870,14 @@ button {
 }
 
 @keyframes fallbackOrb {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 .observatory-observation-vignette {
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 45%, transparent 70%, rgba(0, 0, 0, 0.23)),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.37), transparent 45%, rgba(0, 0, 0, 0.5)),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.7), transparent 45%, transparent 71%, rgba(0, 0, 0, 0.22)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 45%, rgba(0, 0, 0, 0.5)),
     radial-gradient(ellipse at center, transparent 48%, rgba(0, 0, 0, 0.55) 100%);
 }
 
@@ -970,7 +887,7 @@ button {
   top: 0;
   z-index: 4;
   width: 100%;
-  padding: max(20px, env(safe-area-inset-top)) clamp(20px, 3vw, 42px);
+  padding: max(19px, env(safe-area-inset-top)) clamp(20px, 3vw, 42px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1013,14 +930,14 @@ button {
 .observatory-observation-hud {
   position: absolute;
   left: 50%;
-  top: max(24px, env(safe-area-inset-top));
+  top: max(23px, env(safe-area-inset-top));
   z-index: 4;
   width: min(420px, 34vw);
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 10px;
-  color: rgba(247, 240, 231, 0.44);
+  color: rgba(246, 239, 230, 0.43);
   transform: translateX(-50%);
 }
 
@@ -1033,23 +950,23 @@ button {
 }
 
 .observatory-observation-hud small {
-  color: rgba(217, 185, 133, 0.72);
+  color: rgba(215, 181, 131, 0.72);
 }
 
 .observatory-observation-hud i {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(247, 240, 231, 0.15), transparent);
+  background: linear-gradient(90deg, transparent, rgba(246, 239, 230, 0.14), transparent);
 }
 
 .observatory-observation-info {
   position: absolute;
-  left: clamp(24px, 5vw, 78px);
-  bottom: clamp(28px, 7vh, 76px);
+  left: clamp(24px, 5vw, 76px);
+  bottom: clamp(27px, 7vh, 72px);
   z-index: 4;
-  width: min(480px, 38vw);
-  padding: 22px;
+  width: min(475px, 38vw);
+  padding: 21px;
   border: 1px solid rgba(255, 255, 255, 0.11);
-  border-radius: 24px;
+  border-radius: 23px;
   background: rgba(2, 7, 17, 0.56);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(18px);
@@ -1067,7 +984,7 @@ button {
 .observatory-observation-info h2 {
   margin: 7px 0 0;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(42px, 4vw, 66px);
+  font-size: clamp(42px, 4vw, 65px);
   line-height: 0.95;
   letter-spacing: -0.045em;
 }
@@ -1101,7 +1018,7 @@ button {
 }
 
 .observatory-observation-facts span {
-  color: rgba(247, 240, 231, 0.32);
+  color: rgba(246, 239, 230, 0.31);
   font-size: 6px;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -1109,13 +1026,13 @@ button {
 
 .observatory-observation-facts strong {
   margin-top: 5px;
-  color: rgba(247, 240, 231, 0.82);
+  color: rgba(246, 239, 230, 0.82);
   font-size: 10px;
 }
 
 .observatory-observation-info > p:not(:first-child) {
   margin: 15px 0 0;
-  color: rgba(247, 240, 231, 0.62);
+  color: rgba(246, 239, 230, 0.61);
   font-size: 11px;
   line-height: 1.7;
 }
@@ -1131,7 +1048,7 @@ button {
   padding: 0 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  color: rgba(247, 240, 231, 0.75);
+  color: rgba(246, 239, 230, 0.75);
   background: rgba(255, 255, 255, 0.035);
   cursor: pointer;
   font-size: 8px;
@@ -1147,29 +1064,25 @@ button {
   font-weight: 800;
 }
 
-.observatory-rotate-note {
-  display: none;
+/* Camera push into actual telescope position */
+.observatory-app.is-entering .observatory-silhouette-stage {
+  animation: scenePushIntoScope 0.79s cubic-bezier(0.5, 0, 0.2, 1) forwards;
 }
 
-/* Eyepiece camera push */
-.observatory-app.is-entering .observatory-scene-stage {
-  animation: scenePushIntoScope 0.78s cubic-bezier(0.5, 0, 0.2, 1) forwards;
-}
-
-.observatory-app.is-entering .observatory-copy,
-.observatory-app.is-entering .observatory-preview,
-.observatory-app.is-entering .observatory-targets-panel,
-.observatory-app.is-entering .observatory-more-panel,
+.observatory-app.is-entering .observatory-editorial-title,
+.observatory-app.is-entering .observatory-target-dock,
+.observatory-app.is-entering .observatory-drag-hint,
 .observatory-app.is-entering .observatory-topbar,
 .observatory-app.is-entering .observatory-sky-targets,
-.observatory-app.is-entering .observatory-aim-reticle {
-  animation: fadeForEyepiece 0.46s ease forwards;
+.observatory-app.is-entering .observatory-aim-reticle,
+.observatory-app.is-entering .observatory-observe-button {
+  animation: fadeForEyepiece 0.45s ease forwards;
 }
 
 @keyframes scenePushIntoScope {
   to {
-    transform: translate3d(-19vw, 10vh, 0) scale(3.1) rotate(var(--scope-tilt));
-    filter: brightness(0.48);
+    transform: translate3d(-22vw, 13vh, 0) scale(3.15);
+    filter: brightness(0.42);
   }
 }
 
@@ -1180,243 +1093,175 @@ button {
   }
 }
 
-@media (max-width: 1200px) {
-  .observatory-copy {
-    width: min(510px, 43vw);
-  }
-
-  .observatory-copy h1 {
-    font-size: clamp(62px, 6.4vw, 92px);
-  }
-
-  .observatory-preview {
-    width: min(330px, 29vw);
-  }
-
-  .observatory-scene-stage {
-    width: min(69vw, 930px);
-  }
-
-  .observatory-targets-panel {
-    width: min(720px, 68vw);
-  }
+.observatory-rotate-note {
+  display: none;
 }
 
-/* Tablet / narrower desktop */
-@media (max-width: 930px) {
-  .observatory-copy {
-    left: 28px;
-    top: 112px;
-    width: 52vw;
+@media (max-width: 1120px) {
+  .observatory-editorial-title {
+    width: min(450px, 41vw);
   }
 
-  .observatory-copy h1 {
-    font-size: clamp(52px, 8.5vw, 76px);
+  .observatory-editorial-title h1 {
+    font-size: clamp(50px, 5.3vw, 72px);
   }
 
-  .observatory-description {
-    max-width: 340px;
-    font-size: 11px;
-  }
-
-  .observatory-preview {
-    right: 18px;
-    top: 106px;
-    width: 33vw;
-    padding: 14px;
-  }
-
-  .observatory-scene-stage {
-    right: -8vw;
+  .observatory-silhouette-stage {
+    right: -7vw;
     width: 78vw;
   }
 
-  .observatory-targets-panel {
-    left: 28px;
-    width: 76vw;
-  }
-
-  .observatory-more-targets {
-    display: none;
-  }
-
-  .observatory-drag-hint {
-    display: none;
-  }
-
   .observatory-observation-info {
-    width: min(430px, 48vw);
+    width: min(430px, 46vw);
   }
 }
 
 /* Mobile landscape */
-@media (orientation: landscape) and (max-height: 560px) {
+@media (orientation: landscape) and (max-height: 570px) {
   .observatory-app {
     min-height: 100svh;
   }
 
   .observatory-topbar {
-    min-height: 52px;
-    padding: max(7px, env(safe-area-inset-top)) 12px 5px;
-    grid-template-columns: 150px 1fr 170px;
-    gap: 8px;
+    min-height: 51px;
+    padding: max(6px, env(safe-area-inset-top)) 11px 4px;
+    grid-template-columns: 138px 1fr 153px;
+    gap: 7px;
   }
 
   .observatory-back {
-    min-height: 35px;
-    padding: 0 11px;
-    font-size: 10px;
+    min-height: 34px;
+    padding: 0 10px;
+    font-size: 9px;
   }
 
   .observatory-brand {
     justify-content: center;
+    gap: 8px;
   }
 
-  .observatory-brand-symbol {
-    width: 30px;
-    height: 30px;
+  .observatory-brand-orbit {
+    width: 28px;
+    height: 28px;
+  }
+
+  .observatory-brand-orbit i {
+    inset: 6px;
   }
 
   .observatory-brand small {
-    font-size: 5px;
+    display: none;
   }
 
   .observatory-brand strong {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .observatory-night-status {
-    gap: 6px;
-    font-size: 6px;
+    gap: 5px;
+    font-size: 5px;
   }
 
   .observatory-night-status i {
-    width: 20px;
+    width: 17px;
   }
 
   .observatory-night-status b {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
   }
 
-  .observatory-copy {
-    left: max(18px, env(safe-area-inset-left));
-    top: 67px;
-    width: 44vw;
+  .observatory-editorial-title {
+    left: max(16px, env(safe-area-inset-left));
+    top: 70px;
+    width: 37vw;
   }
 
-  .observatory-kicker {
-    font-size: 6px;
+  .observatory-editorial-title p {
+    font-size: 5px;
   }
 
-  .observatory-copy h1 {
-    margin-top: 7px;
-    font-size: clamp(42px, 7.8vw, 62px);
+  .observatory-editorial-title h1 {
+    margin-top: 6px;
+    font-size: clamp(36px, 6.9vw, 53px);
   }
 
-  .observatory-poetry {
+  .observatory-editorial-title h1 span {
+    margin-left: 15px;
+  }
+
+  .observatory-editorial-title em {
     margin-top: 8px;
-    font-size: clamp(13px, 2.2vw, 17px);
+    font-size: clamp(10px, 1.8vw, 13px);
   }
 
-  .observatory-copy-line {
-    width: 130px;
-    margin: 8px 0 7px;
-  }
-
-  .observatory-description {
-    max-width: 300px;
-    font-size: 9px;
-    line-height: 1.48;
-  }
-
-  .observatory-observe {
-    min-height: 39px;
-    margin-top: 11px;
-    padding: 0 16px;
-    font-size: 8px;
-  }
-
-  .observatory-lock-status {
-    margin-top: 7px;
-    font-size: 7px;
-  }
-
-  .observatory-preview {
-    right: max(12px, env(safe-area-inset-right));
-    top: 65px;
-    width: 26vw;
-    max-width: 260px;
-    padding: 11px;
-    border-radius: 18px;
-  }
-
-  .observatory-preview > p {
-    margin-bottom: 7px;
-    font-size: 6px;
-  }
-
-  .observatory-preview-window {
-    border-radius: 12px;
-  }
-
-  .observatory-preview > strong {
-    margin-top: 7px;
-    font-size: 7px;
-  }
-
-  .observatory-preview-progress {
-    margin-top: 7px;
-  }
-
-  .observatory-preview-progress i {
-    width: 15px;
-  }
-
-  .observatory-scene-stage {
-    right: -1%;
-    bottom: -7%;
-    width: 61vw;
+  .observatory-silhouette-stage {
+    right: -3vw;
+    bottom: -8vh;
+    width: 69vw;
   }
 
   .observatory-aim-reticle {
-    left: 65.5%;
-    top: 57%;
+    left: 56.1%;
+    top: 45%;
     transform: translate(-50%, -50%) scale(0.72);
   }
 
-  .observatory-targets-panel {
-    left: max(18px, env(safe-area-inset-left));
+  .observatory-observe-button {
+    left: 56.1%;
+    top: calc(45% + 40px);
+    min-height: 39px;
+    padding: 0 12px;
+    border-radius: 12px;
+  }
+
+  .observatory-observe-button strong {
+    font-size: 7px;
+  }
+
+  .observatory-observe-button small {
+    font-size: 5px;
+  }
+
+  .observatory-target-dock {
     bottom: max(8px, env(safe-area-inset-bottom));
-    width: 64vw;
   }
 
-  .observatory-targets-panel > p {
-    margin-bottom: 5px;
-    font-size: 6px;
-  }
-
-  .observatory-target-chip {
-    min-height: 34px;
+  .observatory-target-dock-toggle {
+    min-width: 186px;
+    min-height: 40px;
     padding: 0 10px;
-    border-radius: 11px;
-    font-size: 6px;
+    border-radius: 13px;
   }
 
-  .observatory-target-chip span {
+  .observatory-target-dock-toggle strong {
     font-size: 11px;
   }
 
-  .observatory-more-panel {
-    left: 18px;
-    bottom: 56px;
-    width: 58vw;
-    padding: 8px;
+  .observatory-target-dock-toggle small {
+    font-size: 5px;
   }
 
-  .observatory-more-chip {
-    min-height: 29px;
+  .observatory-target-dock-panel {
+    width: min(650px, 91vw);
+    padding: 7px;
+  }
+
+  .observatory-target-chip {
+    min-height: 31px;
+    padding: 0 9px;
     font-size: 6px;
+  }
+
+  .observatory-drag-hint {
+    left: max(12px, env(safe-area-inset-left));
+    bottom: max(10px, env(safe-area-inset-bottom));
+    width: 23vw;
+  }
+
+  .observatory-drag-hint span,
+  .observatory-drag-hint small {
+    font-size: 5px;
   }
 
   .observatory-sky-marker {
@@ -1424,27 +1269,27 @@ button {
   }
 
   .observatory-observation-info {
-    left: 16px;
-    bottom: 14px;
-    width: min(430px, 45vw);
-    padding: 14px;
-    border-radius: 18px;
+    left: 14px;
+    bottom: 12px;
+    width: min(410px, 45vw);
+    padding: 13px;
+    border-radius: 17px;
   }
 
   .observatory-observation-info h2 {
-    font-size: clamp(34px, 5vw, 48px);
+    font-size: clamp(32px, 5vw, 45px);
   }
 
   .observatory-observation-info em {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .observatory-observation-info > p:not(:first-child) {
-    font-size: 9px;
+    font-size: 8px;
   }
 
   .observatory-observation-topbar {
-    padding: max(10px, env(safe-area-inset-top)) 15px;
+    padding: max(9px, env(safe-area-inset-top)) 14px;
   }
 
   .observatory-observation-hud {
@@ -1452,20 +1297,34 @@ button {
   }
 
   .observatory-travel-copy {
-    bottom: 5%;
+    bottom: 4%;
   }
 
   .observatory-travel-copy h2 {
-    font-size: clamp(33px, 5.6vw, 52px);
+    font-size: clamp(31px, 5.5vw, 49px);
+  }
+
+  .observatory-travel-copy p {
+    display: none;
+  }
+
+  .eyepiece-blackout {
+    background:
+      radial-gradient(circle at 56.1% 45%, transparent 0 3%, rgba(0, 0, 0, 0.2) 11%, rgba(0, 0, 0, 0.94) 43%, #000 70%);
+  }
+
+  .eyepiece-ring {
+    left: 56.1%;
+    top: 45%;
   }
 }
 
-/* Portrait phones: allow access, but explicitly recommend landscape */
+/* Portrait phone asks for landscape */
 @media (orientation: portrait) and (max-width: 700px) {
   .observatory-rotate-note {
     position: fixed;
     inset: 0;
-    z-index: 150;
+    z-index: 180;
     padding: 24px;
     display: grid;
     place-items: center;
@@ -1489,7 +1348,7 @@ button {
 
   .observatory-rotate-note small {
     max-width: 32ch;
-    color: rgba(247, 240, 231, 0.58);
+    color: rgba(246, 239, 230, 0.58);
     line-height: 1.6;
   }
 
@@ -1500,14 +1359,19 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .observatory-observe,
-  .observatory-target-chip,
-  .observatory-sky-marker span {
-    transition-duration: 0.01ms !important;
-  }
-
+  .silhouette-person,
+  .silhouette-hair,
+  .silhouette-front-arm,
+  .silhouette-ambient-particles circle,
+  .observatory-sky-marker::after,
   .observation-fallback-orb,
   .observatory-rotate-note span {
     animation: none !important;
+  }
+
+  .observatory-target-chip,
+  .observatory-sky-marker span,
+  .observatory-observe-button {
+    transition-duration: 0.01ms !important;
   }
 }

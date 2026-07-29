@@ -1,8 +1,8 @@
 /* =========================================================
-   ASTROPHILE'S OBSERVATORY V5
-   Keeps the original concept:
-   draggable telescope sky -> lock target -> eyepiece zoom
-   -> 3D deep-space corridor -> NASA moving imagery.
+   ASTROPHILE'S OBSERVATORY V6 — LIVING SILHOUETTE
+   Initial UI: animated sky + black silhouette woman + telescope.
+   Interaction: drag sky -> align target -> observe -> eyepiece
+   -> 3D tunnel -> NASA moving imagery.
 ========================================================= */
 
 (() => {
@@ -10,19 +10,18 @@
 
   const app = document.getElementById("observatoryApp");
   const skyCanvas = document.getElementById("skyCanvas");
-  const previewTunnelCanvas = document.getElementById("previewTunnelCanvas");
-  const travelCanvas = document.getElementById("travelCanvas");
   const dragSurface = document.getElementById("dragSurface");
-  const sceneStage = document.getElementById("sceneStage");
-  const targetChips = document.getElementById("targetChips");
+  const silhouetteStage = document.getElementById("silhouetteStage");
+  const telescopeSvgGroup = document.getElementById("telescopeSvgGroup");
   const skyTargets = document.getElementById("skyTargets");
-  const moreTargetsButton = document.getElementById("moreTargetsButton");
-  const moreTargetsPanel = document.getElementById("moreTargetsPanel");
   const observeButton = document.getElementById("observeButton");
-  const lockStatus = document.getElementById("lockStatus");
-  const previewTargetName = document.getElementById("previewTargetName");
+  const targetDockToggle = document.getElementById("targetDockToggle");
+  const targetDockPanel = document.getElementById("targetDockPanel");
+  const targetChips = document.getElementById("targetChips");
+  const selectedTargetLabel = document.getElementById("selectedTargetLabel");
   const eyepieceOverlay = document.getElementById("eyepieceOverlay");
   const travelOverlay = document.getElementById("travelOverlay");
+  const travelCanvas = document.getElementById("travelCanvas");
   const travelTitle = document.getElementById("travelTitle");
   const observationOverlay = document.getElementById("observationOverlay");
   const observationVideo = document.getElementById("observationVideo");
@@ -37,19 +36,23 @@
   if (
     !app ||
     !skyCanvas ||
-    !previewTunnelCanvas ||
-    !travelCanvas ||
     !dragSurface ||
-    !targetChips ||
     !skyTargets ||
     !observeButton ||
+    !targetDockToggle ||
+    !targetDockPanel ||
+    !targetChips ||
+    !eyepieceOverlay ||
+    !travelOverlay ||
+    !travelCanvas ||
     !observationOverlay ||
     !observationVideo
   ) {
     return;
   }
 
-  const embedded = new URLSearchParams(window.location.search).get("embedded") === "1";
+  const embedded =
+    new URLSearchParams(window.location.search).get("embedded") === "1";
 
   if (embedded && backButton) {
     backButton.addEventListener("click", (event) => {
@@ -68,14 +71,15 @@
       shortName: "THE MOON",
       symbol: "☾",
       type: "EARTH’S MOON",
-      x: 0.20,
+      x: 0.18,
       y: 0.22,
-      color: "#f3dfbd",
+      color: "#f1dfbf",
+      glow: "rgba(241,223,191,.52)",
       distance: "384,400 km",
       light: "1.3 seconds",
       poetry: "The nearest world, still beautifully far away.",
       description:
-        "Rotasi ini menggunakan data misi Clementine NASA. Visualnya bukan planet ilustrasi datar, melainkan visualisasi bergerak berbasis pemetaan permukaan Bulan.",
+        "Rotasi ini menggunakan data misi Clementine NASA. Visualnya bergerak berdasarkan pemetaan permukaan Bulan, bukan ilustrasi canvas sederhana.",
       video:
         "https://svs.gsfc.nasa.gov/vis/a000000/a003400/a003444/moonrot.mp4",
       source: "https://svs.gsfc.nasa.gov/3444/"
@@ -86,14 +90,15 @@
       shortName: "MERCURY",
       symbol: "☿",
       type: "INNER ROCKY PLANET",
-      x: 0.36,
-      y: 0.30,
-      color: "#dcc7ac",
+      x: 0.34,
+      y: 0.34,
+      color: "#dbc7ae",
+      glow: "rgba(219,199,174,.48)",
       distance: "≈91 million km",
       light: "≈5 minutes",
       poetry: "A scarred world racing closest to the Sun.",
       description:
-        "Visual observasi Mercury menggunakan citra dari wahana MESSENGER untuk memperlihatkan permukaan berbatu dan kawahnya secara lebih nyata.",
+        "Visual Mercury menggunakan citra dari wahana MESSENGER untuk memperlihatkan permukaan berbatu dan kawahnya secara lebih nyata.",
       video:
         "https://svs.gsfc.nasa.gov/vis/a010000/a011500/a011544/MercuryTour-540-MASTER_high.mp4",
       source: "https://svs.gsfc.nasa.gov/11544/"
@@ -104,14 +109,15 @@
       shortName: "VENUS",
       symbol: "♀",
       type: "CLOUD-WRAPPED PLANET",
-      x: 0.53,
-      y: 0.18,
-      color: "#e5c993",
+      x: 0.49,
+      y: 0.16,
+      color: "#e3c992",
+      glow: "rgba(227,201,146,.5)",
       distance: "≈41 million km",
       light: "≈2.3 minutes",
       poetry: "A luminous world hidden beneath restless cloud.",
       description:
-        "Visual Venus menggunakan pemetaan radar Magellan NASA. Gerakannya memperlihatkan permukaan dan struktur global Venus berdasarkan data misi.",
+        "Visual Venus menggunakan pemetaan radar Magellan NASA. Gerakannya memperlihatkan struktur global Venus berdasarkan data misi.",
       video:
         "https://svs.gsfc.nasa.gov/vis/a010000/a010900/a010904/3728_Venus_music-540-MASTER_high.mp4",
       source: "https://svs.gsfc.nasa.gov/10904/"
@@ -122,9 +128,10 @@
       shortName: "MARS",
       symbol: "♂",
       type: "THE RED PLANET",
-      x: 0.69,
-      y: 0.31,
+      x: 0.66,
+      y: 0.29,
       color: "#d98d73",
+      glow: "rgba(217,141,115,.5)",
       distance: "≈225 million km",
       light: "≈12.5 minutes",
       poetry: "A rust-colored silence turning beyond the dark.",
@@ -140,14 +147,15 @@
       shortName: "JUPITER",
       symbol: "♃",
       type: "GAS GIANT",
-      x: 0.80,
-      y: 0.17,
-      color: "#e3bf94",
+      x: 0.79,
+      y: 0.18,
+      color: "#e0bc91",
+      glow: "rgba(224,188,145,.5)",
       distance: "≈780 million km",
       light: "≈43 minutes",
       poetry: "A storm-lit giant carrying worlds in its gravity.",
       description:
-        "Visual bergerak Jupiter dibuat dari peta Hubble NASA. Awan, pita atmosfer, dan Great Red Spot berasal dari hasil observasi, bukan ilustrasi canvas sebelumnya.",
+        "Visual bergerak Jupiter dibuat dari peta Hubble NASA. Awan, pita atmosfer, dan Great Red Spot berasal dari hasil observasi.",
       video:
         "https://svs.gsfc.nasa.gov/vis/a010000/a012000/a012021/Jupiter01-H264_1280x720.mp4",
       source: "https://svs.gsfc.nasa.gov/12021/"
@@ -161,11 +169,12 @@
       x: 0.88,
       y: 0.42,
       color: "#e3c493",
+      glow: "rgba(227,196,147,.5)",
       distance: "≈1.4 billion km",
       light: "≈79 minutes",
       poetry: "A pale golden world carrying an impossible crown.",
       description:
-        "Observasi Saturn menggunakan materi Hubble NASA. Cincin dan atmosfernya tampil dari visual misi resmi, bukan bentuk ilustrasi sederhana.",
+        "Observasi Saturn menggunakan materi Hubble NASA. Cincin dan atmosfernya tampil dari visual misi resmi.",
       video:
         "https://svs.gsfc.nasa.gov/vis/a010000/a013300/a013307/13307_saturn_opal_wide_mp4.mp4",
       source: "https://svs.gsfc.nasa.gov/13307/"
@@ -176,9 +185,10 @@
       shortName: "URANUS",
       symbol: "♅",
       type: "ICE GIANT",
-      x: 0.76,
-      y: 0.55,
-      color: "#9cd9df",
+      x: 0.75,
+      y: 0.56,
+      color: "#9bd9df",
+      glow: "rgba(155,217,223,.52)",
       distance: "≈2.9 billion km",
       light: "≈2.7 hours",
       poetry: "A quiet blue-green world suspended in restraint.",
@@ -190,26 +200,26 @@
     }
   ];
 
-  const PRIMARY_IDS = ["moon", "mercury", "venus", "jupiter", "saturn"];
-  const MORE_IDS = ["mars", "uranus"];
-
   let selectedTarget = TARGETS[0];
+  let alignedTarget = null;
   let panX = 0;
   let panY = 0;
   let dragStart = null;
   let pointerId = null;
-  let animationFrame = null;
-  let travelAnimation = null;
+  let panAnimationFrame = null;
   let isTraveling = false;
-  let skyStars = [];
-  let skyDust = [];
-  let previewTunnel = null;
+  let skyState = null;
   let travelTunnel = null;
+  let videoFallbackTimer = null;
 
   const clamp = (value, minimum, maximum) =>
     Math.max(minimum, Math.min(maximum, value));
 
-  function setClock() {
+  function getTargetById(targetId) {
+    return TARGETS.find((target) => target.id === targetId) || TARGETS[0];
+  }
+
+  function updateClock() {
     if (!clock) return;
 
     clock.textContent = new Intl.DateTimeFormat("id-ID", {
@@ -220,11 +230,18 @@
     }).format(new Date());
   }
 
-  setClock();
-  window.setInterval(setClock, 30000);
+  updateClock();
+  window.setInterval(updateClock, 30000);
 
-  function getTargetById(targetId) {
-    return TARGETS.find((target) => target.id === targetId) || TARGETS[0];
+  function getAimPosition() {
+    const isMobileLandscape =
+      window.matchMedia("(orientation: landscape) and (max-height: 570px)")
+        .matches;
+
+    return {
+      x: window.innerWidth * (isMobileLandscape ? 0.561 : 0.548),
+      y: window.innerHeight * (isMobileLandscape ? 0.45 : 0.442)
+    };
   }
 
   function targetScreenPosition(target) {
@@ -234,83 +251,26 @@
     };
   }
 
-  function getAimPosition() {
-    return {
-      x: window.innerWidth * 0.651,
-      y: window.innerHeight * 0.552
-    };
-  }
-
-  function updatePanVariables() {
+  function updateVisualPan() {
     app.style.setProperty("--pan-x", `${panX}px`);
     app.style.setProperty("--pan-y", `${panY}px`);
-    app.style.setProperty("--scene-pan-x", `${panX * 0.035}px`);
-    app.style.setProperty("--scene-pan-y", `${panY * 0.022}px`);
-    app.style.setProperty(
-      "--scope-tilt",
-      `${clamp((-panX / Math.max(window.innerWidth, 1)) * 3.5, -2.4, 2.4)}deg`
+    app.style.setProperty("--sky-pan-x", `${panX * 0.12}px`);
+    app.style.setProperty("--sky-pan-y", `${panY * 0.08}px`);
+    app.style.setProperty("--silhouette-pan-x", `${panX * 0.015}px`);
+    app.style.setProperty("--silhouette-pan-y", `${panY * 0.012}px`);
+
+    const tilt = clamp(
+      -8 + (-panX / Math.max(window.innerWidth, 1)) * 6.8,
+      -14,
+      -2
     );
+
+    app.style.setProperty("--scope-tilt", `${tilt}deg`);
   }
 
-  function updateActiveElements() {
-    document
-      .querySelectorAll("[data-observatory-target]")
-      .forEach((element) => {
-        element.classList.toggle(
-          "is-active",
-          element.dataset.observatoryTarget === selectedTarget.id
-        );
-      });
-
-    previewTargetName.textContent = selectedTarget.shortName;
-    observeButton.querySelector("strong").textContent =
-      `OBSERVE ${selectedTarget.shortName}`;
-    lockStatus.lastChild.textContent =
-      ` ${selectedTarget.name} is aligned with the telescope.`;
-  }
-
-  function selectTarget(targetId, align = true) {
-    selectedTarget = getTargetById(targetId);
-
-    if (align) {
-      const aim = getAimPosition();
-      const desiredX = aim.x - selectedTarget.x * window.innerWidth;
-      const desiredY = aim.y - selectedTarget.y * window.innerHeight;
-      animatePanTo(desiredX, desiredY, 620);
-    }
-
-    updateActiveElements();
-  }
-
-  function renderControls() {
-    targetChips.innerHTML = "";
-    moreTargetsPanel.innerHTML = "";
+  function renderTargetControls() {
     skyTargets.innerHTML = "";
-
-    PRIMARY_IDS.forEach((targetId) => {
-      const target = getTargetById(targetId);
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "observatory-target-chip";
-      button.dataset.observatoryTarget = target.id;
-      button.innerHTML = `<span>${target.symbol}</span><b>${target.shortName}</b>`;
-      button.addEventListener("click", () => selectTarget(target.id, true));
-      targetChips.appendChild(button);
-    });
-
-    MORE_IDS.forEach((targetId) => {
-      const target = getTargetById(targetId);
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "observatory-more-chip";
-      button.dataset.observatoryTarget = target.id;
-      button.textContent = `${target.symbol} ${target.name}`;
-      button.addEventListener("click", () => {
-        selectTarget(target.id, true);
-        closeMoreTargets();
-      });
-      moreTargetsPanel.appendChild(button);
-    });
+    targetChips.innerHTML = "";
 
     TARGETS.forEach((target) => {
       const marker = document.createElement("button");
@@ -320,38 +280,78 @@
       marker.style.left = `${target.x * 100}%`;
       marker.style.top = `${target.y * 100}%`;
       marker.style.setProperty("--marker-color", target.color);
+      marker.style.setProperty("--marker-glow", target.glow);
       marker.innerHTML = `<span>${target.shortName}</span>`;
       marker.setAttribute("aria-label", `Arahkan teleskop ke ${target.name}`);
       marker.addEventListener("click", () => selectTarget(target.id, true));
       skyTargets.appendChild(marker);
+
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "observatory-target-chip";
+      chip.dataset.observatoryTarget = target.id;
+      chip.innerHTML = `<span>${target.symbol}</span><b>${target.shortName}</b>`;
+      chip.addEventListener("click", () => {
+        selectTarget(target.id, true);
+        closeTargetDock();
+      });
+      targetChips.appendChild(chip);
     });
 
-    updateActiveElements();
+    updateTargetUI();
   }
 
-  function closeMoreTargets() {
-    moreTargetsPanel.hidden = true;
-    moreTargetsButton.setAttribute("aria-expanded", "false");
+  function updateTargetUI() {
+    selectedTargetLabel.textContent = selectedTarget.name;
+
+    document
+      .querySelectorAll("[data-observatory-target]")
+      .forEach((element) => {
+        element.classList.toggle(
+          "is-active",
+          element.dataset.observatoryTarget === selectedTarget.id
+        );
+      });
+
+    if (alignedTarget) {
+      observeButton.hidden = false;
+      observeButton.querySelector("strong").textContent =
+        `OBSERVE ${alignedTarget.shortName}`;
+    } else {
+      observeButton.hidden = true;
+    }
   }
 
-  moreTargetsButton.addEventListener("click", () => {
-    const isExpanded =
-      moreTargetsButton.getAttribute("aria-expanded") === "true";
+  function openTargetDock() {
+    targetDockPanel.hidden = false;
+    targetDockToggle.setAttribute("aria-expanded", "true");
+    targetDockToggle.querySelector("b").textContent = "−";
+  }
 
-    moreTargetsButton.setAttribute("aria-expanded", String(!isExpanded));
-    moreTargetsPanel.hidden = isExpanded;
+  function closeTargetDock() {
+    targetDockPanel.hidden = true;
+    targetDockToggle.setAttribute("aria-expanded", "false");
+    targetDockToggle.querySelector("b").textContent = "＋";
+  }
+
+  targetDockToggle.addEventListener("click", () => {
+    if (targetDockPanel.hidden) {
+      openTargetDock();
+    } else {
+      closeTargetDock();
+    }
   });
 
-  function animatePanTo(targetPanX, targetPanY, duration) {
-    window.cancelAnimationFrame(animationFrame);
+  function animatePanTo(targetX, targetY, duration = 700) {
+    window.cancelAnimationFrame(panAnimationFrame);
 
-    const startPanX = panX;
-    const startPanY = panY;
+    const startX = panX;
+    const startY = panY;
     const startTime = performance.now();
-    const maxX = window.innerWidth * 0.44;
-    const maxY = window.innerHeight * 0.35;
-    const finalX = clamp(targetPanX, -maxX, maxX);
-    const finalY = clamp(targetPanY, -maxY, maxY);
+    const maxX = window.innerWidth * 0.46;
+    const maxY = window.innerHeight * 0.38;
+    const finalX = clamp(targetX, -maxX, maxX);
+    const finalY = clamp(targetY, -maxY, maxY);
 
     const easeInOutCubic = (progress) =>
       progress < 0.5
@@ -362,25 +362,67 @@
       const progress = clamp((currentTime - startTime) / duration, 0, 1);
       const eased = easeInOutCubic(progress);
 
-      panX = startPanX + (finalX - startPanX) * eased;
-      panY = startPanY + (finalY - startPanY) * eased;
-      updatePanVariables();
+      panX = startX + (finalX - startX) * eased;
+      panY = startY + (finalY - startY) * eased;
+      updateVisualPan();
+      detectAlignment();
 
       if (progress < 1) {
-        animationFrame = window.requestAnimationFrame(step);
+        panAnimationFrame = window.requestAnimationFrame(step);
       }
     };
 
-    animationFrame = window.requestAnimationFrame(step);
+    panAnimationFrame = window.requestAnimationFrame(step);
+  }
+
+  function selectTarget(targetId, align = true) {
+    selectedTarget = getTargetById(targetId);
+
+    if (align) {
+      const aim = getAimPosition();
+      animatePanTo(
+        aim.x - selectedTarget.x * window.innerWidth,
+        aim.y - selectedTarget.y * window.innerHeight
+      );
+    }
+
+    updateTargetUI();
+  }
+
+  function detectAlignment() {
+    const aim = getAimPosition();
+    let nearest = null;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+
+    TARGETS.forEach((target) => {
+      const position = targetScreenPosition(target);
+      const distance = Math.hypot(position.x - aim.x, position.y - aim.y);
+
+      if (distance < nearestDistance) {
+        nearest = target;
+        nearestDistance = distance;
+      }
+    });
+
+    const threshold = Math.min(window.innerWidth, window.innerHeight) * 0.072;
+
+    if (nearest && nearestDistance <= threshold) {
+      alignedTarget = nearest;
+      selectedTarget = nearest;
+    } else {
+      alignedTarget = null;
+    }
+
+    updateTargetUI();
   }
 
   dragSurface.addEventListener("pointerdown", (event) => {
-    if (isTraveling) return;
+    if (isTraveling || !observationOverlay.hidden) return;
 
     pointerId = event.pointerId;
     dragStart = {
-      x: event.clientX,
-      y: event.clientY,
+      clientX: event.clientX,
+      clientY: event.clientY,
       panX,
       panY
     };
@@ -392,34 +434,33 @@
   dragSurface.addEventListener("pointermove", (event) => {
     if (!dragStart || event.pointerId !== pointerId) return;
 
-    const sensitivity = event.pointerType === "touch" ? 1.45 : 1.2;
-    const maxX = window.innerWidth * 0.44;
-    const maxY = window.innerHeight * 0.35;
+    const sensitivity = event.pointerType === "touch" ? 1.56 : 1.28;
+    const maxX = window.innerWidth * 0.46;
+    const maxY = window.innerHeight * 0.38;
 
     panX = clamp(
-      dragStart.panX + (event.clientX - dragStart.x) * sensitivity,
+      dragStart.panX + (event.clientX - dragStart.clientX) * sensitivity,
       -maxX,
       maxX
     );
+
     panY = clamp(
-      dragStart.panY + (event.clientY - dragStart.y) * sensitivity,
+      dragStart.panY + (event.clientY - dragStart.clientY) * sensitivity,
       -maxY,
       maxY
     );
 
-    updatePanVariables();
-    detectNearestTarget();
+    updateVisualPan();
+    detectAlignment();
   });
 
   function endDrag(event) {
     if (!dragStart) return;
 
-    if (event && pointerId !== null) {
-      try {
-        dragSurface.releasePointerCapture(pointerId);
-      } catch (_) {
-        // No-op: pointer can already be released by the browser.
-      }
+    try {
+      dragSurface.releasePointerCapture(event.pointerId);
+    } catch (_) {
+      // Pointer can already be released by browser.
     }
 
     dragStart = null;
@@ -430,49 +471,38 @@
   dragSurface.addEventListener("pointerup", endDrag);
   dragSurface.addEventListener("pointercancel", endDrag);
 
-  function detectNearestTarget() {
-    const aim = getAimPosition();
-    let nearestTarget = null;
-    let nearestDistance = Number.POSITIVE_INFINITY;
-
-    TARGETS.forEach((target) => {
-      const position = targetScreenPosition(target);
-      const distance = Math.hypot(position.x - aim.x, position.y - aim.y);
-
-      if (distance < nearestDistance) {
-        nearestDistance = distance;
-        nearestTarget = target;
-      }
-    });
-
-    if (nearestTarget && nearestDistance < 62) {
-      if (selectedTarget.id !== nearestTarget.id) {
-        selectedTarget = nearestTarget;
-        updateActiveElements();
-      }
-    }
-  }
-
   document.addEventListener("keydown", (event) => {
     if (isTraveling || !observationOverlay.hidden) return;
 
-    const step = event.shiftKey ? 70 : 34;
-    const maxX = window.innerWidth * 0.44;
-    const maxY = window.innerHeight * 0.35;
+    const amount = event.shiftKey ? 70 : 34;
+    const maxX = window.innerWidth * 0.46;
+    const maxY = window.innerHeight * 0.38;
+    let changed = false;
 
-    if (event.key === "ArrowLeft") panX = clamp(panX + step, -maxX, maxX);
-    if (event.key === "ArrowRight") panX = clamp(panX - step, -maxX, maxX);
-    if (event.key === "ArrowUp") panY = clamp(panY + step, -maxY, maxY);
-    if (event.key === "ArrowDown") panY = clamp(panY - step, -maxY, maxY);
+    if (event.key === "ArrowLeft") {
+      panX = clamp(panX + amount, -maxX, maxX);
+      changed = true;
+    }
 
-    if (
-      ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(
-        event.key
-      )
-    ) {
+    if (event.key === "ArrowRight") {
+      panX = clamp(panX - amount, -maxX, maxX);
+      changed = true;
+    }
+
+    if (event.key === "ArrowUp") {
+      panY = clamp(panY + amount, -maxY, maxY);
+      changed = true;
+    }
+
+    if (event.key === "ArrowDown") {
+      panY = clamp(panY - amount, -maxY, maxY);
+      changed = true;
+    }
+
+    if (changed) {
       event.preventDefault();
-      updatePanVariables();
-      detectNearestTarget();
+      updateVisualPan();
+      detectAlignment();
     }
   });
 
@@ -490,106 +520,241 @@
     return { context, width, height };
   }
 
-  function buildSky() {
-    const { width, height } = fitCanvas(skyCanvas);
-    skyStars = Array.from(
-      { length: Math.max(170, Math.floor((width * height) / 7000)) },
-      () => ({
-        x: Math.random() * width,
-        y: Math.random() * height * 0.82,
-        radius: Math.random() * 1.3 + 0.25,
-        alpha: Math.random() * 0.62 + 0.18,
-        phase: Math.random() * Math.PI * 2,
-        speed: Math.random() * 0.018 + 0.005
-      })
-    );
+  function createSkyState() {
+    const meta = fitCanvas(skyCanvas);
 
-    skyDust = Array.from({ length: 5 }, (_, index) => ({
-      x: width * (0.3 + index * 0.08),
-      y: height * (0.19 + (index % 3) * 0.06),
-      radius: Math.min(width, height) * (0.13 + index * 0.025),
-      phase: Math.random() * Math.PI * 2
-    }));
+    return {
+      ...meta,
+      stars: Array.from(
+        {
+          length: Math.max(
+            230,
+            Math.floor((meta.width * meta.height) / 5600)
+          )
+        },
+        () => ({
+          x: Math.random() * meta.width,
+          y: Math.random() * meta.height * 0.84,
+          radius: Math.random() * 1.45 + 0.2,
+          alpha: Math.random() * 0.67 + 0.13,
+          phase: Math.random() * Math.PI * 2,
+          speed: Math.random() * 0.015 + 0.004,
+          depth: Math.random() * 0.8 + 0.2
+        })
+      ),
+      milkyDust: Array.from({ length: 160 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        radius: Math.random() * 2.4 + 0.3,
+        alpha: Math.random() * 0.13 + 0.015
+      })),
+      mountainLayers: [
+        { y: 0.77, color: "#101827", amplitude: 0.08, seed: 1.7 },
+        { y: 0.84, color: "#080d16", amplitude: 0.1, seed: 2.9 },
+        { y: 0.91, color: "#03060b", amplitude: 0.12, seed: 4.4 }
+      ],
+      shootingStar: {
+        active: false,
+        startTime: 0,
+        duration: 3600,
+        x: 0,
+        y: 0
+      }
+    };
+  }
+
+  function drawMountainLayer(context, width, height, layer) {
+    context.beginPath();
+    context.moveTo(0, height);
+
+    for (let x = 0; x <= width; x += width / 22) {
+      const normalizedX = x / width;
+      const noise =
+        Math.sin(normalizedX * Math.PI * 4.6 + layer.seed) * 0.36 +
+        Math.sin(normalizedX * Math.PI * 9.2 + layer.seed * 1.7) * 0.17 +
+        Math.sin(normalizedX * Math.PI * 2.1 + layer.seed * 0.6) * 0.47;
+
+      const y =
+        height * layer.y -
+        noise * height * layer.amplitude;
+
+      context.lineTo(x, y);
+    }
+
+    context.lineTo(width, height);
+    context.closePath();
+    context.fillStyle = layer.color;
+    context.fill();
   }
 
   function renderSky(time = 0) {
-    const { context, width, height } = fitCanvas(skyCanvas);
+    if (!skyState) {
+      skyState = createSkyState();
+    }
 
+    const { context, width, height } = skyState;
     context.clearRect(0, 0, width, height);
 
-    const background = context.createLinearGradient(0, 0, 0, height);
-    background.addColorStop(0, "#020713");
-    background.addColorStop(0.62, "#071326");
-    background.addColorStop(1, "#10111b");
-    context.fillStyle = background;
+    const skyGradient = context.createLinearGradient(0, 0, 0, height);
+    skyGradient.addColorStop(0, "#010611");
+    skyGradient.addColorStop(0.48, "#061229");
+    skyGradient.addColorStop(0.74, "#0d1830");
+    skyGradient.addColorStop(1, "#11121b");
+    context.fillStyle = skyGradient;
     context.fillRect(0, 0, width, height);
 
-    skyDust.forEach((dust, index) => {
-      const x = dust.x + Math.sin(time * 0.00005 + dust.phase) * 16;
-      const y = dust.y + Math.cos(time * 0.000045 + dust.phase) * 10;
-      const gradient = context.createRadialGradient(
-        x,
-        y,
-        0,
-        x,
-        y,
-        dust.radius
-      );
+    const horizonGlow = context.createRadialGradient(
+      width * 0.69,
+      height * 0.76,
+      0,
+      width * 0.69,
+      height * 0.76,
+      width * 0.44
+    );
+
+    horizonGlow.addColorStop(0, "rgba(184, 139, 105, 0.15)");
+    horizonGlow.addColorStop(0.34, "rgba(102, 111, 155, 0.08)");
+    horizonGlow.addColorStop(1, "rgba(0,0,0,0)");
+    context.fillStyle = horizonGlow;
+    context.fillRect(0, 0, width, height);
+
+    context.save();
+    context.translate(width * 0.48, height * 0.28);
+    context.rotate(-0.76);
+
+    for (let layerIndex = 0; layerIndex < 7; layerIndex += 1) {
+      const radius = Math.max(width, height) * (0.14 + layerIndex * 0.055);
+      const gradient = context.createRadialGradient(0, 0, 0, 0, 0, radius);
 
       gradient.addColorStop(
         0,
-        index % 2 === 0
-          ? "rgba(122, 159, 214, 0.055)"
-          : "rgba(154, 130, 194, 0.045)"
+        layerIndex % 2 === 0
+          ? "rgba(169, 194, 225, 0.055)"
+          : "rgba(183, 154, 205, 0.038)"
       );
       gradient.addColorStop(1, "rgba(0,0,0,0)");
 
       context.fillStyle = gradient;
       context.beginPath();
-      context.arc(x, y, dust.radius, 0, Math.PI * 2);
+      context.ellipse(
+        layerIndex * 14 - 45,
+        Math.sin(time * 0.00006 + layerIndex) * 13,
+        radius * 1.38,
+        radius * 0.32,
+        0,
+        0,
+        Math.PI * 2
+      );
+      context.fill();
+    }
+
+    skyState.milkyDust.forEach((dust, index) => {
+      const dx = (dust.x - 0.5) * width * 0.72;
+      const dy =
+        (dust.y - 0.5) * height * 0.28 +
+        Math.sin(index * 0.86) * 30;
+
+      context.beginPath();
+      context.arc(dx, dy, dust.radius, 0, Math.PI * 2);
+      context.fillStyle = `rgba(218,228,242,${dust.alpha})`;
       context.fill();
     });
 
-    skyStars.forEach((star) => {
+    context.restore();
+
+    skyState.stars.forEach((star) => {
       star.phase += star.speed;
-      const alpha = star.alpha * (0.72 + Math.sin(star.phase) * 0.28);
+      const x =
+        star.x +
+        Math.sin(time * 0.000018 + star.phase) * star.depth * 1.8;
+      const alpha = star.alpha * (0.7 + Math.sin(star.phase) * 0.3);
 
       context.beginPath();
-      context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-      context.fillStyle = `rgba(235,242,250,${Math.max(0.04, alpha)})`;
+      context.arc(x, star.y, star.radius, 0, Math.PI * 2);
+      context.fillStyle = `rgba(233,240,249,${Math.max(0.03, alpha)})`;
       context.fill();
+    });
+
+    if (
+      !skyState.shootingStar.active &&
+      Math.random() < 0.0011
+    ) {
+      skyState.shootingStar = {
+        active: true,
+        startTime: time,
+        duration: 2700 + Math.random() * 1600,
+        x: width * (0.28 + Math.random() * 0.52),
+        y: height * (0.1 + Math.random() * 0.22)
+      };
+    }
+
+    if (skyState.shootingStar.active) {
+      const progress =
+        (time - skyState.shootingStar.startTime) /
+        skyState.shootingStar.duration;
+
+      if (progress >= 1) {
+        skyState.shootingStar.active = false;
+      } else {
+        const headX =
+          skyState.shootingStar.x + progress * width * 0.24;
+        const headY =
+          skyState.shootingStar.y + progress * height * 0.17;
+        const tailLength = width * 0.1;
+        const gradient = context.createLinearGradient(
+          headX,
+          headY,
+          headX - tailLength,
+          headY - tailLength * 0.55
+        );
+
+        gradient.addColorStop(0, "rgba(255,249,234,0.88)");
+        gradient.addColorStop(0.28, "rgba(191,222,251,0.24)");
+        gradient.addColorStop(1, "rgba(191,222,251,0)");
+
+        context.strokeStyle = gradient;
+        context.lineWidth = 1.4;
+        context.beginPath();
+        context.moveTo(headX, headY);
+        context.lineTo(
+          headX - tailLength,
+          headY - tailLength * 0.55
+        );
+        context.stroke();
+      }
+    }
+
+    skyState.mountainLayers.forEach((layer) => {
+      drawMountainLayer(context, width, height, layer);
     });
 
     window.requestAnimationFrame(renderSky);
   }
 
-  function createTunnelRenderer(canvas, options = {}) {
+  function createTunnelRenderer(canvas) {
     let meta = fitCanvas(canvas);
     const stars = [];
     const rings = [];
-    const starCount = options.starCount || 190;
-    const ringCount = options.ringCount || 24;
-    const speed = options.speed || 1;
-    let running = true;
+    let running = false;
     let lastTime = performance.now();
 
     const resetStar = () => ({
-      x: (Math.random() - 0.5) * meta.width * 1.7,
-      y: (Math.random() - 0.5) * meta.height * 1.7,
+      x: (Math.random() - 0.5) * meta.width * 1.75,
+      y: (Math.random() - 0.5) * meta.height * 1.75,
       z: Math.random() * 1000 + 30,
       previousZ: 1000,
-      hue: 190 + Math.random() * 42
+      hue: 188 + Math.random() * 55
     });
 
-    for (let index = 0; index < starCount; index += 1) {
+    for (let index = 0; index < 320; index += 1) {
       stars.push(resetStar());
     }
 
-    for (let index = 0; index < ringCount; index += 1) {
+    for (let index = 0; index < 38; index += 1) {
       rings.push({
-        z: index * (1000 / ringCount),
+        z: index * (1000 / 38),
         rotation: Math.random() * Math.PI * 2,
-        tilt: (Math.random() - 0.5) * 0.55
+        tilt: (Math.random() - 0.5) * 0.6
       });
     }
 
@@ -606,11 +771,9 @@
       const { context, width, height } = meta;
       const centerX = width / 2;
       const centerY = height / 2;
-      const focalLength = Math.min(width, height) * 0.82;
+      const focalLength = Math.min(width, height) * 0.88;
 
-      context.fillStyle = options.fade
-        ? "rgba(0, 2, 9, 0.2)"
-        : "#000207";
+      context.fillStyle = "#000207";
       context.fillRect(0, 0, width, height);
 
       const core = context.createRadialGradient(
@@ -619,52 +782,62 @@
         0,
         centerX,
         centerY,
-        Math.min(width, height) * 0.34
+        Math.min(width, height) * 0.37
       );
-      core.addColorStop(0, "rgba(232,245,255,0.16)");
-      core.addColorStop(0.25, "rgba(79,147,219,0.12)");
-      core.addColorStop(0.58, "rgba(89,61,169,0.07)");
+
+      core.addColorStop(0, "rgba(235,247,255,0.2)");
+      core.addColorStop(0.23, "rgba(80,155,223,0.14)");
+      core.addColorStop(0.5, "rgba(100,68,183,0.08)");
       core.addColorStop(1, "rgba(0,0,0,0)");
+
       context.fillStyle = core;
       context.fillRect(0, 0, width, height);
 
       rings.forEach((ring, index) => {
-        ring.z -= delta * speed * 0.72;
+        ring.z -= delta * 0.92;
 
         if (ring.z < 8) {
           ring.z += 1000;
           ring.rotation = Math.random() * Math.PI * 2;
-          ring.tilt = (Math.random() - 0.5) * 0.55;
+          ring.tilt = (Math.random() - 0.5) * 0.6;
         }
 
         const scale = focalLength / ring.z;
-        const radius = Math.min(width, height) * 0.17 * scale;
-        const alpha = clamp(1 - ring.z / 1000, 0, 1) * 0.25;
+        const radius = Math.min(width, height) * 0.18 * scale;
+        const alpha = clamp(1 - ring.z / 1000, 0, 1) * 0.29;
 
-        if (radius < 2 || radius > Math.max(width, height) * 2) return;
+        if (
+          radius < 2 ||
+          radius > Math.max(width, height) * 2
+        ) {
+          return;
+        }
 
         context.save();
         context.translate(centerX, centerY);
-        context.rotate(ring.rotation + currentTime * 0.00015 * (index % 2 ? 1 : -1));
-        context.scale(1, 0.55 + ring.tilt * 0.12);
+        context.rotate(
+          ring.rotation +
+          currentTime * 0.00017 * (index % 2 === 0 ? 1 : -1)
+        );
+        context.scale(1, 0.5 + ring.tilt * 0.1);
         context.beginPath();
         context.arc(0, 0, radius, 0, Math.PI * 2);
         context.strokeStyle =
           index % 3 === 0
-            ? `rgba(133,190,239,${alpha})`
+            ? `rgba(135,198,242,${alpha})`
             : index % 3 === 1
-              ? `rgba(192,139,235,${alpha * 0.75})`
-              : `rgba(245,224,198,${alpha * 0.6})`;
-        context.lineWidth = Math.max(0.5, scale * 1.4);
+              ? `rgba(194,137,237,${alpha * 0.75})`
+              : `rgba(244,219,188,${alpha * 0.58})`;
+        context.lineWidth = Math.max(0.5, scale * 1.55);
         context.stroke();
         context.restore();
       });
 
       stars.forEach((star, index) => {
         star.previousZ = star.z;
-        star.z -= delta * speed * 2.6;
+        star.z -= delta * 3.15;
 
-        if (star.z < 10) {
+        if (star.z < 9) {
           stars[index] = resetStar();
           return;
         }
@@ -700,89 +873,54 @@
         );
         gradient.addColorStop(
           1,
-          `hsla(${star.hue}, 90%, 90%, ${alpha})`
+          `hsla(${star.hue}, 90%, 92%, ${alpha})`
         );
 
         context.strokeStyle = gradient;
-        context.lineWidth = clamp(scale * 1.8, 0.5, 5);
+        context.lineWidth = clamp(scale * 1.9, 0.5, 5.5);
         context.beginPath();
         context.moveTo(previousX, previousY);
         context.lineTo(x, y);
         context.stroke();
       });
 
-      const tunnelEdge = context.createRadialGradient(
+      const edge = context.createRadialGradient(
         centerX,
         centerY,
-        Math.min(width, height) * 0.12,
+        Math.min(width, height) * 0.13,
         centerX,
         centerY,
-        Math.min(width, height) * 0.5
+        Math.min(width, height) * 0.52
       );
-      tunnelEdge.addColorStop(0, "rgba(0,0,0,0)");
-      tunnelEdge.addColorStop(0.62, "rgba(3,8,25,0.08)");
-      tunnelEdge.addColorStop(1, "rgba(0,0,0,0.78)");
-      context.fillStyle = tunnelEdge;
+
+      edge.addColorStop(0, "rgba(0,0,0,0)");
+      edge.addColorStop(0.62, "rgba(3,8,25,0.08)");
+      edge.addColorStop(1, "rgba(0,0,0,0.82)");
+
+      context.fillStyle = edge;
       context.fillRect(0, 0, width, height);
 
       window.requestAnimationFrame(render);
     };
 
     window.addEventListener("resize", resize);
-    window.requestAnimationFrame(render);
 
     return {
-      stop() {
-        running = false;
-      },
       start() {
         if (running) return;
         running = true;
         lastTime = performance.now();
         window.requestAnimationFrame(render);
       },
+      stop() {
+        running = false;
+      },
       resize
     };
   }
 
-  function playObservationVideo(target) {
-    observationFallback.hidden = true;
-    observationVideo.hidden = false;
-    observationVideo.pause();
-    observationVideo.removeAttribute("src");
-    observationVideo.load();
-
-    observationVideo.src = target.video;
-    observationVideo.load();
-
-    let fallbackTimer = window.setTimeout(() => {
-      if (observationVideo.readyState < 2) {
-        observationFallback.hidden = false;
-      }
-    }, 5500);
-
-    observationVideo.onloadeddata = () => {
-      window.clearTimeout(fallbackTimer);
-      observationFallback.hidden = true;
-
-      const playPromise = observationVideo.play();
-
-      if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(() => {
-          // Muted video normally autoplays. If the browser blocks it,
-          // the user can tap anywhere on the observation screen.
-        });
-      }
-    };
-
-    observationVideo.onerror = () => {
-      window.clearTimeout(fallbackTimer);
-      observationFallback.hidden = false;
-    };
-  }
-
   function updateObservationContent(target) {
-    const values = {
+    const content = {
       observationTitle: target.name,
       observationHudTarget: target.shortName,
       observationType: target.type,
@@ -793,7 +931,7 @@
       observationDescription: target.description
     };
 
-    Object.entries(values).forEach(([elementId, value]) => {
+    Object.entries(content).forEach(([elementId, value]) => {
       const element = document.getElementById(elementId);
 
       if (element) {
@@ -803,6 +941,41 @@
 
     observationSourceLink.href = target.source;
     playObservationVideo(target);
+  }
+
+  function playObservationVideo(target) {
+    observationFallback.hidden = true;
+    observationVideo.hidden = false;
+    observationVideo.pause();
+    observationVideo.removeAttribute("src");
+    observationVideo.load();
+
+    window.clearTimeout(videoFallbackTimer);
+
+    observationVideo.src = target.video;
+    observationVideo.load();
+
+    videoFallbackTimer = window.setTimeout(() => {
+      if (observationVideo.readyState < 2) {
+        observationFallback.hidden = false;
+      }
+    }, 6000);
+
+    observationVideo.onloadeddata = () => {
+      window.clearTimeout(videoFallbackTimer);
+      observationFallback.hidden = true;
+
+      const playPromise = observationVideo.play();
+
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
+    };
+
+    observationVideo.onerror = () => {
+      window.clearTimeout(videoFallbackTimer);
+      observationFallback.hidden = false;
+    };
   }
 
   function resetTravelState() {
@@ -822,10 +995,17 @@
   }
 
   function beginObservation() {
-    if (isTraveling || !observationOverlay.hidden) return;
+    if (
+      isTraveling ||
+      !observationOverlay.hidden ||
+      !alignedTarget
+    ) {
+      return;
+    }
 
+    selectedTarget = alignedTarget;
     isTraveling = true;
-    closeMoreTargets();
+    closeTargetDock();
     app.classList.add("is-entering");
 
     eyepieceOverlay.hidden = false;
@@ -839,14 +1019,18 @@
       travelTitle.textContent = `Traveling to ${selectedTarget.name}`;
 
       if (travelTunnel) {
-        travelTunnel.start();
         travelTunnel.resize();
+        travelTunnel.start();
       }
-    }, 720);
+    }, 730);
 
     window.setTimeout(() => {
+      if (travelTunnel) {
+        travelTunnel.stop();
+      }
+
       openObservation(selectedTarget);
-    }, 2900);
+    }, 3000);
   }
 
   observeButton.addEventListener("click", beginObservation);
@@ -863,10 +1047,6 @@
   closeObservationButton.addEventListener("click", closeObservation);
 
   observationOverlay.addEventListener("click", (event) => {
-    if (event.target === observationOverlay) {
-      closeObservation();
-    }
-
     if (
       event.target === observationVideo &&
       observationVideo.paused
@@ -875,82 +1055,61 @@
     }
   });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      if (!observationOverlay.hidden) {
-        closeObservation();
-      } else if (isTraveling) {
-        resetTravelState();
-      }
-    }
-  });
-
   function moveObservation(direction) {
     const currentIndex = TARGETS.findIndex(
       (target) => target.id === selectedTarget.id
     );
+
     const nextIndex =
-      (currentIndex + direction + TARGETS.length) % TARGETS.length;
+      (currentIndex + direction + TARGETS.length) %
+      TARGETS.length;
 
     selectedTarget = TARGETS[nextIndex];
-    updateActiveElements();
+    alignedTarget = selectedTarget;
+    updateTargetUI();
     updateObservationContent(selectedTarget);
   }
 
   previousTargetButton.addEventListener("click", () =>
     moveObservation(-1)
   );
+
   nextTargetButton.addEventListener("click", () =>
     moveObservation(1)
   );
 
-  function onResize() {
-    buildSky();
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      if (!observationOverlay.hidden) {
+        closeObservation();
+      } else if (isTraveling) {
+        resetTravelState();
+      } else {
+        closeTargetDock();
+      }
+    }
+  });
 
-    const aim = getAimPosition();
-    const targetPosition = targetScreenPosition(selectedTarget);
-    const differenceX = aim.x - targetPosition.x;
-    const differenceY = aim.y - targetPosition.y;
+  function handleResize() {
+    skyState = createSkyState();
 
-    panX = clamp(
-      panX + differenceX,
-      -window.innerWidth * 0.44,
-      window.innerWidth * 0.44
-    );
-    panY = clamp(
-      panY + differenceY,
-      -window.innerHeight * 0.35,
-      window.innerHeight * 0.35
-    );
+    if (travelTunnel) {
+      travelTunnel.resize();
+    }
 
-    updatePanVariables();
-
-    if (previewTunnel) previewTunnel.resize();
-    if (travelTunnel) travelTunnel.resize();
+    selectTarget(selectedTarget.id, true);
   }
 
   window.addEventListener("resize", () => {
-    window.clearTimeout(onResize.timer);
-    onResize.timer = window.setTimeout(onResize, 130);
+    window.clearTimeout(handleResize.timer);
+    handleResize.timer = window.setTimeout(handleResize, 140);
   });
 
-  renderControls();
-  buildSky();
+  renderTargetControls();
+  skyState = createSkyState();
   renderSky();
 
-  previewTunnel = createTunnelRenderer(previewTunnelCanvas, {
-    speed: 0.34,
-    starCount: 105,
-    ringCount: 10,
-    fade: true
-  });
-
-  travelTunnel = createTunnelRenderer(travelCanvas, {
-    speed: 1.28,
-    starCount: 280,
-    ringCount: 34,
-    fade: false
-  });
+  travelTunnel = createTunnelRenderer(travelCanvas);
 
   selectTarget("moon", true);
 })();

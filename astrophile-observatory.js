@@ -25,6 +25,10 @@ const clockEl = document.getElementById('observatoryClock');
 let currentTarget = 'moon';
 let travelTimeout;
 
+// Safety reset: the travel transition must never appear on first load.
+travelOverlay.hidden = true;
+extraTargetsPanel.hidden = true;
+
 function updateClock() {
   const now = new Date();
   const hh = String(now.getHours()).padStart(2, '0');

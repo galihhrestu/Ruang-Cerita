@@ -380,6 +380,11 @@ body {
   backdrop-filter: blur(10px);
 }
 
+.observatory-travel-overlay[hidden],
+.observatory-extra-targets[hidden] {
+  display: none !important;
+}
+
 .observatory-travel-overlay {
   position: fixed;
   inset: 0;

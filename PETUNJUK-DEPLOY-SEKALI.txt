@@ -1,29 +1,14 @@
-ASTROPHILE'S OBSERVATORY — MOCKUP PERFECT VERSION
-=================================================
+ASTROPHILE'S OBSERVATORY V4.1 — FIX OVERLAY AWAL
+================================================
 
-ISI PAKET INI:
-- astrophile-observatory.html
-- astrophile-observatory.css
-- astrophile-observatory.js
-- observatory-scene.png
-- index.html (copy pendamping)
-- night-sky-home.css
-- night-sky-home.js
+PERBAIKAN:
+- Cosmic tunnel tidak lagi muncul otomatis ketika halaman pertama dibuka.
+- Tunnel hanya muncul setelah tombol OBSERVE diklik.
+- Panel target tambahan juga benar-benar tersembunyi sampai tombol (...) diklik.
 
-CARA PAKAI (PALING AMAN):
-1. Download zip ini.
-2. Extract.
-3. Ambil file berikut:
-   - astrophile-observatory.html
-   - astrophile-observatory.css
-   - astrophile-observatory.js
-   - observatory-scene.png
-4. Upload dan replace file-file itu ke root project GitHub Pages Ruang Cerita kamu.
-5. Commit changes.
-6. Tunggu GitHub Pages selesai build.
-7. Buka lagi halaman Astrophile’s Observatory.
+FILE PALING PENTING YANG DIREPLACE:
+1. astrophile-observatory.css
+2. astrophile-observatory.js
 
-CATATAN:
-- Versi ini fokus membuat halaman observatory mengikuti mockup terbaru.
-- Layout sudah disiapkan agar tetap bagus di laptop dan HP mode landscape.
-- Jika halaman home kamu saat ini sudah benar, kamu tidak wajib mengganti index.html.
+Untuk pemasangan paling aman, upload seluruh isi paket ke ROOT repository dan replace file lama.
+Tidak ada SQL dan tidak ada perubahan Supabase.

@@ -2,101 +2,194 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#040815">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#030815">
   <title>Astrophile’s Observatory — Ruang Cerita</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="astrophile-observatory.css">
 </head>
 <body>
-  <main class="observatory-page" id="observatoryPage">
-    <canvas class="observatory-sky-canvas" id="skyCanvas" aria-hidden="true"></canvas>
+  <main id="observatoryApp" class="observatory-app">
+    <canvas id="skyCanvas" class="observatory-sky" aria-hidden="true"></canvas>
+
+    <div class="observatory-celestial-haze" aria-hidden="true"></div>
     <div class="observatory-vignette" aria-hidden="true"></div>
     <div class="observatory-grain" aria-hidden="true"></div>
 
+    <div id="dragSurface" class="observatory-drag-surface" aria-label="Geser langit untuk mengarahkan teleskop"></div>
+
     <header class="observatory-topbar">
-      <div class="observatory-brandmark">
-        <span class="brandmark-ring"></span>
-        <span class="brandmark-cross"></span>
+      <a id="backButton" class="observatory-back" href="index.html#astrophile-observatory">
+        <span aria-hidden="true">←</span>
+        <span>Ruang Cerita</span>
+      </a>
+
+      <div class="observatory-brand">
+        <span class="observatory-brand-symbol" aria-hidden="true">✦</span>
+        <div>
+          <small>PRIVATE CELESTIAL OBSERVATORY</small>
+          <strong>Astrophile’s Observatory</strong>
+        </div>
       </div>
-      <div class="observatory-brand">Astrophile’s Observatory</div>
-      <div class="observatory-topbar-right">
-        <div class="observatory-clock" id="observatoryClock">07:42</div>
-        <div class="observatory-mode">CALM NIGHT MODE</div>
-        <button class="observatory-moon-toggle" type="button" aria-label="Calm night mode active">
-          <span></span>
-        </button>
+
+      <div class="observatory-night-status">
+        <span id="observatoryClock">22:17</span>
+        <i></i>
+        <small>CALM NIGHT MODE</small>
+        <b aria-hidden="true">☾</b>
       </div>
     </header>
 
-    <section class="observatory-layout">
-      <div class="observatory-copy">
-        <p class="observatory-eyebrow">PRIVATE CELESTIAL OBSERVATORY</p>
-        <h1>Astrophile’s<br>Observatory</h1>
-        <p class="observatory-quote">Somewhere above the noise,<br>the universe still whispers.</p>
-        <div class="observatory-accent-line"><span></span></div>
-        <p class="observatory-description">
-          Choose a celestial target and gaze deeper. The universe
-          reveals itself to those who take the time to look.
-        </p>
-        <button class="observatory-observe-button" id="observeButton" type="button">
-          <span class="observe-icon">✦</span>
-          <span>OBSERVE</span>
-        </button>
-      </div>
+    <section class="observatory-copy">
+      <p class="observatory-kicker">A SKY DESIGNED TO FEEL LIKE A GIFT</p>
+      <h1>Astrophile’s<br>Observatory</h1>
+      <p class="observatory-poetry">Somewhere above the noise,<br>the universe still whispers.</p>
+      <div class="observatory-copy-line" aria-hidden="true"><span>✦</span><i></i></div>
+      <p class="observatory-description">
+        Pilih benda langit atau geser langit untuk mengarahkannya ke teleskop.
+        Setelah target terkunci, masuk melalui eyepiece dan observasi visual
+        berbasis citra serta data misi antariksa.
+      </p>
 
-      <aside class="observatory-preview-card" aria-label="Preview perjalanan observasi">
-        <p class="preview-label">THROUGH THE TELESCOPE</p>
-        <div class="preview-frame">
-          <canvas id="tunnelCanvas" aria-hidden="true"></canvas>
-          <div class="preview-target-title" id="previewTargetTitle">THE MOON</div>
-        </div>
-        <p class="preview-caption" id="previewCaption">Entering the cosmic tunnel...</p>
-        <div class="preview-progress" aria-hidden="true">
-          <span class="active"></span><span></span><span></span><span></span><span></span>
-        </div>
-      </aside>
+      <button id="observeButton" class="observatory-observe" type="button">
+        <span aria-hidden="true">✦</span>
+        <strong>OBSERVE THE MOON</strong>
+      </button>
+
+      <p id="lockStatus" class="observatory-lock-status">
+        <span aria-hidden="true"></span>
+        The Moon is aligned with the telescope.
+      </p>
     </section>
 
-    <div class="observatory-scenic-layer" aria-hidden="true">
+    <aside class="observatory-preview" aria-label="Pratinjau perjalanan teleskop">
+      <p>THROUGH THE TELESCOPE</p>
+      <div class="observatory-preview-window">
+        <canvas id="previewTunnelCanvas" aria-hidden="true"></canvas>
+        <div class="observatory-preview-reticle" aria-hidden="true">
+          <span></span>
+        </div>
+        <div id="previewTargetName" class="observatory-preview-target">THE MOON</div>
+      </div>
+      <strong>Entering the cosmic tunnel...</strong>
+      <div class="observatory-preview-progress" aria-hidden="true">
+        <i class="active"></i><i></i><i></i><i></i><i></i>
+      </div>
+    </aside>
+
+    <div id="sceneStage" class="observatory-scene-stage" aria-hidden="true">
       <img src="observatory-scene.png" alt="" class="observatory-scene-image">
+      <div class="observatory-scene-glow"></div>
     </div>
 
-    <section class="observatory-bottom-bar">
-      <div class="observatory-target-group">
-        <p class="target-group-label">CELESTIAL TARGET</p>
-        <div class="observatory-targets" id="targetButtons">
-          <button class="target-chip active" data-target="moon" type="button"><span>☾</span><b>THE MOON</b></button>
-          <button class="target-chip" data-target="mercury" type="button"><span>☿</span><b>MERCURY</b></button>
-          <button class="target-chip" data-target="venus" type="button"><span>♀</span><b>VENUS</b></button>
-          <button class="target-chip" data-target="jupiter" type="button"><span>♃</span><b>JUPITER</b></button>
-          <button class="target-chip" data-target="saturn" type="button"><span>♄</span><b>SATURN</b></button>
-          <button class="target-chip target-more" id="targetMoreButton" type="button" aria-expanded="false"><span>…</span></button>
-        </div>
-      </div>
+    <div id="aimReticle" class="observatory-aim-reticle" aria-hidden="true">
+      <span></span><i></i>
+    </div>
+
+    <div id="skyTargets" class="observatory-sky-targets" aria-label="Target di langit"></div>
+
+    <section class="observatory-targets-panel" aria-labelledby="targetPanelTitle">
+      <p id="targetPanelTitle">CELESTIAL TARGET</p>
+      <div id="targetChips" class="observatory-target-chips"></div>
+      <button id="moreTargetsButton" class="observatory-more-targets" type="button" aria-expanded="false">
+        <span>MORE WORLDS</span>
+        <b aria-hidden="true">＋</b>
+      </button>
     </section>
 
-    <section class="observatory-extra-targets" id="extraTargetsPanel" hidden>
-      <button class="extra-target-chip" data-target="mars" type="button">♂ Mars</button>
-      <button class="extra-target-chip" data-target="uranus" type="button">♅ Uranus</button>
-      <button class="extra-target-chip" data-target="neptune" type="button">♆ Neptune</button>
-      <button class="extra-target-chip" data-target="pleiades" type="button">✦ The Pleiades</button>
-      <button class="extra-target-chip" data-target="orion" type="button">✧ Orion Nebula</button>
-      <button class="extra-target-chip" data-target="andromeda" type="button">✦ Andromeda</button>
+    <section id="moreTargetsPanel" class="observatory-more-panel" hidden aria-label="Target tambahan"></section>
+
+    <div class="observatory-drag-hint" aria-hidden="true">
+      <span>DRAG THE SKY</span><i></i><small>align a celestial marker with the telescope</small>
+    </div>
+
+    <section id="eyepieceOverlay" class="observatory-eyepiece-overlay" hidden aria-hidden="true">
+      <div class="eyepiece-blackout"></div>
+      <div class="eyepiece-ring ring-one"></div>
+      <div class="eyepiece-ring ring-two"></div>
+      <div class="eyepiece-ring ring-three"></div>
+      <p>ENTERING THE EYEPIECE</p>
     </section>
 
-    <div class="observatory-travel-overlay" id="travelOverlay" hidden>
+    <section id="travelOverlay" class="observatory-travel-overlay" hidden aria-hidden="true">
       <canvas id="travelCanvas" aria-hidden="true"></canvas>
-      <div class="travel-copy">
-        <p class="travel-step">CROSSING THE COSMIC TUNNEL</p>
+      <div class="observatory-travel-vignette"></div>
+      <div class="observatory-travel-copy">
+        <small>CROSSING THE DEEP-SPACE CORRIDOR</small>
         <h2 id="travelTitle">Traveling to The Moon</h2>
-        <p id="travelSub">Stars stretch into a dark corridor as the observatory flies toward your target.</p>
+        <p>Passing through a three-dimensional tunnel of light, dust, and distant stars.</p>
       </div>
-    </div>
+    </section>
 
-    <a href="index.html#astrophile-observatory" class="observatory-back-link">←&nbsp;Ruang Cerita</a>
+    <section id="observationOverlay" class="observatory-observation" hidden aria-hidden="true">
+      <div class="observatory-observation-backdrop"></div>
+
+      <video
+        id="observationVideo"
+        class="observatory-observation-video"
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      ></video>
+
+      <div id="observationFallback" class="observatory-observation-fallback" hidden>
+        <div class="observation-fallback-orb"></div>
+        <p>Visual NASA sedang dimuat. Pastikan koneksi internet aktif.</p>
+      </div>
+
+      <div class="observatory-observation-vignette"></div>
+
+      <header class="observatory-observation-topbar">
+        <div>
+          <small>NASA IMAGERY / MISSION-DATA VISUALIZATION</small>
+          <strong id="observationTitle">The Moon</strong>
+        </div>
+
+        <button id="closeObservationButton" type="button" aria-label="Tutup observasi">×</button>
+      </header>
+
+      <div class="observatory-observation-hud" aria-hidden="true">
+        <span>TELESCOPE FEED</span>
+        <i></i>
+        <small id="observationHudTarget">THE MOON</small>
+      </div>
+
+      <article class="observatory-observation-info">
+        <p id="observationType">EARTH’S MOON</p>
+        <h2 id="observationName">The Moon</h2>
+        <em id="observationPoetry">The nearest world, still beautifully far away.</em>
+
+        <div class="observatory-observation-facts">
+          <div><span>DISTANCE</span><strong id="observationDistance">384,400 km</strong></div>
+          <div><span>LIGHT TRAVEL</span><strong id="observationLight">1.3 seconds</strong></div>
+        </div>
+
+        <p id="observationDescription">
+          Visual ini menggunakan citra dan data eksplorasi Bulan untuk memberikan
+          pengalaman observasi yang lebih nyata daripada ilustrasi planet datar.
+        </p>
+
+        <div class="observatory-observation-actions">
+          <button id="previousTargetButton" type="button">← Previous</button>
+          <button id="nextTargetButton" type="button">Next World →</button>
+        </div>
+
+        <a id="observationSourceLink" href="#" target="_blank" rel="noopener noreferrer">
+          View official NASA source ↗
+        </a>
+      </article>
+    </section>
+
+    <div class="observatory-rotate-note" aria-hidden="true">
+      <span>↻</span>
+      <strong>Putar HP ke mode landscape</strong>
+      <small>Pengalaman observatory dirancang paling indah dalam posisi horizontal.</small>
+    </div>
   </main>
 
   <script src="astrophile-observatory.js"></script>

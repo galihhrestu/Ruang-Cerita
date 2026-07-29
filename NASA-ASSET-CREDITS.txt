@@ -1,0 +1,46 @@
+NASA MEDIA SOURCES USED BY ASTROPHILE'S OBSERVATORY V5
+======================================================
+
+The Moon — Clementine Moon Spin
+Source page:
+https://svs.gsfc.nasa.gov/3444/
+Video:
+https://svs.gsfc.nasa.gov/vis/a000000/a003400/a003444/moonrot.mp4
+
+Mercury — Discover Mercury / MESSENGER imagery
+Source page:
+https://svs.gsfc.nasa.gov/11544/
+Video:
+https://svs.gsfc.nasa.gov/vis/a010000/a011500/a011544/MercuryTour-540-MASTER_high.mp4
+
+Venus — Magellan radar terrain visualization
+Source page:
+https://svs.gsfc.nasa.gov/10904/
+Video:
+https://svs.gsfc.nasa.gov/vis/a010000/a010900/a010904/3728_Venus_music-540-MASTER_high.mp4
+
+Mars — Viking imagery applied to MOLA topography
+Source page:
+https://svs.gsfc.nasa.gov/1091/
+Video:
+https://svs.gsfc.nasa.gov/vis/a000000/a001000/a001091/a001091.mp4
+
+Jupiter — Hubble Maps Jupiter
+Source page:
+https://svs.gsfc.nasa.gov/12021/
+Video:
+https://svs.gsfc.nasa.gov/vis/a010000/a012000/a012021/Jupiter01-H264_1280x720.mp4
+
+Saturn — Hubble's Brand New Image of Saturn
+Source page:
+https://svs.gsfc.nasa.gov/13307/
+Video:
+https://svs.gsfc.nasa.gov/vis/a010000/a013300/a013307/13307_saturn_opal_wide_mp4.mp4
+
+Uranus — Exploring Planet Uranus Resource Page
+Source page:
+https://svs.gsfc.nasa.gov/20390/
+Video:
+https://svs.gsfc.nasa.gov/vis/a020000/a020300/a020390/Shot4_1k_mp4.mp4
+
+Credits belong to NASA and the credit holders listed on each source page.

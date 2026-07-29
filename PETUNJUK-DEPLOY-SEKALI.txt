@@ -1,251 +1,29 @@
-RUANG CERITA — WRITING WORLD LUXURY V1
-THE WRITING ROOM + OUR STORIES + PERSISTENT READING ROOM
-============================================================
-
-PAKET FINAL — SATU KALI DEPLOY
-
-Tidak ada SQL.
-Tidak ada migration.
-Tidak ada tabel baru.
-Tidak ada data Cerita lama yang diubah.
-
-
-============================================================
-ARSITEKTUR BARU
-============================================================
-
-1. HOMEPAGE = THE ENTRANCE
-
-Homepage tidak lagi berisi:
-- form menulis panjang;
-- daftar Cerita;
-- search/filter/pagination.
-
-Sebagai gantinya section terakhir menjadi:
-
-04 — OUR WORDS
-THE WRITING ROOM
-THE ARCHIVE
-
-Homepage tetap fokus sebagai luxury gateway.
-
-
-2. THE WRITING ROOM
-File:
-writing-room.html
-
-Khusus untuk menulis Cerita.
-
-Fitur:
-- kategori;
-- mood;
-- word count;
-- perkiraan reading time;
-- local draft autosave;
-- Ctrl/Cmd + S;
-- music player;
-- setelah save bisa langsung membaca Cerita.
-
-
-3. OUR STORIES — THE ARCHIVE
-File:
-stories.html
-
-Khusus koleksi Cerita.
-
-Tetap mempertahankan:
-- search;
-- favorit;
-- kategori;
-- mood;
-- sorting;
-- edit;
-- delete;
-- 5 Cerita / halaman.
-
-Layout:
-- Cerita pertama di setiap halaman menjadi featured editorial card.
-- Empat cerita berikutnya menjadi luxury archive cards.
-- Mobile menjadi satu kolom yang nyaman.
-
-
-4. EDIT STORY
-
-edit.html didesain ulang agar satu dunia dengan Writing Room.
-Setelah save, tersedia tombol Baca Hasilnya.
-
-
-5. CELESTIAL READING ROOM
-
-detail.html tetap memakai desain Celestial Reading Room yang sudah disetujui.
-
-Back button standalone sekarang menuju:
-Our Stories / The Archive.
-
-
-============================================================
-MUSIK — PENTING
-============================================================
-
-A. SAAT MEMBUKA CERITA DARI OUR STORIES / WRITING ROOM / EDIT
-
-Cerita TIDAK mengganti parent page.
-
-detail.html dibuka sebagai FULL-SCREEN READING ROOM OVERLAY.
-
-Parent page tetap hidup.
-
-Artinya elemen <audio> parent tidak dibuat ulang dan lagu
-BENAR-BENAR TETAP BERPUTAR ketika Reading Room terbuka.
-
-detail.html di dalam overlay memakai:
-?embedded=1
-
-musik.js mendeteksi embedded mode dan tidak membuat audio kedua.
-
-
-B. SAAT BERPINDAH PAGE BIASA
-
-Contoh:
-Homepage → Writing Room
-Writing Room → Archive
-Archive → Edit
-
-Browser memang mengganti document, jadi satu elemen audio secara teknis
-tidak dapat hidup melewati full-page navigation.
-
-musik.js baru melakukan handoff:
-- track disimpan;
-- currentTime disimpan;
-- timestamp disimpan;
-- volume disimpan;
-- status play disimpan;
-- page baru memulihkan posisi dengan koreksi waktu navigasi pendek.
-
-Jadi track tidak kembali dari awal.
-
-
-============================================================
-UPLOAD FILE — SATU BATCH
-============================================================
-
-REPLACE:
-1. index.html
-2. home-editorial-luxury.css
-3. edit.html
-4. edit.js
-5. detail.html
-6. detail.js
-7. detail-luxury.css
-8. musik.js
-
-
-BARU:
-9. home-gateway.js
-10. writing-world.css
-11. writing-world.js
-12. reading-overlay.css
-13. reading-overlay.js
-14. writing-room.html
-15. writing-room.css
-16. writing-room.js
-17. stories.html
-18. stories.css
-19. stories.js
-20. edit-luxury.css
-
-
-TETAP / JANGAN DIUBAH:
-style.css
-home-platform.css
-heartbeat-home.css
-supabase-config.js
-script.js
-
-checkin.*
-couple-pulse.*
-universe.*
-our-story.*
-heartbeat.*
-
-
-============================================================
-CARA DEPLOY
-============================================================
-
-1. Extract ZIP.
-
-2. Buka:
-https://github.com/galihhrestu/Ruang-Cerita
-
-3. Add file
-→ Upload files
-
-4. Upload SEMUA 20 file paket sekaligus.
-
-5. Semua file diletakkan di ROOT repository,
-   sejajar dengan index.html.
-
-6. Commit message:
-
-Pisahkan Writing Room dan Our Stories luxury archive
-
-7. Klik Commit changes.
-
-SELESAI.
-
-Hanya satu GitHub Pages deployment.
-
-
-============================================================
-SETELAH DEPLOY
-============================================================
-
-Tunggu workflow Pages hijau.
-
-Buka:
-https://galihhrestu.github.io/Ruang-Cerita/
-
-Hard refresh:
-Ctrl + Shift + R
-
-
-============================================================
-TEST
-============================================================
-
-HOMEPAGE
-✓ tidak ada form menulis lama
-✓ tidak ada daftar Cerita lama
-✓ section 04 OUR WORDS tampil
-✓ The Writing Room + The Archive tampil
-✓ jumlah story tampil otomatis
-
-WRITING ROOM
-✓ form bekerja
-✓ draft autosave
-✓ save bekerja
-✓ kategori/mood bekerja
-✓ Baca Ceritanya membuka overlay
-✓ musik tetap berjalan saat overlay terbuka
-
-OUR STORIES
-✓ search
-✓ filter
-✓ sort
-✓ favorit
-✓ edit
-✓ delete
-✓ pagination 5
-✓ Reading Room overlay
-
-EDIT
-✓ data lama termuat
-✓ update isi
-✓ update kategori/mood
-✓ Baca Hasilnya membuka overlay
-
-DETAIL
-✓ standalone masih bekerja
-✓ embedded bekerja
-✓ tidak membuat audio kedua
+ASTROPHILE'S OBSERVATORY — MOCKUP PERFECT VERSION
+=================================================
+
+ISI PAKET INI:
+- astrophile-observatory.html
+- astrophile-observatory.css
+- astrophile-observatory.js
+- observatory-scene.png
+- index.html (copy pendamping)
+- night-sky-home.css
+- night-sky-home.js
+
+CARA PAKAI (PALING AMAN):
+1. Download zip ini.
+2. Extract.
+3. Ambil file berikut:
+   - astrophile-observatory.html
+   - astrophile-observatory.css
+   - astrophile-observatory.js
+   - observatory-scene.png
+4. Upload dan replace file-file itu ke root project GitHub Pages Ruang Cerita kamu.
+5. Commit changes.
+6. Tunggu GitHub Pages selesai build.
+7. Buka lagi halaman Astrophile’s Observatory.
+
+CATATAN:
+- Versi ini fokus membuat halaman observatory mengikuti mockup terbaru.
+- Layout sudah disiapkan agar tetap bagus di laptop dan HP mode landscape.
+- Jika halaman home kamu saat ini sudah benar, kamu tidak wajib mengganti index.html.

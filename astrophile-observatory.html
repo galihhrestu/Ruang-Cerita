@@ -2,341 +2,396 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
   <meta name="theme-color" content="#020713">
-  <title>Astrophile’s Observatory — Ruang Cerita</title>
+
+  <title>Astrophile’s Observatory — The Celestial Atlas</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="astrophile-observatory.css">
 </head>
 
 <body>
-  <main id="observatoryApp" class="observatory-app">
-    <canvas id="skyCanvas" class="observatory-sky" aria-hidden="true"></canvas>
+  <main id="atlasApp" class="atlas-app">
+    <canvas
+      id="atlasSkyCanvas"
+      class="atlas-sky-canvas"
+      aria-hidden="true"
+    ></canvas>
 
-    <div class="observatory-depth-haze" aria-hidden="true"></div>
-    <div class="observatory-vignette" aria-hidden="true"></div>
-    <div class="observatory-grain" aria-hidden="true"></div>
+    <div class="atlas-atmosphere" aria-hidden="true"></div>
+    <div class="atlas-vignette" aria-hidden="true"></div>
+    <div class="atlas-grain" aria-hidden="true"></div>
 
     <div
-      id="dragSurface"
-      class="observatory-drag-surface"
-      aria-label="Geser langit untuk mengarahkan teleskop"
+      id="atlasDragSurface"
+      class="atlas-drag-surface"
+      aria-label="Geser dan zoom langit"
     ></div>
 
-    <header class="observatory-topbar">
-      <a id="backButton" class="observatory-back" href="index.html#astrophile-observatory">
+    <header class="atlas-topbar">
+      <a
+        id="atlasBackButton"
+        class="atlas-back-button"
+        href="index.html#astrophile-observatory"
+      >
         <span aria-hidden="true">←</span>
         <span>Ruang Cerita</span>
       </a>
 
-      <div class="observatory-brand">
-        <span class="observatory-brand-orbit" aria-hidden="true">
-          <i></i><b></b>
+      <div class="atlas-brand">
+        <span class="atlas-brand-mark" aria-hidden="true">
+          <i></i>
+          <b></b>
         </span>
+
         <div>
-          <small>PRIVATE CELESTIAL OBSERVATORY</small>
+          <small>PRIVATE CELESTIAL EXPERIENCE</small>
           <strong>Astrophile’s Observatory</strong>
         </div>
       </div>
 
-      <div class="observatory-night-status">
-        <span id="observatoryClock">22:17</span>
+      <div class="atlas-night-status">
+        <span id="atlasClock">22:17</span>
         <i></i>
-        <small>CALM NIGHT MODE</small>
+        <small>THE CELESTIAL ATLAS</small>
         <b aria-hidden="true">☾</b>
       </div>
     </header>
 
-    <section class="observatory-editorial-title" aria-label="Astrophile's Observatory">
-      <p>A NIGHT MADE FOR HER</p>
-      <h1>Astrophile’s<br><span>Observatory.</span></h1>
-      <em>Somewhere above us, the universe is still whispering.</em>
+    <section class="atlas-editorial-intro">
+      <p>A SKY MADE TO BE EXPLORED</p>
+      <h1>The Celestial<br><span>Atlas.</span></h1>
+      <em>Drag the night. Follow the light. Look a little closer.</em>
     </section>
 
-    <figure id="silhouetteStage" class="observatory-silhouette-stage" aria-label="Siluet wanita menggunakan teleskop">
-      <svg class="observatory-silhouette-svg" viewBox="0 0 900 650" role="img" aria-hidden="true">
-        <defs>
-          <linearGradient id="scopeMetal" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#4b5e6d"/>
-            <stop offset="18%" stop-color="#263540"/>
-            <stop offset="55%" stop-color="#111923"/>
-            <stop offset="100%" stop-color="#03070c"/>
-          </linearGradient>
+    <div
+      id="atlasObjectLayer"
+      class="atlas-object-layer"
+      aria-label="Benda langit interaktif"
+    ></div>
 
-          <linearGradient id="scopeGlass" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#d2f4ff" stop-opacity=".82"/>
-            <stop offset="24%" stop-color="#5a94ad" stop-opacity=".64"/>
-            <stop offset="58%" stop-color="#173145" stop-opacity=".9"/>
-            <stop offset="100%" stop-color="#020711"/>
-          </linearGradient>
-
-          <linearGradient id="hairShade" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#111019"/>
-            <stop offset="48%" stop-color="#05060a"/>
-            <stop offset="100%" stop-color="#000"/>
-          </linearGradient>
-
-          <linearGradient id="coatShade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#1a1b24"/>
-            <stop offset="55%" stop-color="#090b11"/>
-            <stop offset="100%" stop-color="#000"/>
-          </linearGradient>
-
-          <radialGradient id="lensGlow" cx="38%" cy="34%" r="66%">
-            <stop offset="0%" stop-color="#d5f5ff" stop-opacity=".9"/>
-            <stop offset="30%" stop-color="#72b1c9" stop-opacity=".56"/>
-            <stop offset="70%" stop-color="#17354d" stop-opacity=".78"/>
-            <stop offset="100%" stop-color="#01050d"/>
-          </radialGradient>
-
-          <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="16"/>
-            <feOffset dy="18"/>
-            <feColorMatrix values="0 0 0 0 0
-                                   0 0 0 0 0
-                                   0 0 0 0 0
-                                   0 0 0 .65 0"/>
-            <feMerge>
-              <feMergeNode/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-
-          <filter id="smallGlow" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation="8" result="blur"/>
-            <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-
-        <g class="silhouette-ground">
-          <path d="M25 610 C120 558 208 579 290 545 C389 502 464 545 566 520 C672 493 764 529 875 486 L900 650 L0 650 Z" fill="#010308"/>
-          <path d="M35 615 C118 588 178 596 260 572 C341 548 420 565 503 541 C611 510 739 555 881 514" fill="none" stroke="#151724" stroke-width="4" opacity=".42"/>
-          <path d="M168 584 l42 -34 36 11 34 46z" fill="#07090f"/>
-          <path d="M724 548 l55 -48 42 17 52 82z" fill="#05070c"/>
-        </g>
-
-        <g class="silhouette-person" filter="url(#softShadow)">
-          <ellipse cx="662" cy="610" rx="128" ry="24" fill="#000" opacity=".64"/>
-
-          <path class="silhouette-coat"
-            d="M615 382
-               C631 346 680 327 722 350
-               C757 370 779 410 782 456
-               C787 518 754 576 690 593
-               C633 608 585 572 579 520
-               C574 475 587 418 615 382 Z"
-            fill="url(#coatShade)"/>
-
-          <path d="M610 439 C575 466 563 508 574 554 C588 594 625 609 660 599 C626 572 612 522 624 476 Z" fill="#030409"/>
-          <path d="M725 432 C765 455 790 505 778 558 C765 593 738 610 702 604 C734 575 746 523 733 474 Z" fill="#020308"/>
-
-          <path class="silhouette-neck" d="M664 336 C661 354 657 366 646 382 L705 385 C693 365 690 351 692 334 Z" fill="#0a080d"/>
-
-          <ellipse cx="677" cy="303" rx="61" ry="67" fill="#08070c"/>
-          <path class="silhouette-hair"
-            d="M618 294
-               C618 236 653 205 696 209
-               C747 214 771 254 765 311
-               C760 368 749 406 767 468
-               C777 503 760 536 735 544
-               C744 498 710 458 700 419
-               C685 364 692 331 679 299
-               C667 335 663 374 643 414
-               C628 446 620 487 628 528
-               C592 504 586 469 600 429
-               C621 369 618 340 618 294 Z"
-            fill="url(#hairShade)"/>
-
-          <path class="silhouette-hair-highlight"
-            d="M683 228 C713 240 735 270 731 318 C728 361 713 399 728 449"
-            fill="none" stroke="#24212d" stroke-width="7" stroke-linecap="round" opacity=".42"/>
-
-          <path class="silhouette-back-arm"
-            d="M628 403 C603 393 583 380 568 359 C558 345 565 329 578 326
-               C590 324 597 334 607 345 C621 359 638 366 654 373 Z"
-            fill="#09080d"/>
-
-          <path class="silhouette-front-arm"
-            d="M680 386 C665 365 656 348 661 329 C665 314 681 306 694 313
-               C707 320 707 334 701 348 C697 361 701 374 713 391 Z"
-            fill="#09080d"/>
-
-          <ellipse cx="576" cy="327" rx="15" ry="13" fill="#0a090e"/>
-          <ellipse cx="670" cy="317" rx="13" ry="12" fill="#0a090e"/>
-
-          <path d="M603 575 C570 582 552 606 552 630 L666 630 C658 603 637 581 603 575 Z" fill="#020308"/>
-          <path d="M711 578 C747 586 769 606 775 630 L661 630 C668 603 684 585 711 578 Z" fill="#010207"/>
-        </g>
-
-        <g id="telescopeSvgGroup" class="silhouette-telescope" filter="url(#softShadow)">
-          <ellipse cx="420" cy="525" rx="190" ry="25" fill="#000" opacity=".52"/>
-
-          <g class="scope-optical-body">
-            <path d="M277 272 L530 326 L517 388 L262 334 Z" fill="url(#scopeMetal)"/>
-            <path d="M292 279 L516 327 L512 342 L287 295 Z" fill="#9eb3bd" opacity=".19"/>
-            <path d="M284 325 L516 375" stroke="#000" stroke-width="8" opacity=".42"/>
-
-            <ellipse cx="266" cy="303" rx="53" ry="55" transform="rotate(12 266 303)" fill="#0c141d" stroke="#526877" stroke-width="7"/>
-            <ellipse cx="264" cy="302" rx="39" ry="41" transform="rotate(12 264 302)" fill="url(#lensGlow)"/>
-            <ellipse cx="250" cy="287" rx="12" ry="15" fill="#d9f6ff" opacity=".33" filter="url(#smallGlow)"/>
-
-            <path d="M515 324 L558 333 L550 383 L512 375 Z" fill="#101821"/>
-            <path d="M548 338 L587 347 L581 377 L549 370 Z" fill="#03070d"/>
-            <ellipse cx="581" cy="362" rx="14" ry="16" transform="rotate(12 581 362)" fill="#111923"/>
-
-            <path d="M380 294 L392 261 L456 275 L451 302 Z" fill="#111a23"/>
-            <path d="M395 262 L404 246 L455 257 L456 276 Z" fill="#283946"/>
-            <ellipse cx="405" cy="254" rx="8" ry="9" fill="#0b1118"/>
-
-            <path d="M356 286 L369 289 L356 350 L343 347 Z" fill="#6a7880" opacity=".38"/>
-            <path d="M472 312 L488 315 L475 377 L460 374 Z" fill="#6a7880" opacity=".33"/>
-          </g>
-
-          <g class="scope-mount">
-            <ellipse cx="405" cy="390" rx="54" ry="20" fill="#1b252d"/>
-            <ellipse cx="405" cy="386" rx="44" ry="15" fill="#39454a"/>
-            <path d="M390 395 L425 397 L434 454 L379 454 Z" fill="url(#scopeMetal)"/>
-            <ellipse cx="406" cy="453" rx="41" ry="14" fill="#111820"/>
-            <ellipse cx="406" cy="452" rx="29" ry="8" fill="#38434a"/>
-          </g>
-
-          <g class="scope-tripod">
-            <path d="M389 452 L402 454 L348 624 L331 624 Z" fill="#171e24"/>
-            <path d="M408 452 L422 454 L478 624 L460 624 Z" fill="#151c22"/>
-            <path d="M400 454 L412 454 L407 624 L390 624 Z" fill="#242b30"/>
-            <path d="M331 622 L352 622 L356 632 L325 632 Z" fill="#05070a"/>
-            <path d="M458 622 L482 622 L488 632 L452 632 Z" fill="#05070a"/>
-            <path d="M389 622 L411 622 L416 632 L385 632 Z" fill="#05070a"/>
-          </g>
-        </g>
-
-        <g class="silhouette-ambient-particles" fill="#dcecf0">
-          <circle cx="138" cy="309" r="2.4" opacity=".55"/>
-          <circle cx="195" cy="261" r="1.6" opacity=".7"/>
-          <circle cx="318" cy="183" r="2.2" opacity=".48"/>
-          <circle cx="467" cy="162" r="1.7" opacity=".68"/>
-          <circle cx="539" cy="221" r="2.3" opacity=".5"/>
-          <circle cx="799" cy="198" r="1.5" opacity=".72"/>
-        </g>
-      </svg>
-    </figure>
-
-    <div id="aimReticle" class="observatory-aim-reticle" aria-hidden="true">
-      <span></span><i></i>
-    </div>
-
-    <div id="skyTargets" class="observatory-sky-targets" aria-label="Benda langit di langit observatory"></div>
-
-    <button id="observeButton" class="observatory-observe-button" type="button" hidden>
-      <span aria-hidden="true">✦</span>
-      <strong>OBSERVE THE MOON</strong>
-      <small>ENTER THE EYEPIECE</small>
-    </button>
-
-    <section class="observatory-target-dock" aria-label="Celestial targets">
-      <button id="targetDockToggle" class="observatory-target-dock-toggle" type="button" aria-expanded="false">
-        <span aria-hidden="true">✦</span>
-        <strong id="selectedTargetLabel">The Moon</strong>
-        <small>CELESTIAL TARGETS</small>
-        <b aria-hidden="true">＋</b>
+    <section
+      id="atlasSelectionCard"
+      class="atlas-selection-card"
+      hidden
+      aria-live="polite"
+    >
+      <button
+        id="atlasSelectionClose"
+        class="atlas-selection-close"
+        type="button"
+        aria-label="Tutup informasi target"
+      >
+        ×
       </button>
 
-      <div id="targetDockPanel" class="observatory-target-dock-panel" hidden>
-        <div id="targetChips" class="observatory-target-chips"></div>
+      <p id="atlasSelectionType">EARTH’S MOON</p>
+      <h2 id="atlasSelectionName">The Moon</h2>
+      <em id="atlasSelectionPoetry">
+        The nearest world, still beautifully far away.
+      </em>
+
+      <div class="atlas-selection-meta">
+        <span id="atlasSelectionDistance">384,400 km</span>
+        <i></i>
+        <span id="atlasSelectionKind">Natural satellite</span>
       </div>
+
+      <button
+        id="atlasObserveButton"
+        class="atlas-observe-button"
+        type="button"
+      >
+        <span aria-hidden="true">◉</span>
+        <strong>OBSERVE THROUGH TELESCOPE</strong>
+        <small>ENTER THE EYEPIECE</small>
+      </button>
     </section>
 
-    <div class="observatory-drag-hint" aria-hidden="true">
-      <span>DRAG THE SKY</span>
+    <button
+      id="atlasExplorerButton"
+      class="atlas-explorer-button"
+      type="button"
+      aria-expanded="false"
+    >
+      <span aria-hidden="true">✦</span>
+      <strong>CELESTIAL OBJECTS</strong>
+      <small>PLANETS · GALAXIES · NEBULAE</small>
+      <b aria-hidden="true">＋</b>
+    </button>
+
+    <section
+      id="atlasExplorerPanel"
+      class="atlas-explorer-panel"
+      hidden
+      aria-label="Daftar benda langit"
+    >
+      <div class="atlas-explorer-heading">
+        <div>
+          <small>PRIVATE SKY CATALOGUE</small>
+          <strong>Choose somewhere beautiful.</strong>
+        </div>
+
+        <button
+          id="atlasRandomButton"
+          type="button"
+          aria-label="Pilih benda langit secara acak"
+        >
+          Surprise me ✦
+        </button>
+      </div>
+
+      <div id="atlasExplorerList" class="atlas-explorer-list"></div>
+    </section>
+
+    <div class="atlas-navigation-hint" aria-hidden="true">
+      <span>DRAG</span>
       <i></i>
-      <small>align a glowing world with the telescope</small>
+      <span>SCROLL / PINCH TO ZOOM</span>
+      <i></i>
+      <span>TAP A WORLD</span>
     </div>
 
-    <section id="eyepieceOverlay" class="observatory-eyepiece-overlay" hidden aria-hidden="true">
-      <div class="eyepiece-blackout"></div>
-      <div class="eyepiece-ring ring-one"></div>
-      <div class="eyepiece-ring ring-two"></div>
-      <div class="eyepiece-ring ring-three"></div>
+    <div id="atlasZoomMeter" class="atlas-zoom-meter" aria-hidden="true">
+      <span>WIDE SKY</span>
+      <i><b></b></i>
+      <small id="atlasZoomValue">1.0×</small>
+    </div>
+
+    <section
+      id="atlasEyepieceOverlay"
+      class="atlas-eyepiece-overlay"
+      hidden
+      aria-hidden="true"
+    >
+      <div class="atlas-eyepiece-blackout"></div>
+      <div class="atlas-eyepiece-ring ring-one"></div>
+      <div class="atlas-eyepiece-ring ring-two"></div>
+      <div class="atlas-eyepiece-ring ring-three"></div>
+
       <p>ENTERING THE EYEPIECE</p>
     </section>
 
-    <section id="travelOverlay" class="observatory-travel-overlay" hidden aria-hidden="true">
-      <canvas id="travelCanvas" aria-hidden="true"></canvas>
-      <div class="observatory-travel-vignette"></div>
-      <div class="observatory-travel-copy">
+    <section
+      id="atlasTravelOverlay"
+      class="atlas-travel-overlay"
+      hidden
+      aria-hidden="true"
+    >
+      <canvas id="atlasTravelCanvas" aria-hidden="true"></canvas>
+      <div class="atlas-travel-vignette"></div>
+
+      <div class="atlas-travel-copy">
         <small>CROSSING THE DEEP-SPACE CORRIDOR</small>
-        <h2 id="travelTitle">Traveling to The Moon</h2>
-        <p>Passing through a three-dimensional corridor of light, dust, and distant stars.</p>
+        <h2 id="atlasTravelTitle">Traveling to The Moon</h2>
+        <p>
+          The sky folds into a three-dimensional corridor of light,
+          dust, and distant stars.
+        </p>
       </div>
     </section>
 
-    <section id="observationOverlay" class="observatory-observation" hidden aria-hidden="true">
-      <div class="observatory-observation-backdrop"></div>
+    <section
+      id="telescopeOverlay"
+      class="telescope-overlay"
+      hidden
+      aria-hidden="true"
+    >
+      <div class="telescope-space-backdrop"></div>
 
-      <video
-        id="observationVideo"
-        class="observatory-observation-video"
-        muted
-        loop
-        playsinline
-        preload="metadata"
-      ></video>
+      <canvas
+        id="telescopeStarCanvas"
+        class="telescope-star-canvas"
+        aria-hidden="true"
+      ></canvas>
 
-      <div id="observationFallback" class="observatory-observation-fallback" hidden>
-        <div class="observation-fallback-orb"></div>
-        <p>Visual NASA sedang dimuat. Pastikan koneksi internet aktif.</p>
+      <div
+        id="telescopeViewport"
+        class="telescope-viewport"
+        aria-label="Geser dan zoom tampilan teleskop"
+      >
+        <div id="telescopeWorld" class="telescope-world">
+          <video
+            id="telescopeVideo"
+            class="telescope-media telescope-video"
+            muted
+            loop
+            playsinline
+            preload="metadata"
+          ></video>
+
+          <div
+            id="telescopeMediaFallback"
+            class="telescope-media-fallback"
+            hidden
+          >
+            <div class="telescope-fallback-orb"></div>
+            <strong>Visual antariksa sedang dimuat.</strong>
+            <small>Pastikan koneksi internet aktif.</small>
+          </div>
+        </div>
       </div>
 
-      <div class="observatory-observation-vignette"></div>
+      <div class="telescope-lens-shade" aria-hidden="true"></div>
+      <div class="telescope-reticle" aria-hidden="true">
+        <span></span>
+        <i></i>
+      </div>
 
-      <header class="observatory-observation-topbar">
-        <div>
-          <small>NASA IMAGERY / MISSION-DATA VISUALIZATION</small>
-          <strong id="observationTitle">The Moon</strong>
+      <header class="telescope-topbar">
+        <div class="telescope-title">
+          <small>LIVE NASA IMAGERY / MISSION DATA</small>
+          <strong id="telescopeHeaderTitle">The Moon</strong>
         </div>
 
-        <button id="closeObservationButton" type="button" aria-label="Tutup observasi">×</button>
+        <div class="telescope-topbar-actions">
+          <span class="telescope-live-pill">
+            <i></i>
+            LIVE MOTION
+          </span>
+
+          <button
+            id="telescopeExitButton"
+            class="telescope-exit-button"
+            type="button"
+            aria-label="Keluar dari telescope mode"
+          >
+            ×
+          </button>
+        </div>
       </header>
 
-      <div class="observatory-observation-hud" aria-hidden="true">
-        <span>TELESCOPE FEED</span>
-        <i></i>
-        <small id="observationHudTarget">THE MOON</small>
-      </div>
+      <aside
+        id="telescopeInfoPanel"
+        class="telescope-info-panel"
+        hidden
+      >
+        <button
+          id="telescopeInfoClose"
+          class="telescope-info-close"
+          type="button"
+          aria-label="Tutup informasi"
+        >
+          ×
+        </button>
 
-      <article class="observatory-observation-info">
-        <p id="observationType">EARTH’S MOON</p>
-        <h2 id="observationName">The Moon</h2>
-        <em id="observationPoetry">The nearest world, still beautifully far away.</em>
+        <p id="telescopeObjectType">EARTH’S MOON</p>
+        <h2 id="telescopeObjectName">The Moon</h2>
+        <em id="telescopeObjectPoetry">
+          The nearest world, still beautifully far away.
+        </em>
 
-        <div class="observatory-observation-facts">
-          <div><span>DISTANCE</span><strong id="observationDistance">384,400 km</strong></div>
-          <div><span>LIGHT TRAVEL</span><strong id="observationLight">1.3 seconds</strong></div>
+        <div class="telescope-facts">
+          <div>
+            <span>DISTANCE</span>
+            <strong id="telescopeObjectDistance">384,400 km</strong>
+          </div>
+
+          <div>
+            <span>LIGHT TRAVEL</span>
+            <strong id="telescopeObjectLight">1.3 seconds</strong>
+          </div>
+
+          <div>
+            <span>VISUAL SOURCE</span>
+            <strong id="telescopeObjectMission">NASA Clementine</strong>
+          </div>
         </div>
 
-        <p id="observationDescription"></p>
+        <p id="telescopeObjectDescription"></p>
 
-        <div class="observatory-observation-actions">
-          <button id="previousTargetButton" type="button">← Previous</button>
-          <button id="nextTargetButton" type="button">Next World →</button>
-        </div>
-
-        <a id="observationSourceLink" href="#" target="_blank" rel="noopener noreferrer">
+        <a
+          id="telescopeSourceLink"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           View official NASA source ↗
         </a>
-      </article>
+      </aside>
+
+      <div
+        id="telescopeControls"
+        class="telescope-controls"
+      >
+        <button
+          id="telescopeZoomOut"
+          type="button"
+          aria-label="Zoom out"
+        >
+          −
+        </button>
+
+        <div class="telescope-zoom-readout">
+          <small>ZOOM</small>
+          <strong id="telescopeZoomReadout">1.00×</strong>
+        </div>
+
+        <button
+          id="telescopeZoomIn"
+          type="button"
+          aria-label="Zoom in"
+        >
+          ＋
+        </button>
+
+        <button
+          id="telescopeRecenter"
+          class="telescope-control-wide"
+          type="button"
+        >
+          ◎ RE-CENTER
+        </button>
+
+        <button
+          id="telescopeInfoButton"
+          class="telescope-control-wide"
+          type="button"
+        >
+          ✦ OBJECT INFO
+        </button>
+
+        <button
+          id="telescopePreviousObject"
+          type="button"
+          aria-label="Benda langit sebelumnya"
+        >
+          ←
+        </button>
+
+        <button
+          id="telescopeNextObject"
+          type="button"
+          aria-label="Benda langit berikutnya"
+        >
+          →
+        </button>
+      </div>
+
+      <div class="telescope-help" aria-hidden="true">
+        <span>DRAG TO LOOK AROUND</span>
+        <i></i>
+        <small>SCROLL OR PINCH TO ZOOM</small>
+      </div>
     </section>
 
-    <div class="observatory-rotate-note" aria-hidden="true">
+    <div class="atlas-rotate-note" aria-hidden="true">
       <span>↻</span>
       <strong>Putar HP ke mode landscape</strong>
-      <small>Observatory dibuat khusus untuk pengalaman horizontal yang luas dan tenang.</small>
+      <small>
+        The Celestial Atlas dirancang untuk pengalaman horizontal
+        yang luas, tenang, dan imersif.
+      </small>
     </div>
   </main>
 

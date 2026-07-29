@@ -1,28 +1,26 @@
 /* =========================================================
-   ASTROPHILE'S OBSERVATORY V6 — LIVING SILHOUETTE
-   Clean initial scene:
-   wide animated sky + seated woman silhouette + real telescope.
+   ASTROPHILE'S OBSERVATORY V7 — THE CELESTIAL ATLAS
+   Ruang Cerita visual language:
+   midnight navy · ivory · muted gold · celestial blue.
 ========================================================= */
 
 :root {
-  --ivory: #f6efe6;
-  --ivory-soft: rgba(246, 239, 230, 0.72);
-  --ivory-muted: rgba(246, 239, 230, 0.42);
-  --gold: #d7b583;
-  --gold-soft: rgba(215, 181, 131, 0.34);
-  --cyan: #bfe6ee;
-  --night: #020713;
-  --night-soft: #071426;
-  --glass: rgba(5, 12, 27, 0.54);
-  --glass-strong: rgba(5, 12, 27, 0.82);
-  --border: rgba(255, 255, 255, 0.11);
-  --pan-x: 0px;
-  --pan-y: 0px;
-  --sky-pan-x: 0px;
-  --sky-pan-y: 0px;
-  --scope-tilt: -8deg;
-  --silhouette-pan-x: 0px;
-  --silhouette-pan-y: 0px;
+  --atlas-ivory: #f6efe6;
+  --atlas-ivory-soft: rgba(246, 239, 230, 0.72);
+  --atlas-ivory-muted: rgba(246, 239, 230, 0.42);
+  --atlas-gold: #d7b583;
+  --atlas-gold-soft: rgba(215, 181, 131, 0.3);
+  --atlas-blue: #bfe5ed;
+  --atlas-blue-soft: rgba(191, 229, 237, 0.28);
+  --atlas-night: #020713;
+  --atlas-night-soft: #071426;
+  --atlas-glass: rgba(5, 12, 27, 0.54);
+  --atlas-glass-strong: rgba(5, 12, 27, 0.84);
+  --atlas-border: rgba(255, 255, 255, 0.1);
+  --atlas-shadow: 0 26px 80px rgba(0, 0, 0, 0.38);
+  --telescope-world-x: 0px;
+  --telescope-world-y: 0px;
+  --telescope-world-scale: 1;
 }
 
 * {
@@ -39,7 +37,7 @@ body {
 
 body {
   overflow: hidden;
-  color: var(--ivory);
+  color: var(--atlas-ivory);
   font-family: "DM Sans", system-ui, sans-serif;
 }
 
@@ -52,7 +50,7 @@ button {
   color: inherit;
 }
 
-.observatory-app {
+.atlas-app {
   position: relative;
   isolation: isolate;
   width: 100vw;
@@ -61,80 +59,80 @@ button {
   min-height: 560px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 52% 31%, rgba(53, 88, 146, 0.2), transparent 33%),
-    linear-gradient(180deg, #020713 0%, #061124 55%, #080a13 100%);
+    radial-gradient(circle at 52% 28%, rgba(49, 84, 145, 0.2), transparent 34%),
+    linear-gradient(180deg, #020713 0%, #061225 55%, #080a13 100%);
 }
 
-.observatory-sky {
+.atlas-sky-canvas {
   position: absolute;
-  inset: -8%;
+  inset: 0;
   z-index: 1;
-  width: 116%;
-  height: 116%;
-  transform: translate3d(var(--sky-pan-x), var(--sky-pan-y), 0);
-  will-change: transform;
+  width: 100%;
+  height: 100%;
 }
 
-.observatory-depth-haze,
-.observatory-vignette,
-.observatory-grain,
-.observatory-drag-surface {
+.atlas-atmosphere,
+.atlas-vignette,
+.atlas-grain,
+.atlas-drag-surface {
   position: absolute;
   inset: 0;
 }
 
-.observatory-depth-haze {
+.atlas-atmosphere {
   z-index: 2;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 30%, rgba(124, 164, 215, 0.07), transparent 34%),
-    radial-gradient(ellipse at 18% 14%, rgba(168, 136, 205, 0.035), transparent 29%);
+    radial-gradient(ellipse at 48% 30%, rgba(121, 160, 216, 0.065), transparent 37%),
+    radial-gradient(ellipse at 14% 14%, rgba(175, 139, 207, 0.035), transparent 31%);
 }
 
-.observatory-vignette {
-  z-index: 10;
+.atlas-vignette {
+  z-index: 8;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(1, 4, 11, 0.38), transparent 34%, transparent 72%, rgba(1, 4, 11, 0.23)),
-    linear-gradient(180deg, rgba(1, 3, 10, 0.08), transparent 56%, rgba(1, 3, 9, 0.52)),
-    radial-gradient(ellipse at center, transparent 48%, rgba(1, 3, 9, 0.48) 100%);
+    linear-gradient(90deg, rgba(1, 4, 11, 0.28), transparent 30%, transparent 73%, rgba(1, 4, 11, 0.22)),
+    linear-gradient(180deg, rgba(1, 3, 10, 0.05), transparent 56%, rgba(1, 3, 9, 0.5)),
+    radial-gradient(ellipse at center, transparent 48%, rgba(1, 3, 9, 0.44) 100%);
 }
 
-.observatory-grain {
-  z-index: 11;
+.atlas-grain {
+  z-index: 9;
   pointer-events: none;
-  opacity: 0.075;
+  opacity: 0.065;
   mix-blend-mode: soft-light;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.14) 1px, transparent 1px);
   background-size: 4px 4px;
 }
 
-.observatory-drag-surface {
-  z-index: 13;
+.atlas-drag-surface {
+  z-index: 11;
   cursor: grab;
   touch-action: none;
 }
 
-.observatory-app.is-dragging .observatory-drag-surface {
+.atlas-app.is-dragging .atlas-drag-surface {
   cursor: grabbing;
 }
 
-.observatory-topbar,
-.observatory-editorial-title,
-.observatory-aim-reticle,
-.observatory-sky-targets,
-.observatory-observe-button,
-.observatory-target-dock,
-.observatory-drag-hint {
+.atlas-topbar,
+.atlas-editorial-intro,
+.atlas-object-layer,
+.atlas-selection-card,
+.atlas-explorer-button,
+.atlas-explorer-panel,
+.atlas-navigation-hint,
+.atlas-zoom-meter {
   position: absolute;
-  z-index: 30;
+  z-index: 20;
 }
 
-.observatory-topbar {
+.atlas-topbar {
   left: 0;
   top: 0;
+  z-index: 40;
   width: 100%;
   min-height: 76px;
   padding: max(17px, env(safe-area-inset-top)) clamp(20px, 3vw, 46px) 10px;
@@ -145,19 +143,19 @@ button {
   pointer-events: none;
 }
 
-.observatory-back,
-.observatory-night-status {
+.atlas-back-button,
+.atlas-night-status {
   pointer-events: auto;
 }
 
-.observatory-back {
+.atlas-back-button {
   justify-self: start;
   min-height: 42px;
   padding: 0 14px;
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--atlas-border);
   border-radius: 15px;
   color: rgba(246, 239, 230, 0.7);
   background: rgba(4, 10, 23, 0.3);
@@ -168,13 +166,13 @@ button {
   font-weight: 700;
 }
 
-.observatory-brand {
+.atlas-brand {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.observatory-brand-orbit {
+.atlas-brand-mark {
   position: relative;
   width: 40px;
   height: 40px;
@@ -183,26 +181,26 @@ button {
   border-radius: 50%;
 }
 
-.observatory-brand-orbit i {
+.atlas-brand-mark i {
   position: absolute;
   inset: 8px;
   border: 1px solid rgba(215, 181, 131, 0.2);
   border-radius: 50%;
 }
 
-.observatory-brand-orbit b {
+.atlas-brand-mark b {
   position: absolute;
   left: 50%;
   top: 50%;
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--atlas-gold);
   box-shadow: 0 0 16px rgba(215, 181, 131, 0.44);
   transform: translate(-50%, -50%);
 }
 
-.observatory-brand-orbit::after {
+.atlas-brand-mark::after {
   content: "";
   position: absolute;
   left: 4px;
@@ -213,26 +211,26 @@ button {
   transform: rotate(-22deg);
 }
 
-.observatory-brand small,
-.observatory-brand strong {
+.atlas-brand small,
+.atlas-brand strong {
   display: block;
 }
 
-.observatory-brand small {
+.atlas-brand small {
   color: rgba(215, 181, 131, 0.66);
   font-size: 6px;
   font-weight: 800;
   letter-spacing: 0.18em;
 }
 
-.observatory-brand strong {
+.atlas-brand strong {
   margin-top: 3px;
   font-family: "Playfair Display", Georgia, serif;
   font-size: 20px;
   font-weight: 500;
 }
 
-.observatory-night-status {
+.atlas-night-status {
   justify-self: end;
   display: flex;
   align-items: center;
@@ -243,553 +241,752 @@ button {
   letter-spacing: 0.15em;
 }
 
-.observatory-night-status span {
-  color: var(--gold);
+.atlas-night-status span {
+  color: var(--atlas-gold);
 }
 
-.observatory-night-status i {
+.atlas-night-status i {
   width: 34px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(246, 239, 230, 0.17), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(246, 239, 230, 0.17),
+    transparent
+  );
 }
 
-.observatory-night-status b {
+.atlas-night-status b {
   width: 34px;
   height: 34px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--border);
+  border: 1px solid var(--atlas-border);
   border-radius: 50%;
   background: rgba(6, 13, 29, 0.37);
   font-size: 12px;
 }
 
-.observatory-editorial-title {
-  left: clamp(36px, 5vw, 82px);
-  top: clamp(113px, 15vh, 156px);
-  width: min(510px, 38vw);
+.atlas-editorial-intro {
+  left: clamp(30px, 4.8vw, 76px);
+  top: clamp(105px, 14vh, 145px);
+  width: min(460px, 35vw);
   pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
-.observatory-editorial-title p {
+.atlas-app.has-selection .atlas-editorial-intro {
+  opacity: 0.27;
+  transform: translateY(-5px);
+}
+
+.atlas-editorial-intro p {
   margin: 0;
-  color: rgba(215, 181, 131, 0.82);
+  color: rgba(215, 181, 131, 0.8);
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.22em;
 }
 
-.observatory-editorial-title h1 {
-  margin: 12px 0 0;
-  color: var(--ivory);
+.atlas-editorial-intro h1 {
+  margin: 11px 0 0;
+  color: var(--atlas-ivory);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(54px, 5.5vw, 88px);
+  font-size: clamp(54px, 5.35vw, 84px);
   font-weight: 600;
   line-height: 0.88;
   letter-spacing: -0.055em;
   text-shadow: 0 18px 55px rgba(0, 0, 0, 0.33);
 }
 
-.observatory-editorial-title h1 span {
-  margin-left: clamp(20px, 3.4vw, 54px);
+.atlas-editorial-intro h1 span {
+  margin-left: clamp(18px, 3vw, 46px);
 }
 
-.observatory-editorial-title em {
+.atlas-editorial-intro em {
   display: block;
-  max-width: 29ch;
-  margin-top: 18px;
-  color: rgba(224, 201, 170, 0.88);
+  max-width: 31ch;
+  margin-top: 17px;
+  color: rgba(224, 201, 170, 0.86);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(16px, 1.45vw, 22px);
-  line-height: 1.4;
+  font-size: clamp(15px, 1.35vw, 21px);
+  line-height: 1.42;
 }
 
-.observatory-silhouette-stage {
-  position: absolute;
-  right: -1.4vw;
-  bottom: -1.5vh;
-  z-index: 9;
-  width: min(72vw, 1110px);
-  height: auto;
-  margin: 0;
-  transform: translate3d(var(--silhouette-pan-x), var(--silhouette-pan-y), 0);
-  transform-origin: 62% 72%;
-  will-change: transform;
-  pointer-events: none;
-}
-
-.observatory-silhouette-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-.silhouette-person {
-  transform-origin: 680px 580px;
-  animation: silhouetteBreath 6.5s ease-in-out infinite;
-}
-
-.silhouette-hair {
-  transform-origin: 690px 240px;
-  animation: silhouetteHair 8s ease-in-out infinite;
-}
-
-.silhouette-front-arm {
-  transform-origin: 679px 334px;
-  animation: silhouetteHand 7.4s ease-in-out infinite;
-}
-
-.silhouette-telescope {
-  transform-box: fill-box;
-  transform-origin: 70% 56%;
-  transform: rotate(var(--scope-tilt));
-  transition: transform 0.16s ease;
-}
-
-.silhouette-ambient-particles circle {
-  animation: silhouetteParticle 5s ease-in-out infinite;
-}
-
-.silhouette-ambient-particles circle:nth-child(2n) {
-  animation-delay: 1.2s;
-}
-
-.silhouette-ambient-particles circle:nth-child(3n) {
-  animation-delay: 2.4s;
-}
-
-@keyframes silhouetteBreath {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@keyframes silhouetteHair {
-  0%, 100% { transform: skewX(0deg) translateX(0); }
-  50% { transform: skewX(-1.5deg) translateX(-3px); }
-}
-
-@keyframes silhouetteHand {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(-1.6deg); }
-}
-
-@keyframes silhouetteParticle {
-  0%, 100% { opacity: 0.25; transform: translateY(0); }
-  50% { opacity: 0.75; transform: translateY(-7px); }
-}
-
-.observatory-aim-reticle {
-  left: 54.8%;
-  top: 44.2%;
-  width: 51px;
-  height: 51px;
-  border: 1px solid rgba(191, 230, 238, 0.27);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.observatory-aim-reticle::before,
-.observatory-aim-reticle::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  background: rgba(191, 230, 238, 0.2);
-  transform: translate(-50%, -50%);
-}
-
-.observatory-aim-reticle::before {
-  width: 78px;
-  height: 1px;
-}
-
-.observatory-aim-reticle::after {
-  width: 1px;
-  height: 78px;
-}
-
-.observatory-aim-reticle span {
-  position: absolute;
-  inset: 10px;
-  border: 1px solid rgba(191, 230, 238, 0.13);
-  border-radius: 50%;
-}
-
-.observatory-aim-reticle i {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 17px rgba(191, 230, 238, 0.62);
-  transform: translate(-50%, -50%);
-}
-
-.observatory-sky-targets {
+.atlas-object-layer {
   inset: 0;
-  z-index: 22;
+  z-index: 14;
   pointer-events: none;
-  transform: translate3d(var(--pan-x), var(--pan-y), 0);
-  will-change: transform;
 }
 
-.observatory-sky-marker {
+.atlas-object-marker {
   position: absolute;
-  width: 42px;
-  height: 42px;
+  width: 54px;
+  height: 54px;
   padding: 0;
   display: grid;
   place-items: center;
   border: 0;
   background: transparent;
+  opacity: 0;
   pointer-events: auto;
   cursor: pointer;
+  transform: translate(-50%, -50%) scale(var(--marker-scale, 1));
+  transition:
+    opacity 0.2s ease,
+    filter 0.2s ease;
 }
 
-.observatory-sky-marker::before {
-  content: "";
-  width: 7px;
-  height: 7px;
+.atlas-object-marker.is-visible {
+  opacity: 1;
+}
+
+.atlas-object-marker.is-selected {
+  z-index: 5;
+}
+
+.atlas-object-core {
+  position: relative;
+  width: var(--object-size, 9px);
+  height: var(--object-size, 9px);
   border-radius: 50%;
-  background: var(--marker-color, #f4e5d0);
+  background: var(--object-color, #f3e5d2);
   box-shadow:
-    0 0 0 8px rgba(255, 255, 255, 0.025),
-    0 0 20px var(--marker-glow, rgba(244, 229, 208, 0.42));
+    0 0 0 9px rgba(255, 255, 255, 0.022),
+    0 0 22px var(--object-glow, rgba(243, 229, 210, 0.48));
 }
 
-.observatory-sky-marker::after {
-  content: "";
+.atlas-object-marker[data-shape="galaxy"] .atlas-object-core {
+  width: calc(var(--object-size, 9px) * 2.4);
+  height: calc(var(--object-size, 9px) * 0.78);
+  border: 1px solid var(--object-color, #d9d3ef);
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 246, 222, 0.95),
+      var(--object-color, #d9d3ef) 22%,
+      rgba(105, 91, 166, 0.28) 62%,
+      transparent 74%
+    );
+  transform: rotate(-19deg);
+  box-shadow:
+    0 0 22px var(--object-glow, rgba(217, 211, 239, 0.42));
+}
+
+.atlas-object-marker[data-shape="nebula"] .atlas-object-core {
+  width: calc(var(--object-size, 9px) * 2.2);
+  height: calc(var(--object-size, 9px) * 1.65);
+  background:
+    radial-gradient(
+      ellipse at 42% 48%,
+      rgba(255, 246, 224, 0.88),
+      var(--object-color, #b9a0d2) 22%,
+      rgba(95, 111, 178, 0.22) 60%,
+      transparent 75%
+    );
+  filter: blur(0.35px);
+  box-shadow:
+    0 0 28px var(--object-glow, rgba(185, 160, 210, 0.42));
+}
+
+.atlas-object-orbit {
   position: absolute;
-  inset: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.045);
+  inset: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 50%;
-  animation: markerPulse 4s ease-in-out infinite;
+  animation: atlasOrbitPulse 4.5s ease-in-out infinite;
 }
 
-.observatory-sky-marker span {
+.atlas-object-marker.is-selected .atlas-object-orbit {
+  inset: 0;
+  border-color: rgba(191, 229, 237, 0.38);
+  box-shadow: 0 0 25px rgba(191, 229, 237, 0.18);
+}
+
+.atlas-object-label {
   position: absolute;
   left: 50%;
-  top: calc(100% + 2px);
+  top: calc(100% + 3px);
   min-width: max-content;
-  padding: 5px 8px;
+  padding: 6px 9px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  color: rgba(246, 239, 230, 0.6);
-  background: rgba(3, 9, 21, 0.44);
+  color: rgba(246, 239, 230, 0.62);
+  background: rgba(3, 9, 21, 0.48);
   opacity: 0;
   transform: translate(-50%, -4px);
   transition: opacity 0.2s ease, transform 0.2s ease;
   font-size: 7px;
   font-weight: 800;
-  letter-spacing: 0.1em;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  letter-spacing: 0.11em;
+  white-space: nowrap;
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
 }
 
-.observatory-sky-marker:hover span,
-.observatory-sky-marker.is-active span {
+.atlas-object-marker:hover .atlas-object-label,
+.atlas-object-marker.is-selected .atlas-object-label,
+.atlas-object-marker.is-near-center .atlas-object-label {
   opacity: 1;
   transform: translate(-50%, 0);
 }
 
-.observatory-sky-marker.is-active::before {
-  width: 10px;
-  height: 10px;
-  box-shadow:
-    0 0 0 11px rgba(191, 230, 238, 0.05),
-    0 0 30px rgba(191, 230, 238, 0.7);
+@keyframes atlasOrbitPulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.88);
+  }
+
+  50% {
+    opacity: 0.72;
+    transform: scale(1.12);
+  }
 }
 
-@keyframes markerPulse {
-  0%, 100% { transform: scale(0.88); opacity: 0.3; }
-  50% { transform: scale(1.16); opacity: 0.75; }
+.atlas-selection-card {
+  right: clamp(22px, 3.4vw, 52px);
+  top: 50%;
+  z-index: 45;
+  width: min(370px, 29vw);
+  padding: 22px;
+  border: 1px solid var(--atlas-border);
+  border-radius: 25px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 17, 36, 0.65),
+      rgba(4, 10, 23, 0.78)
+    );
+  box-shadow: var(--atlas-shadow);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transform: translateY(-50%);
+  animation: atlasCardIn 0.38s ease both;
 }
 
-.observatory-observe-button {
-  left: 54.8%;
-  top: calc(44.2% + 55px);
-  min-height: 49px;
-  padding: 0 18px;
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
-  align-items: center;
-  column-gap: 10px;
-  border: 1px solid rgba(255, 239, 217, 0.35);
-  border-radius: 15px;
-  color: #261d14;
-  background: linear-gradient(180deg, #efd8bb, #c99f6b);
-  box-shadow:
-    0 18px 45px rgba(205, 165, 111, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.48);
-  cursor: pointer;
-  transform: translateX(-50%);
-  transition: transform 0.23s ease, filter 0.23s ease, opacity 0.23s ease;
-}
-
-.observatory-observe-button[hidden] {
+.atlas-selection-card[hidden],
+.atlas-explorer-panel[hidden],
+.atlas-eyepiece-overlay[hidden],
+.atlas-travel-overlay[hidden],
+.telescope-overlay[hidden],
+.telescope-info-panel[hidden],
+.telescope-media-fallback[hidden] {
   display: none !important;
 }
 
-.observatory-observe-button:hover {
-  transform: translateX(-50%) translateY(-2px);
+@keyframes atlasCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-50% + 12px));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+}
+
+.atlas-selection-close,
+.telescope-info-close {
+  position: absolute;
+  right: 13px;
+  top: 13px;
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 50%;
+  color: rgba(246, 239, 230, 0.52);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+}
+
+.atlas-selection-card > p {
+  margin: 0;
+  padding-right: 38px;
+  color: rgba(191, 229, 237, 0.66);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.atlas-selection-card h2 {
+  margin: 8px 0 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(39px, 3.6vw, 58px);
+  font-weight: 600;
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+}
+
+.atlas-selection-card em {
+  display: block;
+  margin-top: 11px;
+  color: rgba(224, 201, 170, 0.88);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.atlas-selection-meta {
+  margin-top: 17px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 9px;
+  color: rgba(246, 239, 230, 0.43);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.atlas-selection-meta i {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(246, 239, 230, 0.14),
+    transparent
+  );
+}
+
+.atlas-observe-button {
+  width: 100%;
+  min-height: 53px;
+  margin-top: 20px;
+  padding: 0 15px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 11px;
+  border: 1px solid rgba(255, 239, 217, 0.34);
+  border-radius: 15px;
+  color: #261d14;
+  background:
+    linear-gradient(180deg, #efd8bb, #c99f6b);
+  box-shadow:
+    0 18px 45px rgba(205, 165, 111, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.46);
+  cursor: pointer;
+  transition: transform 0.23s ease, filter 0.23s ease;
+}
+
+.atlas-observe-button:hover {
+  transform: translateY(-2px);
   filter: brightness(1.04);
 }
 
-.observatory-observe-button > span {
+.atlas-observe-button > span {
   grid-row: 1 / 3;
-  font-size: 14px;
+  font-size: 16px;
 }
 
-.observatory-observe-button strong {
-  font-size: 9px;
+.atlas-observe-button strong {
+  text-align: left;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.atlas-observe-button small {
+  color: rgba(38, 29, 20, 0.56);
+  text-align: left;
+  font-size: 6px;
   font-weight: 800;
   letter-spacing: 0.11em;
 }
 
-.observatory-observe-button small {
-  color: rgba(38, 29, 20, 0.58);
-  font-size: 6px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
-
-.observatory-target-dock {
-  left: 50%;
-  bottom: max(23px, env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  pointer-events: auto;
-}
-
-.observatory-target-dock-toggle {
-  min-width: 235px;
-  min-height: 51px;
-  padding: 0 14px;
+.atlas-explorer-button {
+  left: clamp(22px, 3vw, 48px);
+  bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 45;
+  min-width: 225px;
+  min-height: 49px;
+  padding: 0 13px;
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: auto auto;
   align-items: center;
   column-gap: 10px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  color: rgba(246, 239, 230, 0.78);
-  background: rgba(5, 12, 27, 0.48);
-  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.24);
+  border: 1px solid var(--atlas-border);
+  border-radius: 15px;
+  color: rgba(246, 239, 230, 0.74);
+  background: rgba(4, 10, 23, 0.46);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.23);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   cursor: pointer;
 }
 
-.observatory-target-dock-toggle > span {
+.atlas-explorer-button > span {
   grid-row: 1 / 3;
-  color: var(--gold);
+  color: var(--atlas-gold);
 }
 
-.observatory-target-dock-toggle strong {
+.atlas-explorer-button strong {
   text-align: left;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.atlas-explorer-button small {
+  color: rgba(246, 239, 230, 0.3);
+  text-align: left;
+  font-size: 5px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.atlas-explorer-button b {
+  grid-row: 1 / 3;
+  color: rgba(246, 239, 230, 0.42);
+}
+
+.atlas-explorer-panel {
+  left: clamp(22px, 3vw, 48px);
+  bottom: calc(max(24px, env(safe-area-inset-bottom)) + 61px);
+  z-index: 50;
+  width: min(680px, 72vw);
+  padding: 15px;
+  border: 1px solid var(--atlas-border);
+  border-radius: 21px;
+  background: rgba(4, 10, 23, 0.86);
+  box-shadow: var(--atlas-shadow);
+  backdrop-filter: blur(19px);
+  -webkit-backdrop-filter: blur(19px);
+  animation: atlasExplorerIn 0.3s ease both;
+}
+
+@keyframes atlasExplorerIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.atlas-explorer-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.atlas-explorer-heading small,
+.atlas-explorer-heading strong {
+  display: block;
+}
+
+.atlas-explorer-heading small {
+  color: rgba(191, 229, 237, 0.57);
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.atlas-explorer-heading strong {
+  margin-top: 3px;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
 }
 
-.observatory-target-dock-toggle small {
-  color: rgba(246, 239, 230, 0.34);
-  text-align: left;
-  font-size: 6px;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-}
-
-.observatory-target-dock-toggle b {
-  grid-row: 1 / 3;
-  color: rgba(246, 239, 230, 0.45);
-  font-size: 14px;
-}
-
-.observatory-target-dock-panel {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 10px);
-  width: min(720px, 86vw);
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: rgba(4, 10, 23, 0.82);
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.36);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  transform: translateX(-50%);
-}
-
-.observatory-target-dock-panel[hidden],
-.observatory-eyepiece-overlay[hidden],
-.observatory-travel-overlay[hidden],
-.observatory-observation[hidden],
-.observatory-observation-fallback[hidden] {
-  display: none !important;
-}
-
-.observatory-target-chips {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.observatory-target-chips::-webkit-scrollbar {
-  display: none;
-}
-
-.observatory-target-chip {
-  flex: 0 0 auto;
-  min-height: 39px;
-  padding: 0 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.atlas-explorer-heading button {
+  min-height: 34px;
+  padding: 0 11px;
   border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 12px;
-  color: rgba(246, 239, 230, 0.64);
+  border-radius: 11px;
+  color: rgba(215, 181, 131, 0.76);
   background: rgba(255, 255, 255, 0.025);
   cursor: pointer;
   font-size: 7px;
   font-weight: 800;
-  letter-spacing: 0.09em;
 }
 
-.observatory-target-chip span {
-  color: var(--gold);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 13px;
+.atlas-explorer-list {
+  margin-top: 13px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  max-height: min(55vh, 410px);
+  overflow-y: auto;
+  padding-right: 3px;
 }
 
-.observatory-target-chip:hover,
-.observatory-target-chip.is-active {
-  border-color: rgba(215, 181, 131, 0.31);
-  color: var(--ivory);
+.atlas-explorer-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.atlas-explorer-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.atlas-explorer-item {
+  min-height: 52px;
+  padding: 0 11px;
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  color: rgba(246, 239, 230, 0.68);
+  background: rgba(255, 255, 255, 0.022);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.atlas-explorer-item:hover,
+.atlas-explorer-item.is-active {
+  border-color: rgba(215, 181, 131, 0.28);
+  color: var(--atlas-ivory);
   background: rgba(18, 27, 50, 0.72);
 }
 
-.observatory-drag-hint {
-  left: clamp(20px, 3vw, 48px);
-  bottom: max(18px, env(safe-area-inset-bottom));
-  width: min(300px, 27vw);
+.atlas-explorer-item > span {
+  width: 32px;
+  height: 32px;
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 8px;
-  color: rgba(246, 239, 230, 0.25);
-  pointer-events: none;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 50%;
+  color: var(--atlas-gold);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 14px;
 }
 
-.observatory-drag-hint span,
-.observatory-drag-hint small {
+.atlas-explorer-item strong,
+.atlas-explorer-item small {
+  display: block;
+}
+
+.atlas-explorer-item strong {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.atlas-explorer-item small {
+  margin-top: 2px;
+  color: rgba(246, 239, 230, 0.29);
   font-size: 6px;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
+}
+
+.atlas-explorer-item b {
+  color: rgba(191, 229, 237, 0.35);
+  font-size: 10px;
+}
+
+.atlas-navigation-hint {
+  left: 50%;
+  bottom: max(27px, env(safe-area-inset-bottom));
+  z-index: 18;
+  display: grid;
+  grid-template-columns: auto 28px auto 28px auto;
+  align-items: center;
+  gap: 8px;
+  color: rgba(246, 239, 230, 0.23);
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.atlas-app.has-selection .atlas-navigation-hint {
+  opacity: 0.22;
+}
+
+.atlas-navigation-hint span {
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
   white-space: nowrap;
 }
 
-.observatory-drag-hint i {
+.atlas-navigation-hint i {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(246, 239, 230, 0.14), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(246, 239, 230, 0.14),
+    transparent
+  );
 }
 
-/* Eyepiece transition */
-.observatory-eyepiece-overlay,
-.observatory-travel-overlay,
-.observatory-observation {
+.atlas-zoom-meter {
+  right: clamp(22px, 3vw, 48px);
+  bottom: max(27px, env(safe-area-inset-bottom));
+  z-index: 18;
+  width: min(260px, 22vw);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 9px;
+  color: rgba(246, 239, 230, 0.26);
+  pointer-events: none;
+}
+
+.atlas-zoom-meter span,
+.atlas-zoom-meter small {
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  white-space: nowrap;
+}
+
+.atlas-zoom-meter i {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.atlas-zoom-meter i b {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 22%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(215, 181, 131, 0.62),
+    rgba(191, 229, 237, 0.55)
+  );
+}
+
+/* =========================================================
+   EYEPIECE TRANSITION
+========================================================= */
+
+.atlas-eyepiece-overlay,
+.atlas-travel-overlay,
+.telescope-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
 }
 
-.observatory-eyepiece-overlay {
+.atlas-eyepiece-overlay {
   overflow: hidden;
   background: rgba(0, 0, 0, 0.05);
 }
 
-.eyepiece-blackout {
+.atlas-eyepiece-blackout {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 54.8% 44.2%, transparent 0 3%, rgba(0, 0, 0, 0.2) 11%, rgba(0, 0, 0, 0.94) 43%, #000 70%);
-  animation: eyepieceBlackout 0.78s cubic-bezier(0.5, 0, 0.25, 1) forwards;
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 0 3%,
+      rgba(0, 0, 0, 0.19) 11%,
+      rgba(0, 0, 0, 0.95) 43%,
+      #000 70%
+    );
+  animation: atlasEyepieceBlackout 0.8s cubic-bezier(0.5, 0, 0.25, 1) forwards;
 }
 
-.eyepiece-ring {
+.atlas-eyepiece-ring {
   position: absolute;
-  left: 54.8%;
-  top: 44.2%;
+  left: 50%;
+  top: 50%;
   aspect-ratio: 1;
-  border: 2px solid rgba(191, 230, 238, 0.18);
+  border: 2px solid rgba(191, 229, 237, 0.18);
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0.1);
-  animation: eyepieceRing 0.78s cubic-bezier(0.45, 0, 0.2, 1) forwards;
+  animation: atlasEyepieceRing 0.8s cubic-bezier(0.45, 0, 0.2, 1) forwards;
 }
 
-.eyepiece-ring.ring-one {
+.atlas-eyepiece-ring.ring-one {
   width: 220px;
 }
 
-.eyepiece-ring.ring-two {
+.atlas-eyepiece-ring.ring-two {
   width: 390px;
   animation-delay: 0.04s;
 }
 
-.eyepiece-ring.ring-three {
+.atlas-eyepiece-ring.ring-three {
   width: 590px;
   animation-delay: 0.08s;
 }
 
-.observatory-eyepiece-overlay p {
+.atlas-eyepiece-overlay p {
   position: absolute;
   left: 50%;
   bottom: 8%;
   margin: 0;
-  color: rgba(246, 239, 230, 0.62);
+  color: rgba(246, 239, 230, 0.61);
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.2em;
   transform: translateX(-50%);
 }
 
-@keyframes eyepieceBlackout {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1.24); }
+@keyframes atlasEyepieceBlackout {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.24);
+  }
 }
 
-@keyframes eyepieceRing {
-  to { opacity: 0; transform: translate(-50%, -50%) scale(4.5); }
+@keyframes atlasEyepieceRing {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(4.6);
+  }
 }
 
-/* 3D deep-space tunnel */
-.observatory-travel-overlay {
+/* =========================================================
+   THREE-DIMENSIONAL CORRIDOR
+========================================================= */
+
+.atlas-travel-overlay {
   overflow: hidden;
   background: #000207;
 }
 
-.observatory-travel-overlay canvas {
+.atlas-travel-overlay canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.observatory-travel-vignette {
+.atlas-travel-vignette {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, transparent 0 29%, rgba(0, 0, 0, 0.08) 55%, rgba(0, 0, 0, 0.85) 100%),
-    linear-gradient(180deg, rgba(7, 16, 34, 0.08), rgba(0, 0, 0, 0.26));
+    radial-gradient(
+      circle at center,
+      transparent 0 29%,
+      rgba(0, 0, 0, 0.08) 55%,
+      rgba(0, 0, 0, 0.85) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(7, 16, 34, 0.08),
+      rgba(0, 0, 0, 0.26)
+    );
   pointer-events: none;
 }
 
-.observatory-travel-copy {
+.atlas-travel-copy {
   position: absolute;
   left: 50%;
   bottom: 7%;
@@ -800,14 +997,14 @@ button {
   text-shadow: 0 8px 30px rgba(0, 0, 0, 0.85);
 }
 
-.observatory-travel-copy small {
+.atlas-travel-copy small {
   color: rgba(168, 213, 231, 0.74);
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.18em;
 }
 
-.observatory-travel-copy h2 {
+.atlas-travel-copy h2 {
   margin: 8px 0 0;
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(40px, 5vw, 74px);
@@ -815,563 +1012,929 @@ button {
   letter-spacing: -0.045em;
 }
 
-.observatory-travel-copy p {
+.atlas-travel-copy p {
   margin: 9px auto 0;
   color: rgba(246, 239, 230, 0.53);
   font-size: 10px;
 }
 
-/* NASA observation */
-.observatory-observation {
+/* =========================================================
+   TELESCOPE MODE — PAN / ZOOM REMAINS ACTIVE
+========================================================= */
+
+.telescope-overlay {
   overflow: hidden;
   background: #000;
+  cursor: grab;
+  touch-action: none;
 }
 
-.observatory-observation-backdrop,
-.observatory-observation-video,
-.observatory-observation-fallback,
-.observatory-observation-vignette {
+.telescope-overlay.is-dragging {
+  cursor: grabbing;
+}
+
+.telescope-space-backdrop,
+.telescope-star-canvas,
+.telescope-viewport,
+.telescope-lens-shade {
   position: absolute;
   inset: 0;
 }
 
-.observatory-observation-backdrop {
+.telescope-space-backdrop {
   background:
-    radial-gradient(circle at 50% 45%, rgba(23, 50, 90, 0.34), transparent 46%),
-    #000;
+    radial-gradient(circle at 50% 43%, rgba(33, 62, 109, 0.28), transparent 43%),
+    #000207;
 }
 
-.observatory-observation-video {
+.telescope-star-canvas {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  background: #000;
-  filter: saturate(1.03) contrast(1.03);
+  pointer-events: none;
 }
 
-.observatory-observation-fallback {
+.telescope-viewport {
+  overflow: hidden;
+}
+
+.telescope-world {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(1280px, 100vw);
+  height: min(720px, 100vh);
+  transform:
+    translate(
+      calc(-50% + var(--telescope-world-x)),
+      calc(-50% + var(--telescope-world-y))
+    )
+    scale(var(--telescope-world-scale));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.telescope-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: transparent;
+  filter: saturate(1.04) contrast(1.04);
+}
+
+.telescope-media-fallback {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
   align-content: center;
-  gap: 18px;
-  background: radial-gradient(circle at center, #0d1b34, #01040a 70%);
-  color: rgba(246, 239, 230, 0.65);
+  gap: 15px;
+  color: rgba(246, 239, 230, 0.64);
+  background:
+    radial-gradient(circle at center, #0d1b34, #01040a 72%);
   text-align: center;
 }
 
-.observation-fallback-orb {
-  width: min(33vw, 320px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 30%, #e6d0ad, #9a725b 56%, #332633 82%);
-  box-shadow: 0 0 100px rgba(192, 167, 132, 0.2);
-  animation: fallbackOrb 10s linear infinite;
-}
-
-@keyframes fallbackOrb {
-  to { transform: rotate(360deg); }
-}
-
-.observatory-observation-vignette {
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.7), transparent 45%, transparent 71%, rgba(0, 0, 0, 0.22)),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 45%, rgba(0, 0, 0, 0.5)),
-    radial-gradient(ellipse at center, transparent 48%, rgba(0, 0, 0, 0.55) 100%);
-}
-
-.observatory-observation-topbar {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 4;
-  width: 100%;
-  padding: max(19px, env(safe-area-inset-top)) clamp(20px, 3vw, 42px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.observatory-observation-topbar small,
-.observatory-observation-topbar strong {
+.telescope-media-fallback strong,
+.telescope-media-fallback small {
   display: block;
 }
 
-.observatory-observation-topbar small {
-  color: rgba(173, 218, 230, 0.72);
+.telescope-media-fallback small {
+  color: rgba(246, 239, 230, 0.38);
+}
+
+.telescope-fallback-orb {
+  width: min(30vw, 290px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #e6d0ad,
+      #9a725b 56%,
+      #332633 82%
+    );
+  box-shadow: 0 0 100px rgba(192, 167, 132, 0.2);
+  animation: telescopeFallbackOrb 10s linear infinite;
+}
+
+@keyframes telescopeFallbackOrb {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.telescope-lens-shade {
+  z-index: 4;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.38),
+      transparent 18%,
+      transparent 82%,
+      rgba(0, 0, 0, 0.38)
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.31),
+      transparent 23%,
+      transparent 78%,
+      rgba(0, 0, 0, 0.42)
+    ),
+    radial-gradient(
+      ellipse at center,
+      transparent 46%,
+      rgba(0, 0, 0, 0.62) 100%
+    );
+}
+
+.telescope-lens-shade::before,
+.telescope-lens-shade::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.telescope-lens-shade::before {
+  width: min(92vw, 1180px);
+  aspect-ratio: 1;
+  border: clamp(14px, 2.3vw, 34px) solid rgba(13, 20, 29, 0.8);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 85px rgba(0, 0, 0, 0.7),
+    0 0 90px rgba(0, 0, 0, 0.62);
+}
+
+.telescope-lens-shade::after {
+  width: min(78vw, 980px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(191, 229, 237, 0.09);
+}
+
+.telescope-reticle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 5;
+  width: 210px;
+  height: 210px;
+  border: 1px solid rgba(191, 229, 237, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.telescope-reticle::before,
+.telescope-reticle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: rgba(191, 229, 237, 0.11);
+  transform: translate(-50%, -50%);
+}
+
+.telescope-reticle::before {
+  width: 320px;
+  height: 1px;
+}
+
+.telescope-reticle::after {
+  width: 1px;
+  height: 320px;
+}
+
+.telescope-reticle span {
+  position: absolute;
+  inset: 44px;
+  border: 1px solid rgba(191, 229, 237, 0.11);
+  border-radius: 50%;
+}
+
+.telescope-reticle i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(215, 181, 131, 0.65);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.telescope-topbar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 12;
+  width: 100%;
+  padding: max(18px, env(safe-area-inset-top)) clamp(18px, 3vw, 42px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.telescope-title,
+.telescope-topbar-actions {
+  pointer-events: auto;
+}
+
+.telescope-title small,
+.telescope-title strong {
+  display: block;
+}
+
+.telescope-title small {
+  color: rgba(191, 229, 237, 0.66);
   font-size: 7px;
   font-weight: 800;
   letter-spacing: 0.17em;
 }
 
-.observatory-observation-topbar strong {
+.telescope-title strong {
   margin-top: 4px;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 23px;
+  font-size: 24px;
   font-weight: 500;
 }
 
-.observatory-observation-topbar button {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 50%;
-  color: var(--ivory);
-  background: rgba(3, 8, 18, 0.48);
-  cursor: pointer;
-  font-size: 20px;
-  backdrop-filter: blur(13px);
-  -webkit-backdrop-filter: blur(13px);
-}
-
-.observatory-observation-hud {
-  position: absolute;
-  left: 50%;
-  top: max(23px, env(safe-area-inset-top));
-  z-index: 4;
-  width: min(420px, 34vw);
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+.telescope-topbar-actions {
+  display: flex;
   align-items: center;
   gap: 10px;
-  color: rgba(246, 239, 230, 0.43);
-  transform: translateX(-50%);
 }
 
-.observatory-observation-hud span,
-.observatory-observation-hud small {
-  font-size: 6px;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  white-space: nowrap;
-}
-
-.observatory-observation-hud small {
-  color: rgba(215, 181, 131, 0.72);
-}
-
-.observatory-observation-hud i {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(246, 239, 230, 0.14), transparent);
-}
-
-.observatory-observation-info {
-  position: absolute;
-  left: clamp(24px, 5vw, 76px);
-  bottom: clamp(27px, 7vh, 72px);
-  z-index: 4;
-  width: min(475px, 38vw);
-  padding: 21px;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  border-radius: 23px;
-  background: rgba(2, 7, 17, 0.56);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-.observatory-observation-info > p:first-child {
-  margin: 0;
-  color: rgba(173, 218, 230, 0.7);
+.telescope-live-pill {
+  min-height: 34px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  color: rgba(246, 239, 230, 0.62);
+  background: rgba(3, 8, 18, 0.46);
   font-size: 7px;
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.11em;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.observatory-observation-info h2 {
+.telescope-live-pill i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff7080;
+  box-shadow: 0 0 0 0 rgba(255, 112, 128, 0.56);
+  animation: telescopeLivePulse 1.8s ease infinite;
+}
+
+@keyframes telescopeLivePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 112, 128, 0.56);
+  }
+
+  70% {
+    box-shadow: 0 0 0 9px rgba(255, 112, 128, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 112, 128, 0);
+  }
+}
+
+.telescope-exit-button {
+  width: 41px;
+  height: 41px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+  color: var(--atlas-ivory);
+  background: rgba(3, 8, 18, 0.5);
+  cursor: pointer;
+  font-size: 19px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.telescope-info-panel {
+  position: absolute;
+  left: clamp(18px, 4vw, 62px);
+  bottom: clamp(75px, 10vh, 108px);
+  z-index: 13;
+  width: min(450px, 37vw);
+  padding: 21px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 23px;
+  background: rgba(2, 7, 17, 0.65);
+  box-shadow: var(--atlas-shadow);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: telescopeInfoIn 0.32s ease both;
+}
+
+@keyframes telescopeInfoIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.telescope-info-panel > p:first-of-type {
+  margin: 0;
+  padding-right: 35px;
+  color: rgba(191, 229, 237, 0.68);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.17em;
+}
+
+.telescope-info-panel h2 {
   margin: 7px 0 0;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(42px, 4vw, 65px);
+  font-size: clamp(42px, 4vw, 64px);
   line-height: 0.95;
   letter-spacing: -0.045em;
 }
 
-.observatory-observation-info em {
+.telescope-info-panel em {
   display: block;
   margin-top: 10px;
-  color: rgba(224, 201, 170, 0.9);
+  color: rgba(224, 201, 170, 0.89);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.45;
 }
 
-.observatory-observation-facts {
-  margin-top: 17px;
+.telescope-facts {
+  margin-top: 16px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
 }
 
-.observatory-observation-facts div {
-  padding: 10px 11px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.025);
+.telescope-facts div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.023);
 }
 
-.observatory-observation-facts span,
-.observatory-observation-facts strong {
+.telescope-facts span,
+.telescope-facts strong {
   display: block;
 }
 
-.observatory-observation-facts span {
-  color: rgba(246, 239, 230, 0.31);
-  font-size: 6px;
+.telescope-facts span {
+  color: rgba(246, 239, 230, 0.28);
+  font-size: 5px;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.09em;
 }
 
-.observatory-observation-facts strong {
+.telescope-facts strong {
   margin-top: 5px;
+  overflow: hidden;
+  color: rgba(246, 239, 230, 0.79);
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.telescope-info-panel > p:not(:first-of-type) {
+  margin: 14px 0 0;
+  color: rgba(246, 239, 230, 0.59);
+  font-size: 10px;
+  line-height: 1.68;
+}
+
+#telescopeSourceLink {
+  margin-top: 12px;
+  display: inline-block;
+  color: rgba(191, 229, 237, 0.66);
+  text-decoration: none;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.telescope-controls {
+  position: absolute;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 14;
+  min-height: 50px;
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 17px;
+  background: rgba(3, 8, 18, 0.56);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transform: translateX(-50%);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.telescope-controls button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 11px;
+  color: rgba(246, 239, 230, 0.7);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.telescope-controls .telescope-control-wide {
+  min-width: 105px;
+  font-size: 7px;
+  letter-spacing: 0.07em;
+}
+
+.telescope-zoom-readout {
+  min-width: 62px;
+  text-align: center;
+}
+
+.telescope-zoom-readout small,
+.telescope-zoom-readout strong {
+  display: block;
+}
+
+.telescope-zoom-readout small {
+  color: rgba(246, 239, 230, 0.29);
+  font-size: 5px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.telescope-zoom-readout strong {
+  margin-top: 2px;
   color: rgba(246, 239, 230, 0.82);
   font-size: 10px;
 }
 
-.observatory-observation-info > p:not(:first-child) {
-  margin: 15px 0 0;
-  color: rgba(246, 239, 230, 0.61);
-  font-size: 11px;
-  line-height: 1.7;
-}
-
-.observatory-observation-actions {
-  margin-top: 16px;
-  display: flex;
+.telescope-help {
+  position: absolute;
+  right: clamp(18px, 3vw, 42px);
+  bottom: max(34px, env(safe-area-inset-bottom));
+  z-index: 12;
+  width: min(300px, 25vw);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
   gap: 8px;
+  color: rgba(246, 239, 230, 0.23);
+  pointer-events: none;
+  transition: opacity 0.35s ease;
 }
 
-.observatory-observation-actions button {
-  min-height: 39px;
-  padding: 0 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: rgba(246, 239, 230, 0.75);
-  background: rgba(255, 255, 255, 0.035);
-  cursor: pointer;
-  font-size: 8px;
+.telescope-help span,
+.telescope-help small {
+  font-size: 5px;
   font-weight: 800;
+  letter-spacing: 0.11em;
+  white-space: nowrap;
 }
 
-#observationSourceLink {
-  margin-top: 13px;
-  display: inline-block;
-  color: rgba(173, 218, 230, 0.68);
-  text-decoration: none;
-  font-size: 8px;
-  font-weight: 800;
+.telescope-help i {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(246, 239, 230, 0.14),
+    transparent
+  );
 }
 
-/* Camera push into actual telescope position */
-.observatory-app.is-entering .observatory-silhouette-stage {
-  animation: scenePushIntoScope 0.79s cubic-bezier(0.5, 0, 0.2, 1) forwards;
+.telescope-overlay.is-ui-idle .telescope-topbar,
+.telescope-overlay.is-ui-idle .telescope-controls,
+.telescope-overlay.is-ui-idle .telescope-help {
+  opacity: 0.18;
 }
 
-.observatory-app.is-entering .observatory-editorial-title,
-.observatory-app.is-entering .observatory-target-dock,
-.observatory-app.is-entering .observatory-drag-hint,
-.observatory-app.is-entering .observatory-topbar,
-.observatory-app.is-entering .observatory-sky-targets,
-.observatory-app.is-entering .observatory-aim-reticle,
-.observatory-app.is-entering .observatory-observe-button {
-  animation: fadeForEyepiece 0.45s ease forwards;
+.telescope-overlay.is-ui-idle .telescope-controls {
+  transform: translateX(-50%) translateY(8px);
 }
 
-@keyframes scenePushIntoScope {
-  to {
-    transform: translate3d(-22vw, 13vh, 0) scale(3.15);
-    filter: brightness(0.42);
-  }
-}
-
-@keyframes fadeForEyepiece {
-  to {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-}
-
-.observatory-rotate-note {
+.atlas-rotate-note {
   display: none;
 }
 
 @media (max-width: 1120px) {
-  .observatory-editorial-title {
-    width: min(450px, 41vw);
+  .atlas-editorial-intro {
+    width: min(420px, 39vw);
   }
 
-  .observatory-editorial-title h1 {
-    font-size: clamp(50px, 5.3vw, 72px);
+  .atlas-editorial-intro h1 {
+    font-size: clamp(49px, 5.1vw, 70px);
   }
 
-  .observatory-silhouette-stage {
-    right: -7vw;
-    width: 78vw;
+  .atlas-selection-card {
+    width: min(340px, 31vw);
   }
 
-  .observatory-observation-info {
-    width: min(430px, 46vw);
+  .atlas-explorer-panel {
+    width: min(630px, 76vw);
+  }
+
+  .telescope-info-panel {
+    width: min(420px, 44vw);
   }
 }
 
-/* Mobile landscape */
+/* =========================================================
+   MOBILE LANDSCAPE
+========================================================= */
+
 @media (orientation: landscape) and (max-height: 570px) {
-  .observatory-app {
+  .atlas-app {
     min-height: 100svh;
   }
 
-  .observatory-topbar {
+  .atlas-topbar {
     min-height: 51px;
     padding: max(6px, env(safe-area-inset-top)) 11px 4px;
-    grid-template-columns: 138px 1fr 153px;
+    grid-template-columns: 135px 1fr 150px;
     gap: 7px;
   }
 
-  .observatory-back {
+  .atlas-back-button {
     min-height: 34px;
     padding: 0 10px;
     font-size: 9px;
   }
 
-  .observatory-brand {
+  .atlas-brand {
     justify-content: center;
     gap: 8px;
   }
 
-  .observatory-brand-orbit {
+  .atlas-brand-mark {
     width: 28px;
     height: 28px;
   }
 
-  .observatory-brand-orbit i {
+  .atlas-brand-mark i {
     inset: 6px;
   }
 
-  .observatory-brand small {
+  .atlas-brand small {
     display: none;
   }
 
-  .observatory-brand strong {
+  .atlas-brand strong {
     font-size: 14px;
   }
 
-  .observatory-night-status {
+  .atlas-night-status {
     gap: 5px;
     font-size: 5px;
   }
 
-  .observatory-night-status i {
+  .atlas-night-status i {
     width: 17px;
   }
 
-  .observatory-night-status b {
+  .atlas-night-status b {
     width: 28px;
     height: 28px;
   }
 
-  .observatory-editorial-title {
-    left: max(16px, env(safe-area-inset-left));
-    top: 70px;
-    width: 37vw;
+  .atlas-editorial-intro {
+    left: max(15px, env(safe-area-inset-left));
+    top: 67px;
+    width: 32vw;
   }
 
-  .observatory-editorial-title p {
+  .atlas-editorial-intro p {
     font-size: 5px;
   }
 
-  .observatory-editorial-title h1 {
+  .atlas-editorial-intro h1 {
     margin-top: 6px;
-    font-size: clamp(36px, 6.9vw, 53px);
+    font-size: clamp(34px, 6.4vw, 49px);
   }
 
-  .observatory-editorial-title h1 span {
-    margin-left: 15px;
+  .atlas-editorial-intro h1 span {
+    margin-left: 13px;
   }
 
-  .observatory-editorial-title em {
-    margin-top: 8px;
-    font-size: clamp(10px, 1.8vw, 13px);
+  .atlas-editorial-intro em {
+    margin-top: 7px;
+    font-size: clamp(9px, 1.7vw, 12px);
   }
 
-  .observatory-silhouette-stage {
-    right: -3vw;
-    bottom: -8vh;
-    width: 69vw;
+  .atlas-selection-card {
+    right: max(11px, env(safe-area-inset-right));
+    top: 53%;
+    width: min(285px, 35vw);
+    padding: 14px;
+    border-radius: 18px;
   }
 
-  .observatory-aim-reticle {
-    left: 56.1%;
-    top: 45%;
-    transform: translate(-50%, -50%) scale(0.72);
+  .atlas-selection-card h2 {
+    font-size: clamp(30px, 4.8vw, 42px);
   }
 
-  .observatory-observe-button {
-    left: 56.1%;
-    top: calc(45% + 40px);
-    min-height: 39px;
-    padding: 0 12px;
-    border-radius: 12px;
-  }
-
-  .observatory-observe-button strong {
-    font-size: 7px;
-  }
-
-  .observatory-observe-button small {
-    font-size: 5px;
-  }
-
-  .observatory-target-dock {
-    bottom: max(8px, env(safe-area-inset-bottom));
-  }
-
-  .observatory-target-dock-toggle {
-    min-width: 186px;
-    min-height: 40px;
-    padding: 0 10px;
-    border-radius: 13px;
-  }
-
-  .observatory-target-dock-toggle strong {
+  .atlas-selection-card em {
+    margin-top: 6px;
     font-size: 11px;
   }
 
-  .observatory-target-dock-toggle small {
+  .atlas-selection-meta {
+    margin-top: 10px;
     font-size: 5px;
   }
 
-  .observatory-target-dock-panel {
-    width: min(650px, 91vw);
-    padding: 7px;
+  .atlas-observe-button {
+    min-height: 40px;
+    margin-top: 11px;
+    border-radius: 12px;
   }
 
-  .observatory-target-chip {
-    min-height: 31px;
-    padding: 0 9px;
+  .atlas-observe-button strong {
     font-size: 6px;
   }
 
-  .observatory-drag-hint {
-    left: max(12px, env(safe-area-inset-left));
-    bottom: max(10px, env(safe-area-inset-bottom));
-    width: 23vw;
+  .atlas-observe-button small {
+    font-size: 4px;
   }
 
-  .observatory-drag-hint span,
-  .observatory-drag-hint small {
+  .atlas-explorer-button {
+    left: max(11px, env(safe-area-inset-left));
+    bottom: max(9px, env(safe-area-inset-bottom));
+    min-width: 172px;
+    min-height: 39px;
+    border-radius: 12px;
+  }
+
+  .atlas-explorer-button strong {
+    font-size: 6px;
+  }
+
+  .atlas-explorer-button small {
+    font-size: 4px;
+  }
+
+  .atlas-explorer-panel {
+    left: max(11px, env(safe-area-inset-left));
+    bottom: calc(max(9px, env(safe-area-inset-bottom)) + 49px);
+    width: min(570px, 75vw);
+    padding: 10px;
+    border-radius: 15px;
+  }
+
+  .atlas-explorer-heading strong {
+    font-size: 14px;
+  }
+
+  .atlas-explorer-list {
+    margin-top: 9px;
+    max-height: 47vh;
+    gap: 6px;
+  }
+
+  .atlas-explorer-item {
+    min-height: 40px;
+    grid-template-columns: 26px 1fr auto;
+    border-radius: 11px;
+  }
+
+  .atlas-explorer-item > span {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .atlas-explorer-item strong {
+    font-size: 11px;
+  }
+
+  .atlas-navigation-hint {
+    bottom: max(12px, env(safe-area-inset-bottom));
+    grid-template-columns: auto 18px auto 18px auto;
+  }
+
+  .atlas-navigation-hint span {
+    font-size: 4px;
+  }
+
+  .atlas-zoom-meter {
+    right: max(11px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: 18vw;
+  }
+
+  .atlas-zoom-meter span,
+  .atlas-zoom-meter small {
+    font-size: 4px;
+  }
+
+  .atlas-object-marker {
+    transform:
+      translate(-50%, -50%)
+      scale(calc(var(--marker-scale, 1) * 0.82));
+  }
+
+  .atlas-travel-copy {
+    bottom: 4%;
+  }
+
+  .atlas-travel-copy h2 {
+    font-size: clamp(31px, 5.5vw, 49px);
+  }
+
+  .atlas-travel-copy p {
+    display: none;
+  }
+
+  .telescope-topbar {
+    padding: max(8px, env(safe-area-inset-top)) 12px;
+  }
+
+  .telescope-title small {
     font-size: 5px;
   }
 
-  .observatory-sky-marker {
-    transform: scale(0.78);
+  .telescope-title strong {
+    font-size: 16px;
   }
 
-  .observatory-observation-info {
-    left: 14px;
-    bottom: 12px;
-    width: min(410px, 45vw);
+  .telescope-live-pill {
+    display: none;
+  }
+
+  .telescope-exit-button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .telescope-lens-shade::before {
+    width: min(95vw, 760px);
+    border-width: 12px;
+  }
+
+  .telescope-lens-shade::after {
+    width: min(78vw, 610px);
+  }
+
+  .telescope-reticle {
+    width: 135px;
+    height: 135px;
+  }
+
+  .telescope-reticle::before {
+    width: 210px;
+  }
+
+  .telescope-reticle::after {
+    height: 210px;
+  }
+
+  .telescope-reticle span {
+    inset: 29px;
+  }
+
+  .telescope-info-panel {
+    left: 12px;
+    bottom: 61px;
+    width: min(370px, 45vw);
     padding: 13px;
     border-radius: 17px;
   }
 
-  .observatory-observation-info h2 {
-    font-size: clamp(32px, 5vw, 45px);
+  .telescope-info-panel h2 {
+    font-size: clamp(30px, 4.6vw, 43px);
   }
 
-  .observatory-observation-info em {
-    font-size: 11px;
+  .telescope-info-panel em {
+    font-size: 10px;
   }
 
-  .observatory-observation-info > p:not(:first-child) {
-    font-size: 8px;
+  .telescope-facts {
+    margin-top: 9px;
   }
 
-  .observatory-observation-topbar {
-    padding: max(9px, env(safe-area-inset-top)) 14px;
+  .telescope-facts div {
+    padding: 7px;
   }
 
-  .observatory-observation-hud {
+  .telescope-info-panel > p:not(:first-of-type) {
+    margin-top: 9px;
+    font-size: 7px;
+  }
+
+  .telescope-controls {
+    bottom: max(8px, env(safe-area-inset-bottom));
+    min-height: 42px;
+    padding: 5px;
+    gap: 5px;
+    border-radius: 13px;
+  }
+
+  .telescope-controls button {
+    min-width: 31px;
+    height: 31px;
+    padding: 0 7px;
+  }
+
+  .telescope-controls .telescope-control-wide {
+    min-width: 83px;
+    font-size: 5px;
+  }
+
+  .telescope-zoom-readout {
+    min-width: 48px;
+  }
+
+  .telescope-help {
     display: none;
-  }
-
-  .observatory-travel-copy {
-    bottom: 4%;
-  }
-
-  .observatory-travel-copy h2 {
-    font-size: clamp(31px, 5.5vw, 49px);
-  }
-
-  .observatory-travel-copy p {
-    display: none;
-  }
-
-  .eyepiece-blackout {
-    background:
-      radial-gradient(circle at 56.1% 45%, transparent 0 3%, rgba(0, 0, 0, 0.2) 11%, rgba(0, 0, 0, 0.94) 43%, #000 70%);
-  }
-
-  .eyepiece-ring {
-    left: 56.1%;
-    top: 45%;
   }
 }
 
-/* Portrait phone asks for landscape */
+/* Portrait phones intentionally redirect to landscape */
 @media (orientation: portrait) and (max-width: 700px) {
-  .observatory-rotate-note {
+  .atlas-rotate-note {
     position: fixed;
     inset: 0;
-    z-index: 180;
+    z-index: 190;
     padding: 24px;
     display: grid;
     place-items: center;
     align-content: center;
     gap: 12px;
-    color: var(--ivory);
+    color: var(--atlas-ivory);
     background:
       radial-gradient(circle at center, #0a1831, #020611 72%);
     text-align: center;
   }
 
-  .observatory-rotate-note span {
+  .atlas-rotate-note span {
     font-size: 46px;
-    animation: rotatePhone 2.4s ease-in-out infinite;
+    animation: atlasRotatePhone 2.4s ease-in-out infinite;
   }
 
-  .observatory-rotate-note strong {
+  .atlas-rotate-note strong {
     font-family: "Playfair Display", Georgia, serif;
     font-size: 27px;
   }
 
-  .observatory-rotate-note small {
+  .atlas-rotate-note small {
     max-width: 32ch;
     color: rgba(246, 239, 230, 0.58);
     line-height: 1.6;
   }
 
-  @keyframes rotatePhone {
-    0%, 100% { transform: rotate(0deg); }
-    50% { transform: rotate(90deg); }
+  @keyframes atlasRotatePhone {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+
+    50% {
+      transform: rotate(90deg);
+    }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .silhouette-person,
-  .silhouette-hair,
-  .silhouette-front-arm,
-  .silhouette-ambient-particles circle,
-  .observatory-sky-marker::after,
-  .observation-fallback-orb,
-  .observatory-rotate-note span {
+  .atlas-object-orbit,
+  .telescope-live-pill i,
+  .telescope-fallback-orb,
+  .atlas-rotate-note span {
     animation: none !important;
   }
 
-  .observatory-target-chip,
-  .observatory-sky-marker span,
-  .observatory-observe-button {
+  .atlas-editorial-intro,
+  .atlas-object-marker,
+  .atlas-object-label,
+  .atlas-observe-button,
+  .telescope-controls,
+  .telescope-topbar,
+  .telescope-help {
     transition-duration: 0.01ms !important;
   }
 }
